@@ -1,0 +1,47 @@
+{
+  "en": {
+    "numberbank.name": "NumberBank1.0",
+    "numberbank.NumberBank": "NumberBank",
+    "numberbank.argments.bank": "",
+    "numberbank.argments.card": "",
+    "numberbank.argments.key": "key",
+    "numberbank.putNum": "[BANK]の[CARD]の数字を[NUM]にする",
+    "numberbank.setNum": "[VAL]を[BANK]の[CARD]の数字にする",
+    "numberbank.inoutDone": "",
+    "numberbank.getNum": "[BANK]の[CARD]を読む",
+    "numberbank.repNum": "",
+    "numberbank.repCloudNum": "",
+    "numberbank.boolAvl": "",
+    "numberbank.setMaster": ""
+  },
+  "ja": {
+    "numberbank.name": "NumberBank1.0",
+    "numberbank.NumberBank": "ナンバーバンク",
+    "numberbank.argments.bank": "バンク",
+    "numberbank.argments.card": "カード",
+    "numberbank.argments.key": "key",
+    "numberbank.putNum": "[BANK]の[CARD]の数字を[NUM]にする",
+    "numberbank.setNum": "[VAL]を[BANK]の[CARD]の数字にする",
+    "numberbank.inoutDone": "読み書き完了",
+    "numberbank.getNum": "[BANK]の[CARD]を読む",
+    "numberbank.repNum": "クラウド数字",
+    "numberbank.repCloudNum": "[BANK]の[CARD]の数字",
+    "numberbank.boolAvl": "[BANK]の[CARD]がある",
+    "numberbank.setMaster": "マスター[KEY]をセット"
+  },
+  "ja-Hira": {
+    "numberbank.name": "なんばーばんく1.0",
+    "numberbank.NumberBank": "なんばーばんく",
+    "numberbank.argments.bank": "ばんく",
+    "numberbank.argments.card": "かーど",
+    "numberbank.argments.key": "key",
+    "numberbank.putNum": "[BANK]の[CARD]のすうじを[NUM]にする",
+    "numberbank.setNum": "[VAL]を[BANK]の[CARD]のすうじにする",
+    "numberbank.inoutDone": "よみかきかんりょう",
+    "numberbank.getNum": "[BANK]の[CARD]をよむ",
+    "numberbank.repNum": "クラウドすうじ",
+    "numberbank.repCloudNum": "[BANK]の[CARD]のすうじ",
+    "numberbank.boolAvl": "[BANK]の[CARD]がある",
+    "numberbank.setMaster": "ますたー[KEY]をセット"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "name": "xcx-numberbank",
+  "version": "0.0.0",
+  "scripts": {
+    "register": "npx xcratch-register --id=numberbank --gui=../scratch-gui --block=./src/vm/extensions/block --entry=./src/gui/lib/libraries/extensions/entry --core --link --use=extension-support util",
+    "build": "npx xcratch-build --module=numberbank --gui=../scratch-gui --block=./src/vm/extensions/block --entry=./src/gui/lib/libraries/extensions/entry"
+  },
+  "devDependencies": {
+    "xcratch-build": "^0.4.0",
+    "xcratch-register": "^0.4.2"
+  }
+}
