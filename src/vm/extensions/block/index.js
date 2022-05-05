@@ -2,8 +2,8 @@ import BlockType from '../../extension-support/block-type';
 import ArgumentType from '../../extension-support/argument-type';
 import translations from './translations.json';
 import blockIcon from './numberbank_icon.png';
-import 'firebase/app';
-import 'firebase/firestore';
+import '@firebase/app';
+import '@firebase/firestore';
 import crypto from 'crypto';
 
 

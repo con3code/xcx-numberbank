@@ -2422,7 +2422,7 @@ var ERRORS = (_a$1 = {}, _a$1["no-app"
 ] = 'First argument to `onLog` must be null or a function.', _a$1);
 var ERROR_FACTORY = new ErrorFactory('app', 'Firebase', ERRORS);
 var name$c = "@firebase/app";
-var version$1$1 = "0.6.30";
+var version$1 = "0.6.30";
 var name$b = "@firebase/analytics";
 var name$a = "@firebase/app-check";
 var name$9 = "@firebase/auth";
@@ -2434,7 +2434,7 @@ var name$4 = "@firebase/performance";
 var name$3 = "@firebase/remote-config";
 var name$2 = "@firebase/storage";
 var name$1 = "@firebase/firestore";
-var name$d = "firebase-wrapper";
+var name = "firebase-wrapper";
 /**
  * @license
  * Copyright 2019 Google LLC
@@ -2455,7 +2455,7 @@ var name$d = "firebase-wrapper";
 var _a$2;
 
 var DEFAULT_ENTRY_NAME = '[DEFAULT]';
-var PLATFORM_LOG_STRING = (_a$2 = {}, _a$2[name$c] = 'fire-core', _a$2[name$b] = 'fire-analytics', _a$2[name$a] = 'fire-app-check', _a$2[name$9] = 'fire-auth', _a$2[name$8] = 'fire-rtdb', _a$2[name$7] = 'fire-fn', _a$2[name$6] = 'fire-iid', _a$2[name$5] = 'fire-fcm', _a$2[name$4] = 'fire-perf', _a$2[name$3] = 'fire-rc', _a$2[name$2] = 'fire-gcs', _a$2[name$1] = 'fire-fst', _a$2['fire-js'] = 'fire-js', _a$2[name$d] = 'fire-js-all', _a$2);
+var PLATFORM_LOG_STRING = (_a$2 = {}, _a$2[name$c] = 'fire-core', _a$2[name$b] = 'fire-analytics', _a$2[name$a] = 'fire-app-check', _a$2[name$9] = 'fire-auth', _a$2[name$8] = 'fire-rtdb', _a$2[name$7] = 'fire-fn', _a$2[name$6] = 'fire-iid', _a$2[name$5] = 'fire-fcm', _a$2[name$4] = 'fire-perf', _a$2[name$3] = 'fire-rc', _a$2[name$2] = 'fire-gcs', _a$2[name$1] = 'fire-fst', _a$2['fire-js'] = 'fire-js', _a$2[name] = 'fire-js-all', _a$2);
 /**
  * @license
  * Copyright 2019 Google LLC
@@ -3097,7 +3097,7 @@ function registerCoreComponents(firebase, variant) {
   /* PRIVATE */
   )); // Register `app` package.
 
-  firebase.registerVersion(name$c, version$1$1, variant); // Register platform SDK identifier (no version).
+  firebase.registerVersion(name$c, version$1, variant); // Register platform SDK identifier (no version).
 
   firebase.registerVersion('fire-js', '');
 }
@@ -3154,28 +3154,6 @@ firebase$1.initializeApp = function () {
 
 var firebase$2 = firebase$1;
 registerCoreComponents(firebase$2);
-
-var name = "firebase";
-var version$1 = "8.10.1";
-/**
- * @license
- * Copyright 2018 Google LLC
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-firebase$2.registerVersion(name, version$1, 'app');
-firebase$2.SDK_VERSION = version$1;
 
 // based off https://github.com/defunctzombie/node-process/blob/master/browser.js
 
