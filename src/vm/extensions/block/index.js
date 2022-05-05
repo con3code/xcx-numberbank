@@ -6,7 +6,6 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
 import crypto from 'crypto';
 
-
 /**
  * Formatter which is used for translation.
  * This will be replaced which is used in the runtime.

@@ -11,5 +11,9 @@
   },
   "dependencies": {
     "firebase": "^9.7.0"
+  },
+  "imports": {
+    "firebase/compat/app": "/home/pi/scr/scratch-gui/node_modules/firebase/compat/app",
+    "firebase/compat/firestore": "/home/pi/scr/scratch-gui/node_modules/firebase/compat/firestore"
   }
 }
