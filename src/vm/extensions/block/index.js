@@ -2,9 +2,10 @@ import BlockType from '../../extension-support/block-type';
 import ArgumentType from '../../extension-support/argument-type';
 import translations from './translations.json';
 import blockIcon from './numberbank_icon.png';
-import firebase from '/firebase/compat/app';
-import '/firebase/compat/firestore';
 import crypto from 'crypto';
+require("firebase/app");
+require("firebase/firestore");
+
 
 /**
  * Formatter which is used for translation.

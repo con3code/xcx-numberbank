@@ -11,8 +11,5 @@
   },
   "dependencies": {
     "firebase": "^9.7.0"
-  },
-  "paths": {
-    "/firebase/*": "/home/pi/scr/scratch-gui/node_modules/firebase/*"
   }
 }
