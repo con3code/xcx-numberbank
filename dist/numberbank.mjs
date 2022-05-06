@@ -11897,7 +11897,7 @@ function hexString(textStr) {
 
 var encryptSha256 = function encryptSha256(str) {
   var hash = SHA256(str);
-  return hexString(hash); //    return hash.toString()
+  return hexString(hash.toString()); //    return hash.toString()
 }; // Firebase関連
 
 

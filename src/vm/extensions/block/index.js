@@ -937,7 +937,7 @@ function hexString(textStr) {
 
 const encryptSha256 = (str) => {
     const hash = SHA256(str);
-    return hexString(hash)
+    return hexString(hash.toString())
 //    return hash.toString()
 }
 
