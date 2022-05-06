@@ -571,12 +571,12 @@ class ExtensionBlocks {
                 // Initialize Firebase
 
                 try {
-                    fbApp = initializeApp(cloudConfig_mkb);
+                    fbApp = initializeApp(cloudConfig_mkey);
                     db = getFirestore(fbApp);
                     // fnc = getFunctions();
                 } catch (e) {
                     // v8
-                    firebase.initializeApp(cloudConfig_mkb);
+                    firebase.initializeApp(cloudConfig_mkey);
                     db = firebase.firestore();
                     // fnc = getFunctions();
                 }
@@ -913,7 +913,7 @@ const interval = {
     MsAvl: 100,
 }
 
-// mkBank格納用
+// 格納用予備
 const cloudConfig_mkb = {
     cloudType: '',
     apiKey: '',
