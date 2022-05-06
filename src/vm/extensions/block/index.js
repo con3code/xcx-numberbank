@@ -319,18 +319,18 @@ class ExtensionBlocks {
             sleep(1)
                 .then(() => {
                     bankSha256 = encryptSha256(new TextEncoder().encode(bankKey));
-                    // console.log("bankSha256: " + bankSha256);    
+                    console.log("bankSha256: " + bankSha256);    
                 })
                 .then(() => {
                     cardSha256 = encryptSha256(new TextEncoder().encode(cardKey));
-                    // console.log("cardSha256: " + cardSha256);
+                    console.log("cardSha256: " + cardSha256);
                 })
                 .then(() => {
                     uniSha256 = encryptSha256(new TextEncoder().encode(uniKey));
-                    // console.log("uniSha256: " + uniSha256);
+                    console.log("uniSha256: " + uniSha256);
                 })
                 .then(() => {
-                    // console.log("masterSha256: " + masterSha256);
+                    console.log("masterSha256: " + masterSha256);
 
                     console.log('cloudConfig_mkey:', firebaseConfig);
                     console.log('db:', db);
@@ -925,15 +925,20 @@ function availableWaiter(msec) {
 
 
 
-const encryptSha256 = (str) => {
-    const hash = SHA256(str);
-    const byteArray = new Uint8Array(hash);
+function hexString(textStr) {
+    const byteArray = new Uint8Array(textStr);
     const hexCodes = [...byteArray].map(value => {
         const hexCode = value.toString(16);
         const paddedHexCode = hexCode.padStart(2, '0');
         return paddedHexCode;
     });
     return hexCodes.join('');
+}
+
+const encryptSha256 = (str) => {
+    const hash = SHA256(str);
+    return hexString(hash)
+//    return hash.toString()
 }
 
 

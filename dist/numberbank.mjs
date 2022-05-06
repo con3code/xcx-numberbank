@@ -11324,13 +11324,16 @@ var ExtensionBlocks = /*#__PURE__*/function () {
 
       if (bankKey != '' && bankKey != undefined) {
         sleep(1).then(function () {
-          bankSha256 = encryptSha256(new TextEncoder().encode(bankKey)); // console.log("bankSha256: " + bankSha256);    
+          bankSha256 = encryptSha256(new TextEncoder().encode(bankKey));
+          console.log("bankSha256: " + bankSha256);
         }).then(function () {
-          cardSha256 = encryptSha256(new TextEncoder().encode(cardKey)); // console.log("cardSha256: " + cardSha256);
+          cardSha256 = encryptSha256(new TextEncoder().encode(cardKey));
+          console.log("cardSha256: " + cardSha256);
         }).then(function () {
-          uniSha256 = encryptSha256(new TextEncoder().encode(uniKey)); // console.log("uniSha256: " + uniSha256);
+          uniSha256 = encryptSha256(new TextEncoder().encode(uniKey));
+          console.log("uniSha256: " + uniSha256);
         }).then(function () {
-          // console.log("masterSha256: " + masterSha256);
+          console.log("masterSha256: " + masterSha256);
           console.log('cloudConfig_mkey:', firebaseConfig);
           console.log('db:', db);
           console.log('uniSha256:', uniSha256);
@@ -11880,9 +11883,8 @@ function availableWaiter(msec) {
   });
 }
 
-var encryptSha256 = function encryptSha256(str) {
-  var hash = SHA256(str);
-  var byteArray = new Uint8Array(hash);
+function hexString(textStr) {
+  var byteArray = new Uint8Array(textStr);
 
   var hexCodes = _toConsumableArray(byteArray).map(function (value) {
     var hexCode = value.toString(16);
@@ -11891,6 +11893,11 @@ var encryptSha256 = function encryptSha256(str) {
   });
 
   return hexCodes.join('');
+}
+
+var encryptSha256 = function encryptSha256(str) {
+  var hash = SHA256(str);
+  return hexString(hash); //    return hash.toString()
 }; // Firebase関連
 
 
