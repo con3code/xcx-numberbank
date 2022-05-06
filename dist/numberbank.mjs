@@ -8893,11 +8893,12 @@ var ExtensionBlocks = /*#__PURE__*/function () {
 
         try {
           fbApp = initializeApp(cloudConfig_mkey);
-          db = on(fbApp); // fnc = getFunctions();
+          db = on(fbApp);
         } catch (e) {
           // v8
-          firebase.initializeApp(cloudConfig_mkey);
-          db = firebase.firestore(); // fnc = getFunctions();
+          firebase.default.initializeApp(cloudConfig_mkey);
+          db = firebase.default.firestore(); //                    firebase.initializeApp(cloudConfig_mkey);
+          //                    db = firebase.firestore();
         }
 
         fn(db, 'bank');
