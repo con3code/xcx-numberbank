@@ -10121,11 +10121,6 @@ var Variable = /*#__PURE__*/function () {
 
 var variable = Variable;
 
-// import SHA256 from "crypto-js/sha256";
-// const { Crypto } = import ("@peculiar/webcrypto");
-// import crypto from "@peculiar/webcrypto";
-// const crypto = new Crypto();
-
 /**
  * Formatter which is used for translation.
  * This will be replaced which is used in the runtime.
@@ -10228,8 +10223,7 @@ var ExtensionBlocks = /*#__PURE__*/function () {
           return sleep(1);
         }).then(function () {
           //console.log("masterSha256: " + masterSha256);
-          console.log('cloudConfig_mkey:', firebaseConfig);
-
+          // console.log('cloudConfig_mkey:', firebaseConfig);
           if (masterSha256 != '' && masterSha256 != undefined) {
             console.log("NumberBank put 00");
             var now = Date.now();
@@ -10309,9 +10303,9 @@ var ExtensionBlocks = /*#__PURE__*/function () {
         }).then(function () {
           //console.log("masterSha256: " + masterSha256);
           if (masterSha256 != '' && masterSha256 != undefined) {
-            console.log('cloudConfig_mkey:', firebaseConfig); //v8
+            // console.log('cloudConfig_mkey:', firebaseConfig);
+            //v8
             // cardDb.doc(uniSha256).get().then(function (ckey) {
-
             vr(wn(db, 'card', uniSha256)).then(function (ckey) {
               console.log("NumberBank set 00");
 
@@ -10365,10 +10359,9 @@ var ExtensionBlocks = /*#__PURE__*/function () {
 
       if (args.BANK == '' || args.CARD == '') {
         return;
-      }
+      } // console.log('args.BANK:', args.BANK);
+      // console.log('args.CARD:', args.CARD);
 
-      console.log('args.BANK:', args.BANK);
-      console.log('args.CARD:', args.CARD);
 
       if (inoutFlag) {
         return;
@@ -10378,8 +10371,7 @@ var ExtensionBlocks = /*#__PURE__*/function () {
       console.log("getNum...");
       bankKey = bankName = args.BANK;
       cardKey = args.CARD;
-      uniKey = bankKey.trim().concat(cardKey.trim());
-      console.log('uniKey:' + uniKey);
+      uniKey = bankKey.trim().concat(cardKey.trim()); // console.log('uniKey:' + uniKey);
 
       if (!crypto || !crypto.subtle) {
         throw Error("crypto.subtle is not supported.");
@@ -10402,16 +10394,14 @@ var ExtensionBlocks = /*#__PURE__*/function () {
 
           return sleep(1);
         }).then(function () {
-          console.log("masterSha256: " + masterSha256);
-          console.log('cloudConfig_mkey:', firebaseConfig);
-          console.log('db:', db);
-          console.log('uniSha256:', uniSha256);
-
+          // console.log("masterSha256: " + masterSha256);
+          // // console.log('cloudConfig_mkey:', firebaseConfig);
+          // console.log('db:', db);
+          // console.log('uniSha256:', uniSha256);
           if (masterSha256 != '' && masterSha256 != undefined) {
             vr(wn(db, 'card', uniSha256)).then(function (ckey) {
-              console.log("NumberBank get 00");
-              console.log('ckey:', ckey);
-              console.log('ckey.exists:', ckey.exists());
+              console.log("NumberBank get 00"); // console.log('ckey:', ckey);
+              // console.log('ckey.exists:', ckey.exists());
 
               if (ckey.exists()) {
                 console.log("NumberBank get 01");
@@ -10497,8 +10487,7 @@ var ExtensionBlocks = /*#__PURE__*/function () {
           return sleep(1);
         }).then(function () {
           //console.log("masterSha256: " + masterSha256);
-          console.log('cloudConfig_mkey:', firebaseConfig);
-
+          // console.log('cloudConfig_mkey:', firebaseConfig);
           if (masterSha256 != '' && masterSha256 != undefined) {
             vr(wn(db, 'card', uniSha256)).then(function (ckey) {
               console.log("NumberBank rep 00");
@@ -10564,13 +10553,12 @@ var ExtensionBlocks = /*#__PURE__*/function () {
       if (bankKey != '' && bankKey != undefined) {
         //
         crypto.subtle.digest('SHA-256', new TextEncoder().encode(uniKey)).then(function (uniStr) {
-          uniSha256 = hexString(uniStr); //console.log("uniSha256: " + uniSha256);
+          uniSha256 = hexString(uniStr); // console.log("uniSha256: " + uniSha256);
 
           return sleep(1);
         }).then(function () {
-          //console.log("masterSha256: " + masterSha256);
-          console.log('cloudConfig_mkey:', firebaseConfig);
-
+          // console.log("masterSha256: " + masterSha256);
+          // console.log('cloudConfig_mkey:', firebaseConfig);
           if (masterSha256 != '' && masterSha256 != undefined) {
             vr(wn(db, 'card', uniSha256)).then(function (ckey) {
               console.log("NumberBank avl 00");
@@ -10626,31 +10614,30 @@ var ExtensionBlocks = /*#__PURE__*/function () {
           throw new Error('Unexpected responce status ${response.status} or content type');
         }
       }).then(function (resBody) {
-        cloudConfig_mkey.masterKey = resBody.masterKey;
-        cloudConfig_mkey.apiKey = firebaseConfig.apiKey = resBody.apiKey;
-        cloudConfig_mkey.authDomain = firebaseConfig.authDomain = resBody.authDomain;
-        cloudConfig_mkey.databaseURL = firebaseConfig.databaseURL = resBody.databaseURL;
-        cloudConfig_mkey.projectId = firebaseConfig.projectId = resBody.projectId;
-        cloudConfig_mkey.storageBucket = firebaseConfig.storageBucket = resBody.storageBucket;
-        cloudConfig_mkey.messagingSenderId = firebaseConfig.messagingSenderId = resBody.messagingSenderId;
-        cloudConfig_mkey.appId = firebaseConfig.appId = resBody.appId;
-        cloudConfig_mkey.measurementId = firebaseConfig.measurementId = resBody.measurementId;
+        firebaseConfig.apiKey = resBody.apiKey;
+        firebaseConfig.authDomain = resBody.authDomain;
+        firebaseConfig.databaseURL = resBody.databaseURL;
+        firebaseConfig.projectId = resBody.projectId;
+        firebaseConfig.storageBucket = resBody.storageBucket;
+        firebaseConfig.messagingSenderId = resBody.messagingSenderId;
+        firebaseConfig.appId = resBody.appId;
+        firebaseConfig.measurementId = resBody.measurementId;
         interval.MsPut = resBody.intervalMsPut;
         interval.MsSet = resBody.intervalMsSet;
         interval.MsGet = resBody.intervalMsGet;
         interval.MsRep = resBody.intervalMsRep;
-        interval.MsAvl = resBody.intervalMsAvl;
-        console.log('cloudConfig_mkey:', cloudConfig_mkey);
-        console.log('interval:', interval);
-        console.log('cloudConfig_mkey:', firebaseConfig);
+        interval.MsAvl = resBody.intervalMsAvl; // console.log('cloudConfig_mkey:', cloudConfig_mkey);
+
+        console.log('interval:', interval); // console.log('cloudConfig_mkey:', firebaseConfig);
+
         inoutFlag = false;
         return ioWaiter(1);
       }).then(function () {
         inoutFlag = true; // Initialize Firebase
 
         fbApp = initializeApp(firebaseConfig);
-        db = on(fbApp);
-        console.log('db:', db);
+        db = on(fbApp); // console.log('db:', db);
+
         /*
         try {
             fbApp = initializeApp(cloudConfig_mkey);
@@ -10659,8 +10646,8 @@ var ExtensionBlocks = /*#__PURE__*/function () {
             // v8
             firebase.default.initializeApp(cloudConfig_mkey);
             db = firebase.default.firestore();
-        //                    firebase.initializeApp(cloudConfig_mkey);
-        //                    db = firebase.firestore();
+            // firebase.initializeApp(cloudConfig_mkey);
+            // db = firebase.firestore();
         }
         */
         // bankDb = collection(db, 'bank');
@@ -10679,8 +10666,8 @@ var ExtensionBlocks = /*#__PURE__*/function () {
         masterSha256 = hexString(masterStr);
         return sleep(1);
       }).then(function () {
-        //console.log("MasterKey:", masterKey);
-        console.log("masterSha256:", masterSha256);
+        // console.log("MasterKey:", masterKey);
+        // console.log("masterSha256:", masterSha256);
         console.log("MasterKey setted!");
       }).catch(function (error) {
         console.log("Error setting MasterKey:", error);
@@ -11042,22 +11029,5 @@ var firebaseConfig = {
   appId: "",
   measurementId: ""
 }; // 格納用予備
-
-var cloudConfig_mkey = {
-  cloudType: '',
-  apiKey: '',
-  authDomain: '',
-  databaseURL: "",
-  projectId: '',
-  storageBucket: '',
-  messagingSenderId: '',
-  appId: '',
-  measurementId: '',
-  Version: '',
-  AccessKeyId: '',
-  SecretAccessKey: '',
-  SessionToken: '',
-  Expiration: ''
-};
 
 export { ExtensionBlocks as blockClass, entry };
