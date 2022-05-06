@@ -4,9 +4,13 @@ import translations from './translations.json';
 import blockIcon from './numberbank_icon.png';
 import { initializeApp } from 'firebase/app';
 import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore/lite';
-import SHA256 from "crypto-js/sha256";
-import crypto from 'crypto';
 import Variable from '../../engine/variable';
+import crypto from 'crypto';
+// import SHA256 from "crypto-js/sha256";
+
+// const { Crypto } = import ("@peculiar/webcrypto");
+// import Crypto from "@peculiar/webcrypto";
+// const crypto = new Crypto();
 
 /**
  * Formatter which is used for translation.
@@ -1000,12 +1004,13 @@ const encryptSha256 = (str) => {
 */
 
 
+/*
 // もともと
 const encryptSha256 = (str) => {
     const hash = SHA256(str);
     return hash.toString()
 }
-
+*/
 
 
 // Firebase関連
