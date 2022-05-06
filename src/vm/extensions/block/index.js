@@ -343,6 +343,7 @@ class ExtensionBlocks {
                         getDoc(doc(db, 'card', uniSha256)).then(function (ckey) {
                             console.log("NumberBank get 00");
                             console.log('ckey:', ckey);
+                            console.log('ckey.exists:', ckey.exists());
 
                             if (ckey.exists()) {
                                 console.log("NumberBank get 01");
@@ -355,6 +356,7 @@ class ExtensionBlocks {
                                         console.log('cloudNum:', cloudNum);
                                     })
                                     .then(() => {
+                                        console.log("NumberBank get 03");
                                         inoutFlag = false;
                                     })
                                     .catch(function (error) {
@@ -362,7 +364,8 @@ class ExtensionBlocks {
                                     });
 
                             } else {
-                                //console.log("No Card!");
+                                console.log("NumberBank get 04");
+                                console.log("No Card!");
                                 cloudNum = '';
                                 inoutFlag = false;
                             }
@@ -378,7 +381,7 @@ class ExtensionBlocks {
                         inoutFlag = false;
                     }
 
-                    console.log("NumberBank get 03");
+                    console.log("NumberBank get 05");
 
                 });
 

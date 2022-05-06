@@ -11339,6 +11339,7 @@ var ExtensionBlocks = /*#__PURE__*/function () {
             vr(wn(db, 'card', uniSha256)).then(function (ckey) {
               console.log("NumberBank get 00");
               console.log('ckey:', ckey);
+              console.log('ckey.exists:', ckey.exists());
 
               if (ckey.exists()) {
                 console.log("NumberBank get 01");
@@ -11348,12 +11349,14 @@ var ExtensionBlocks = /*#__PURE__*/function () {
                   cloudNum = data.number;
                   console.log('cloudNum:', cloudNum);
                 }).then(function () {
+                  console.log("NumberBank get 03");
                   inoutFlag = false;
                 }).catch(function (error) {
                   console.error("Error getting document: ", error);
                 });
               } else {
-                //console.log("No Card!");
+                console.log("NumberBank get 04");
+                console.log("No Card!");
                 cloudNum = '';
                 inoutFlag = false;
               }
@@ -11367,7 +11370,7 @@ var ExtensionBlocks = /*#__PURE__*/function () {
             inoutFlag = false;
           }
 
-          console.log("NumberBank get 03");
+          console.log("NumberBank get 05");
         });
       }
 
