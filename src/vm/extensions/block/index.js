@@ -4,7 +4,7 @@ import translations from './translations.json';
 import blockIcon from './numberbank_icon.png';
 import { initializeApp } from 'firebase/app';
 import { getFirestore, collection } from 'firebase/firestore/lite';
-import crypto from 'crypto';
+import SHA256 from "crypto-js/sha256";
 import Variable from '../../engine/variable';
 
 /**
@@ -125,6 +125,7 @@ class ExtensionBlocks {
         }
 
         if (bankKey != '' && bankKey != undefined) {
+            
             ioWaiter(1)
                 .then(() => {
                     bankSha256 = encryptSha256(new TextEncoder().encode(bankKey));
@@ -205,6 +206,7 @@ class ExtensionBlocks {
         }
 
         if (bankKey != '' && bankKey != undefined) {
+
             ioWaiter(1)
                 .then(() => {
                     bankSha256 = encryptSha256(new TextEncoder().encode(bankKey));
@@ -302,6 +304,7 @@ class ExtensionBlocks {
         }
 
         if (bankKey != '' && bankKey != undefined) {
+
             ioWaiter(1)
                 .then(() => {
                     bankSha256 = encryptSha256(new TextEncoder().encode(bankKey));
@@ -391,6 +394,7 @@ class ExtensionBlocks {
         }
 
         if (bankKey != '' && bankKey != undefined) {
+
             ioWaiter(1)
                 .then(() => {
                     bankSha256 = encryptSha256(new TextEncoder().encode(bankKey));
@@ -876,9 +880,8 @@ function availableWaiter(msec) {
 
 
 const encryptSha256 = (str) => {
-    const hash = crypto.createHash('sha256');
-    hash.update(str);
-    return hash.digest('hex')
+    const hash = SHA256(str);
+    return hash.toString()
 }
 
 

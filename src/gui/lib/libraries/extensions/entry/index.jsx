@@ -38,7 +38,7 @@ const entry = {
     disabled: false,
     bluetoothRequired: false,
     internetConnectionRequired: true,
-    helpLink: 'https://con3office.github.io/xcx-numberbank/',
+    helpLink: 'https://con3.com/numberbank/',
     setFormatMessage: formatter => {
         formatMessage = formatter;
     },
