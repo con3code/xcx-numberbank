@@ -11884,18 +11884,6 @@ function availableWaiter(msec) {
     return availableWaiter(msec);
   });
 }
-
-function hexString(textStr) {
-  var byteArray = new Uint8Array(textStr);
-
-  var hexCodes = _toConsumableArray(byteArray).map(function (value) {
-    var hexCode = value.toString(16);
-    var paddedHexCode = hexCode.padStart(2, '0');
-    return paddedHexCode;
-  });
-
-  return hexCodes.join('');
-}
 /*
 //機能拡張上では動作せず（025_）
 const encryptSha256 = (str) => {
@@ -11904,21 +11892,22 @@ const encryptSha256 = (str) => {
     return hash.digest('hex')
 }
 */
+
+/*
 //hexStringとの組合せ
+//拡張機能上では動作せず（026_）
+const encryptSha256 = (str) => {
+    const hash = SHA256(str);
+    return hexString(hash)
+}
+*/
+// もともと
 
 
 var encryptSha256 = function encryptSha256(str) {
   var hash = SHA256(str);
-  return hexString(hash);
-};
-/*
-// もともと
-const encryptSha256 = (str) => {
-    const hash = SHA256(str);
-    return hash.toString()
-}
-*/
-// Firebase関連
+  return hash.toString();
+}; // Firebase関連
 
 
 var fbApp;

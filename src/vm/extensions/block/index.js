@@ -948,20 +948,22 @@ const encryptSha256 = (str) => {
 */
 
 
+/*
 //hexStringとの組合せ
+//拡張機能上では動作せず（026_）
 const encryptSha256 = (str) => {
     const hash = SHA256(str);
     return hexString(hash)
 }
+*/
 
 
-/*
 // もともと
 const encryptSha256 = (str) => {
     const hash = SHA256(str);
     return hash.toString()
 }
-*/
+
 
 
 // Firebase関連
