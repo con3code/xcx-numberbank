@@ -6852,7 +6852,7 @@ var ExtensionBlocks = /*#__PURE__*/function () {
             //v8
             // cardDb.doc(uniSha256).get().then(function (ckey) {
             getDoc(doc(db, 'card', uniSha256)).then(function (ckey) {
-              if (ckey.exists) {
+              if (ckey.exists()) {
                 // cardDb.doc(uniSha256).get()
                 getDoc(doc(db, 'card', uniSha256)).then(function (doc) {
                   var data = doc.data();
@@ -6903,8 +6903,8 @@ var ExtensionBlocks = /*#__PURE__*/function () {
         return;
       }
 
-      inoutFlag = true; //console.log("getNum...");
-
+      inoutFlag = true;
+      console.log("getNum...");
       bankKey = bankName = args.BANK;
       cardKey = args.CARD;
       uniKey = bankKey.trim().concat(cardKey.trim()); //console.log("uniKey: " + uniKey);    
@@ -6915,16 +6915,22 @@ var ExtensionBlocks = /*#__PURE__*/function () {
 
       if (bankKey != '' && bankKey != undefined) {
         ioWaiter(1).then(function () {
-          bankSha256 = encryptSha256(new TextEncoder().encode(bankKey)); //console.log("bankSha256: " + bankSha256);    
+          bankSha256 = encryptSha256(new TextEncoder().encode(bankKey));
+          console.log("bankSha256: " + bankSha256);
         }).then(function () {
-          cardSha256 = encryptSha256(new TextEncoder().encode(cardKey)); //console.log("cardSha256: " + cardSha256);
+          cardSha256 = encryptSha256(new TextEncoder().encode(cardKey));
+          console.log("cardSha256: " + cardSha256);
         }).then(function () {
-          uniSha256 = encryptSha256(new TextEncoder().encode(uniKey)); //console.log("uniSha256: " + uniSha256);
+          uniSha256 = encryptSha256(new TextEncoder().encode(uniKey));
+          console.log("uniSha256: " + uniSha256);
         }).then(function () {
-          //console.log("masterSha256: " + masterSha256);
+          console.log("masterSha256: " + masterSha256);
+
           if (masterSha256 != '' && masterSha256 != undefined) {
             getDoc(doc(db, 'card', uniSha256)).then(function (ckey) {
-              if (ckey.exists) {
+              console.log("Firebase getDoc");
+
+              if (ckey.exists()) {
                 getDoc(doc(db, 'card', uniSha256)).then(function (doc) {
                   var data = doc.data();
                   cloudNum = data.number;
@@ -6993,7 +6999,7 @@ var ExtensionBlocks = /*#__PURE__*/function () {
           //console.log("masterSha256: " + masterSha256);
           if (masterSha256 != '' && masterSha256 != undefined) {
             getDoc(doc(db, 'card', uniSha256)).then(function (ckey) {
-              if (ckey.exists) {
+              if (ckey.exists()) {
                 getDoc(doc(db, 'card', uniSha256)).then(function (doc) {
                   var data = doc.data();
                   cloudNum = data.number;
@@ -7053,7 +7059,7 @@ var ExtensionBlocks = /*#__PURE__*/function () {
           //console.log("masterSha256: " + masterSha256);
           if (masterSha256 != '' && masterSha256 != undefined) {
             getDoc(doc(db, 'card', uniSha256)).then(function (ckey) {
-              if (ckey.exists) {
+              if (ckey.exists()) {
                 //console.log("Available!");
                 inoutFlag = false;
                 availableFlag = true;
@@ -7112,9 +7118,9 @@ var ExtensionBlocks = /*#__PURE__*/function () {
         interval.MsSet = resBody.intervalMsSet;
         interval.MsGet = resBody.intervalMsGet;
         interval.MsRep = resBody.intervalMsRep;
-        interval.MsAvl = resBody.intervalMsAvl; // console.log('cloudConfig_mkey:', cloudConfig_mkey);
-        // console.log('interval:', interval);
-
+        interval.MsAvl = resBody.intervalMsAvl;
+        console.log('cloudConfig_mkey:', cloudConfig_mkey);
+        console.log('interval:', interval);
         inoutFlag = false;
         return ioWaiter(1);
       }).then(function () {

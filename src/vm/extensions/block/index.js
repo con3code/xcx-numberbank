@@ -231,7 +231,7 @@ class ExtensionBlocks {
                         // cardDb.doc(uniSha256).get().then(function (ckey) {
                         getDoc(doc(db, 'card', uniSha256)).then(function (ckey) {
 
-                            if (ckey.exists) {
+                            if (ckey.exists()) {
 
                                 // cardDb.doc(uniSha256).get()
                                 getDoc(doc(db, 'card', uniSha256))
@@ -293,7 +293,7 @@ class ExtensionBlocks {
         if (inoutFlag) { return; }
         inoutFlag = true;
 
-        //console.log("getNum...");
+        console.log("getNum...");
 
         bankKey = bankName = args.BANK;
         cardKey = args.CARD;
@@ -310,25 +310,26 @@ class ExtensionBlocks {
             ioWaiter(1)
                 .then(() => {
                     bankSha256 = encryptSha256(new TextEncoder().encode(bankKey));
-                    //console.log("bankSha256: " + bankSha256);    
+                    console.log("bankSha256: " + bankSha256);    
                 })
                 .then(() => {
                     cardSha256 = encryptSha256(new TextEncoder().encode(cardKey));
-                    //console.log("cardSha256: " + cardSha256);
+                    console.log("cardSha256: " + cardSha256);
                 })
                 .then(() => {
                     uniSha256 = encryptSha256(new TextEncoder().encode(uniKey));
-                    //console.log("uniSha256: " + uniSha256);
+                    console.log("uniSha256: " + uniSha256);
                 })
                 .then(() => {
-                    //console.log("masterSha256: " + masterSha256);
+                    console.log("masterSha256: " + masterSha256);
 
 
                     if (masterSha256 != '' && masterSha256 != undefined) {
 
                         getDoc(doc(db, 'card', uniSha256)).then(function (ckey) {
+                            console.log("Firebase getDoc");
 
-                            if (ckey.exists) {
+                            if (ckey.exists()) {
 
                                 getDoc(doc(db, 'card', uniSha256))
                                     .then((doc) => {
@@ -418,7 +419,7 @@ class ExtensionBlocks {
 
                         getDoc(doc(db, 'card', uniSha256)).then(function (ckey) {
 
-                            if (ckey.exists) {
+                            if (ckey.exists()) {
 
                                 getDoc(doc(db, 'card', uniSha256))
                                     .then((doc) => {
@@ -496,7 +497,7 @@ class ExtensionBlocks {
 
                         getDoc(doc(db, 'card', uniSha256)).then(function (ckey) {
 
-                            if (ckey.exists) {
+                            if (ckey.exists()) {
                                 //console.log("Available!");
                                 inoutFlag = false;
                                 availableFlag = true;
@@ -565,8 +566,8 @@ class ExtensionBlocks {
                 interval.MsRep = resBody.intervalMsRep;
                 interval.MsAvl = resBody.intervalMsAvl;
 
-                // console.log('cloudConfig_mkey:', cloudConfig_mkey);
-                // console.log('interval:', interval);
+                console.log('cloudConfig_mkey:', cloudConfig_mkey);
+                console.log('interval:', interval);
 
 
                 inoutFlag = false;
