@@ -5,6 +5,7 @@ import blockIcon from './numberbank_icon.png';
 import { initializeApp } from 'firebase/app';
 import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore/lite';
 import SHA256 from "crypto-js/sha256";
+import crypto from 'crypto'; 
 import Variable from '../../engine/variable';
 
 /**
@@ -925,6 +926,7 @@ function availableWaiter(msec) {
 
 
 
+
 function hexString(textStr) {
     const byteArray = new Uint8Array(textStr);
     const hexCodes = [...byteArray].map(value => {
@@ -935,11 +937,21 @@ function hexString(textStr) {
     return hexCodes.join('');
 }
 
+
+const encryptSha256 = (str) => {
+    const hash = crypto.createHash('sha256');
+    hash.update(str);
+    return hash.digest('hex')
+}
+
+/*
 const encryptSha256 = (str) => {
     const hash = SHA256(str);
     return hexString(hash.toString())
 //    return hash.toString()
 }
+*/
+
 
 
 // Firebase関連

@@ -10346,7 +10346,7 @@ var core = {exports: {}};
   });
 })(sha256);
 
-var SHA256 = sha256.exports;
+var crypto = {};
 
 /**
  * @fileoverview UID generator, from Blockly.
@@ -11883,22 +11883,19 @@ function availableWaiter(msec) {
   });
 }
 
-function hexString(textStr) {
-  var byteArray = new Uint8Array(textStr);
-
-  var hexCodes = _toConsumableArray(byteArray).map(function (value) {
-    var hexCode = value.toString(16);
-    var paddedHexCode = hexCode.padStart(2, '0');
-    return paddedHexCode;
-  });
-
-  return hexCodes.join('');
-}
-
 var encryptSha256 = function encryptSha256(str) {
-  var hash = SHA256(str);
-  return hexString(hash.toString()); //    return hash.toString()
-}; // Firebase関連
+  var hash = crypto.createHash('sha256');
+  hash.update(str);
+  return hash.digest('hex');
+};
+/*
+const encryptSha256 = (str) => {
+    const hash = SHA256(str);
+    return hexString(hash.toString())
+//    return hash.toString()
+}
+*/
+// Firebase関連
 
 
 var fbApp;
