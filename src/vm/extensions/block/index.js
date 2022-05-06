@@ -300,6 +300,9 @@ class ExtensionBlocks {
 
         if (args.BANK == '' || args.CARD == '') { return; }
 
+        console.log('args.BANK:', args.BANK);
+        console.log('args.CARD:', args.CARD);
+
         if (inoutFlag) { return; }
         inoutFlag = true;
 
@@ -309,7 +312,7 @@ class ExtensionBlocks {
         cardKey = args.CARD;
 
         uniKey = bankKey.trim().concat(cardKey.trim());
-        //console.log("uniKey: " + uniKey);    
+        console.log('uniKey:' + uniKey);
 
         if (!crypto) {
             throw Error("crypto is not supported.");
@@ -654,7 +657,7 @@ class ExtensionBlocks {
             })
             .then(() => {
                 //console.log("MasterKey:", masterKey);
-                //console.log("masterSha256:", masterSha256);
+                console.log("masterSha256:", masterSha256);
                 console.log("MasterKey setted!");
 
             })
@@ -938,14 +941,15 @@ function hexString(textStr) {
 }
 
 
-/*
+
+
 //機能拡張上では動作せず（025_）
 const encryptSha256 = (str) => {
     const hash = crypto.createHash('sha256');
     hash.update(str);
     return hash.digest('hex')
 }
-*/
+
 
 
 /*
@@ -957,13 +961,13 @@ const encryptSha256 = (str) => {
 }
 */
 
-
+/*
 // もともと
 const encryptSha256 = (str) => {
     const hash = SHA256(str);
     return hash.toString()
 }
-
+*/
 
 
 // Firebase関連

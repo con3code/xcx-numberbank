@@ -10346,8 +10346,6 @@ var core = {exports: {}};
   });
 })(sha256);
 
-var SHA256 = sha256.exports;
-
 var crypto = {};
 
 /**
@@ -11310,6 +11308,9 @@ var ExtensionBlocks = /*#__PURE__*/function () {
         return;
       }
 
+      console.log('args.BANK:', args.BANK);
+      console.log('args.CARD:', args.CARD);
+
       if (inoutFlag) {
         return;
       }
@@ -11318,7 +11319,8 @@ var ExtensionBlocks = /*#__PURE__*/function () {
       console.log("getNum...");
       bankKey = bankName = args.BANK;
       cardKey = args.CARD;
-      uniKey = bankKey.trim().concat(cardKey.trim()); //console.log("uniKey: " + uniKey);    
+      uniKey = bankKey.trim().concat(cardKey.trim());
+      console.log('uniKey:' + uniKey);
 
       if (!crypto) {
         throw Error("crypto is not supported.");
@@ -11600,7 +11602,7 @@ var ExtensionBlocks = /*#__PURE__*/function () {
         masterSha256 = encryptSha256(new TextEncoder().encode(masterKey));
       }).then(function () {
         //console.log("MasterKey:", masterKey);
-        //console.log("masterSha256:", masterSha256);
+        console.log("masterSha256:", masterSha256);
         console.log("MasterKey setted!");
       }).catch(function (error) {
         console.log("Error setting MasterKey:", error);
@@ -11884,15 +11886,13 @@ function availableWaiter(msec) {
     return availableWaiter(msec);
   });
 }
-/*
-//機能拡張上では動作せず（025_）
-const encryptSha256 = (str) => {
-    const hash = crypto.createHash('sha256');
-    hash.update(str);
-    return hash.digest('hex')
-}
-*/
 
+
+var encryptSha256 = function encryptSha256(str) {
+  var hash = crypto.createHash('sha256');
+  hash.update(str);
+  return hash.digest('hex');
+};
 /*
 //hexStringとの組合せ
 //拡張機能上では動作せず（026_）
@@ -11901,13 +11901,15 @@ const encryptSha256 = (str) => {
     return hexString(hash)
 }
 */
+
+/*
 // もともと
-
-
-var encryptSha256 = function encryptSha256(str) {
-  var hash = SHA256(str);
-  return hash.toString();
-}; // Firebase関連
+const encryptSha256 = (str) => {
+    const hash = SHA256(str);
+    return hash.toString()
+}
+*/
+// Firebase関連
 
 
 var fbApp;
