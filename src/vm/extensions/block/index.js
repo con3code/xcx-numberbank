@@ -335,11 +335,14 @@ class ExtensionBlocks {
                     // console.log("masterSha256: " + masterSha256);
 
                     console.log('cloudConfig_mkey:', firebaseConfig);
+                    console.log('db:', db);
+                    console.log('uniSha256:', uniSha256);
 
                     if (masterSha256 != '' && masterSha256 != undefined) {
 
                         getDoc(doc(db, 'card', uniSha256)).then(function (ckey) {
                             console.log("NumberBank get 00");
+                            console.log('ckey:', ckey);
 
                             if (ckey.exists()) {
                                 console.log("NumberBank get 01");
@@ -349,6 +352,7 @@ class ExtensionBlocks {
                                         console.log("NumberBank get 02");
                                         let data = doc.data();
                                         cloudNum = data.number;
+                                        console.log('cloudNum:', cloudNum);
                                     })
                                     .then(() => {
                                         inoutFlag = false;
@@ -611,6 +615,7 @@ class ExtensionBlocks {
 
                 fbApp = initializeApp(firebaseConfig);
                 db = getFirestore(fbApp);
+                console.log('db:', db);
 
                 /*
                 try {

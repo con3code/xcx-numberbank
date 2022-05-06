@@ -11332,10 +11332,13 @@ var ExtensionBlocks = /*#__PURE__*/function () {
         }).then(function () {
           // console.log("masterSha256: " + masterSha256);
           console.log('cloudConfig_mkey:', firebaseConfig);
+          console.log('db:', db);
+          console.log('uniSha256:', uniSha256);
 
           if (masterSha256 != '' && masterSha256 != undefined) {
             vr(wn(db, 'card', uniSha256)).then(function (ckey) {
               console.log("NumberBank get 00");
+              console.log('ckey:', ckey);
 
               if (ckey.exists()) {
                 console.log("NumberBank get 01");
@@ -11343,6 +11346,7 @@ var ExtensionBlocks = /*#__PURE__*/function () {
                   console.log("NumberBank get 02");
                   var data = doc.data();
                   cloudNum = data.number;
+                  console.log('cloudNum:', cloudNum);
                 }).then(function () {
                   inoutFlag = false;
                 }).catch(function (error) {
@@ -11559,6 +11563,7 @@ var ExtensionBlocks = /*#__PURE__*/function () {
 
         fbApp = initializeApp(firebaseConfig);
         db = on(fbApp);
+        console.log('db:', db);
         /*
         try {
             fbApp = initializeApp(cloudConfig_mkey);
