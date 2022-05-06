@@ -190,19 +190,7 @@ var ArgumentType = {
 var argumentType = ArgumentType;
 
 var en = {
-	"numberbank.name": "NumberBank1.0",
-	"numberbank.NumberBank": "NumberBank",
-	"numberbank.argments.bank": "",
-	"numberbank.argments.card": "",
-	"numberbank.argments.key": "key",
-	"numberbank.putNum": "[BANK]の[CARD]の数字を[NUM]にする",
-	"numberbank.setNum": "[VAL]を[BANK]の[CARD]の数字にする",
-	"numberbank.inoutDone": "",
-	"numberbank.getNum": "[BANK]の[CARD]を読む",
-	"numberbank.repNum": "",
-	"numberbank.repCloudNum": "",
-	"numberbank.boolAvl": "",
-	"numberbank.setMaster": ""
+	"numberbank.NumberBank": "NumberBank"
 };
 var ja = {
 	"numberbank.name": "NumberBank1.0",
@@ -6164,7 +6152,7 @@ var ExtensionBlocks = /*#__PURE__*/function () {
             VAL: {
               type: argumentType.STRING,
               fieldName: 'VARIABLE',
-              //                            variableType: Variable.SCALAR_TYPE,            
+              variableType: Variable.SCALAR_TYPE,
               menu: 'valMenu'
             }
           }

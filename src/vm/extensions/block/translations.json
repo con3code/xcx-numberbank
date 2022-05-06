@@ -1,18 +1,6 @@
 {
   "en": {
-    "numberbank.name": "NumberBank1.0",
-    "numberbank.NumberBank": "NumberBank",
-    "numberbank.argments.bank": "",
-    "numberbank.argments.card": "",
-    "numberbank.argments.key": "key",
-    "numberbank.putNum": "[BANK]の[CARD]の数字を[NUM]にする",
-    "numberbank.setNum": "[VAL]を[BANK]の[CARD]の数字にする",
-    "numberbank.inoutDone": "",
-    "numberbank.getNum": "[BANK]の[CARD]を読む",
-    "numberbank.repNum": "",
-    "numberbank.repCloudNum": "",
-    "numberbank.boolAvl": "",
-    "numberbank.setMaster": ""
+    "numberbank.NumberBank": "NumberBank"
   },
   "ja": {
     "numberbank.name": "NumberBank1.0",
