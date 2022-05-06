@@ -128,7 +128,7 @@ class ExtensionBlocks {
 
         if (bankKey != '' && bankKey != undefined) {
 
-            ioWaiter(1)
+            sleep(1)
                 .then(() => {
                     bankSha256 = encryptSha256(new TextEncoder().encode(bankKey));
                     //console.log("bankSha256: " + bankSha256);    
@@ -209,7 +209,7 @@ class ExtensionBlocks {
 
         if (bankKey != '' && bankKey != undefined) {
 
-            ioWaiter(1)
+            sleep(1)
                 .then(() => {
                     bankSha256 = encryptSha256(new TextEncoder().encode(bankKey));
                     //console.log("bankSha256: " + bankSha256);    
@@ -307,21 +307,21 @@ class ExtensionBlocks {
 
         if (bankKey != '' && bankKey != undefined) {
 
-            ioWaiter(1)
+            sleep(1)
                 .then(() => {
                     bankSha256 = encryptSha256(new TextEncoder().encode(bankKey));
-                    console.log("bankSha256: " + bankSha256);    
+                    // console.log("bankSha256: " + bankSha256);    
                 })
                 .then(() => {
                     cardSha256 = encryptSha256(new TextEncoder().encode(cardKey));
-                    console.log("cardSha256: " + cardSha256);
+                    // console.log("cardSha256: " + cardSha256);
                 })
                 .then(() => {
                     uniSha256 = encryptSha256(new TextEncoder().encode(uniKey));
-                    console.log("uniSha256: " + uniSha256);
+                    // console.log("uniSha256: " + uniSha256);
                 })
                 .then(() => {
-                    console.log("masterSha256: " + masterSha256);
+                    // console.log("masterSha256: " + masterSha256);
 
 
                     if (masterSha256 != '' && masterSha256 != undefined) {
@@ -398,7 +398,7 @@ class ExtensionBlocks {
 
         if (bankKey != '' && bankKey != undefined) {
 
-            ioWaiter(1)
+            sleep(1)
                 .then(() => {
                     bankSha256 = encryptSha256(new TextEncoder().encode(bankKey));
                     //console.log("bankSha256: " + bankSha256);
@@ -483,7 +483,7 @@ class ExtensionBlocks {
 
         if (bankKey != '' && bankKey != undefined) {
 
-            ioWaiter(1)
+            sleep(1)
                 .then(() => {
                     uniSha256 = encryptSha256(new TextEncoder().encode(uniKey));
                     //console.log("uniSha256: " + uniSha256);
@@ -609,7 +609,7 @@ class ExtensionBlocks {
             throw Error("crypto is not supported.");
         }
 
-        ioWaiter(1)
+        sleep(1)
             .then(() => {
                 masterSha256 = encryptSha256(new TextEncoder().encode(masterKey));
             })

@@ -11170,7 +11170,7 @@ var ExtensionBlocks = /*#__PURE__*/function () {
       }
 
       if (bankKey != '' && bankKey != undefined) {
-        ioWaiter(1).then(function () {
+        sleep(1).then(function () {
           bankSha256 = encryptSha256(new TextEncoder().encode(bankKey)); //console.log("bankSha256: " + bankSha256);    
         }).then(function () {
           cardSha256 = encryptSha256(new TextEncoder().encode(cardKey)); //console.log("cardSha256: " + cardSha256);
@@ -11233,7 +11233,7 @@ var ExtensionBlocks = /*#__PURE__*/function () {
       }
 
       if (bankKey != '' && bankKey != undefined) {
-        ioWaiter(1).then(function () {
+        sleep(1).then(function () {
           bankSha256 = encryptSha256(new TextEncoder().encode(bankKey)); //console.log("bankSha256: " + bankSha256);    
         }).then(function () {
           cardSha256 = encryptSha256(new TextEncoder().encode(cardKey)); //console.log("cardSha256: " + cardSha256);
@@ -11307,18 +11307,14 @@ var ExtensionBlocks = /*#__PURE__*/function () {
       }
 
       if (bankKey != '' && bankKey != undefined) {
-        ioWaiter(1).then(function () {
-          bankSha256 = encryptSha256(new TextEncoder().encode(bankKey));
-          console.log("bankSha256: " + bankSha256);
+        sleep(1).then(function () {
+          bankSha256 = encryptSha256(new TextEncoder().encode(bankKey)); // console.log("bankSha256: " + bankSha256);    
         }).then(function () {
-          cardSha256 = encryptSha256(new TextEncoder().encode(cardKey));
-          console.log("cardSha256: " + cardSha256);
+          cardSha256 = encryptSha256(new TextEncoder().encode(cardKey)); // console.log("cardSha256: " + cardSha256);
         }).then(function () {
-          uniSha256 = encryptSha256(new TextEncoder().encode(uniKey));
-          console.log("uniSha256: " + uniSha256);
+          uniSha256 = encryptSha256(new TextEncoder().encode(uniKey)); // console.log("uniSha256: " + uniSha256);
         }).then(function () {
-          console.log("masterSha256: " + masterSha256);
-
+          // console.log("masterSha256: " + masterSha256);
           if (masterSha256 != '' && masterSha256 != undefined) {
             vr(wn(db, 'card', uniSha256)).then(function (ckey) {
               console.log("Firebase getDoc");
@@ -11382,7 +11378,7 @@ var ExtensionBlocks = /*#__PURE__*/function () {
       }
 
       if (bankKey != '' && bankKey != undefined) {
-        ioWaiter(1).then(function () {
+        sleep(1).then(function () {
           bankSha256 = encryptSha256(new TextEncoder().encode(bankKey)); //console.log("bankSha256: " + bankSha256);
         }).then(function () {
           cardSha256 = encryptSha256(new TextEncoder().encode(cardKey)); //console.log("cardSha256: " + cardSha256);
@@ -11446,7 +11442,7 @@ var ExtensionBlocks = /*#__PURE__*/function () {
       }
 
       if (bankKey != '' && bankKey != undefined) {
-        ioWaiter(1).then(function () {
+        sleep(1).then(function () {
           uniSha256 = encryptSha256(new TextEncoder().encode(uniKey)); //console.log("uniSha256: " + uniSha256);
         }).then(function () {
           //console.log("masterSha256: " + masterSha256);
@@ -11545,7 +11541,7 @@ var ExtensionBlocks = /*#__PURE__*/function () {
         throw Error("crypto is not supported.");
       }
 
-      ioWaiter(1).then(function () {
+      sleep(1).then(function () {
         masterSha256 = encryptSha256(new TextEncoder().encode(masterKey));
       }).then(function () {
         //console.log("MasterKey:", masterKey);
@@ -11783,6 +11779,14 @@ var ExtensionBlocks = /*#__PURE__*/function () {
 
   return ExtensionBlocks;
 }();
+
+function sleep(msec) {
+  return new Promise(function (resolve) {
+    return setTimeout(function () {
+      resolve();
+    }, msec);
+  });
+}
 
 function ioWaiter(msec) {
   return new Promise(function (resolve, reject) {
