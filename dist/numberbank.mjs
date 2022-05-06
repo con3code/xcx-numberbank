@@ -241,18 +241,5408 @@ var translations = {
 
 var img = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAEs2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNS41LjAiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIgogICAgeG1sbnM6ZXhpZj0iaHR0cDovL25zLmFkb2JlLmNvbS9leGlmLzEuMC8iCiAgICB4bWxuczp0aWZmPSJodHRwOi8vbnMuYWRvYmUuY29tL3RpZmYvMS4wLyIKICAgIHhtbG5zOnBob3Rvc2hvcD0iaHR0cDovL25zLmFkb2JlLmNvbS9waG90b3Nob3AvMS4wLyIKICAgIHhtbG5zOnhtcD0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wLyIKICAgIHhtbG5zOnhtcE1NPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvbW0vIgogICAgeG1sbnM6c3RFdnQ9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZUV2ZW50IyIKICAgZXhpZjpQaXhlbFhEaW1lbnNpb249IjQwIgogICBleGlmOlBpeGVsWURpbWVuc2lvbj0iNDAiCiAgIGV4aWY6Q29sb3JTcGFjZT0iMSIKICAgdGlmZjpJbWFnZVdpZHRoPSI0MCIKICAgdGlmZjpJbWFnZUxlbmd0aD0iNDAiCiAgIHRpZmY6UmVzb2x1dGlvblVuaXQ9IjIiCiAgIHRpZmY6WFJlc29sdXRpb249IjcyLzEiCiAgIHRpZmY6WVJlc29sdXRpb249IjcyLzEiCiAgIHBob3Rvc2hvcDpDb2xvck1vZGU9IjMiCiAgIHBob3Rvc2hvcDpJQ0NQcm9maWxlPSJzUkdCIElFQzYxOTY2LTIuMSIKICAgeG1wOk1vZGlmeURhdGU9IjIwMjItMDUtMDVUMjI6MDA6MTgrMDk6MDAiCiAgIHhtcDpNZXRhZGF0YURhdGU9IjIwMjItMDUtMDVUMjI6MDA6MTgrMDk6MDAiPgogICA8eG1wTU06SGlzdG9yeT4KICAgIDxyZGY6U2VxPgogICAgIDxyZGY6bGkKICAgICAgc3RFdnQ6YWN0aW9uPSJwcm9kdWNlZCIKICAgICAgc3RFdnQ6c29mdHdhcmVBZ2VudD0iQWZmaW5pdHkgRGVzaWduZXIgMS4xMC41IgogICAgICBzdEV2dDp3aGVuPSIyMDIyLTA1LTA1VDIyOjAwOjE4KzA5OjAwIi8+CiAgICA8L3JkZjpTZXE+CiAgIDwveG1wTU06SGlzdG9yeT4KICA8L3JkZjpEZXNjcmlwdGlvbj4KIDwvcmRmOlJERj4KPC94OnhtcG1ldGE+Cjw/eHBhY2tldCBlbmQ9InIiPz6ySOccAAABgWlDQ1BzUkdCIElFQzYxOTY2LTIuMQAAKJF1kc8rRFEUxz8zyK8RxcLC4iWshvwokVJmEkqaxiiDzczzZkbNG6/33qTJVtlOUWLj14K/gK2yVopIyVLWxAY95xk1krm3e8/nfu85p3PPBW8krepWeTfoGdsMjwWU2eicUvlIhUwfQ1THVMsYCYUmKTnebvC49qrTzVXa799Ru6hZKniqhIdVw7SFx4UnV2zD5U3hJjUVWxQ+FvabUqDwtavHC/zkcrLAHy6bkXAQvA3CSvIXx3+xmjJ1YXk5bXo6q/7U477Ep2VmpsW2ymrBIswYARQmGCVIPz0Myt5PJ710yYkS8d3f8VMsS6wqu0EOkyWSpLDxi5qV7JrYhOiazDQ5t/9/+2ol+noL2X0BqHhwnJd2qNyAz7zjvO87zucBlN3DWaYYv7wHA6+i54ta2y7Ur8HJeVGLb8HpOjTfGTEz9i2VyfImEvB8BHVRaLyEmvlCz37uObyFyKp81QVs70CH+NcvfAE9zGfTItwtqQAAAAlwSFlzAAALEwAACxMBAJqcGAAAA4VJREFUWIXtl9FLHFcUxn/3bh1XBltXg2nX7LrEIIIKRoOOEFOJj8WSSvPgU/qQhyQvgZZ9amB9C4RCCYGQQDBFWpoH6V8QaAMhIC7UqqXgw5oou1KIGnDrCmMyfZiNuOvccZ2ZshT8YGHm3HO/882559x7F45xjGP8vyEU9hPAPWAE0IDXQBbIAVtAHdAENAIni88Z4ArwR5GjDvgeuASEgb+L8zeAN8AHxThR4GNAB/4CvgGeHyb8CWB5+P2+76NTHjnWDxMHdsa8kFvYWQf4zQfHHqRC4NtKvkKBGwFw7EEl8IkPzs+BFuAXj/Mz+19CCqenwBp2wf+AXeRnKgwgsRvpO2AZ+LPIcRb4yMH/FXZjpIFfgZvF+UfCRY5WQ1nsLt2P2wrflFtg1RKXI6ew/6OwR7GXej/WFL6u2apUoKmwp4FFxdj1svddhd87t8CVCnTDXYV9BGj3Sx6EwJ+w981yCOCaX/LyQvaCAvAQ+NZh7KtkMrmm63pucnIysbKycmTyIDJIX1/fz1JKy2EosrS0dAf4sbu7O+mF25dAIYRIpVJfj46Ovujq6nK8eKTTaT8h/C1xLBYbFEJcADAMg/n5+QM+2WyWXE61S0E4HA4nk0ldSnlZCPEZ0Iu9TYWA174yKKWsef8cjUaJx+OOfrOzs0qOoaGhW6FQaEUI8Rj4EjiNfXLVAJ8EUoPvYRiGo31xcZGdnR3HsVAopGPfKx0RqMCOjg4aGhoO2E3TZG5uzhNnpQLrnIymWXrASCnp7+93JFhfr+geegCVCuxwMm5ubmJZpbtLb28vtbW1nsQ4QdXFMewjLAa8BByLa3t7m6mpKYQQmKbJ8PAwbW1t9PT0MDMzE4hAVQYfAF8A57A765SKYHl5mUwmw+rqKtPT05imycDAAEKo/o8FI/C8F7JCocDGxgaNjY20t/u+JwBqgXmvhDU19tY4ODhYkb+maa7jBwROTEx82NnZ6XSuHorm5mYikQgAiUSCRCLhHlxKWltbXX2cmuT+2NhYSywWI5vNYlkWuq5TX1+PrutomoZpmhQKBfL5PFtbW+zu7hKJRDAMo6T2xsfHWVhYIJ/PI4RASrnXUJqmEY/HaWpqchVYUsmpVKpfCBFM+wWE8iW+WhUVLigRKIT4tFpCVCjPYKIaItwQ6GXhv0C5wJfVEOGGEoGWZT2rlhAVyjP4qCoqXPAvzS0P0I71Tf8AAAAASUVORK5CYII=";
 
+function _arrayLikeToArray$2(arr, len) {
+  if (len == null || len > arr.length) len = arr.length;
+
+  for (var i = 0, arr2 = new Array(len); i < len; i++) {
+    arr2[i] = arr[i];
+  }
+
+  return arr2;
+}
+
+function _arrayWithoutHoles(arr) {
+  if (Array.isArray(arr)) return _arrayLikeToArray$2(arr);
+}
+
+function _iterableToArray(iter) {
+  if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter);
+}
+
+function _unsupportedIterableToArray$2(o, minLen) {
+  if (!o) return;
+  if (typeof o === "string") return _arrayLikeToArray$2(o, minLen);
+  var n = Object.prototype.toString.call(o).slice(8, -1);
+  if (n === "Object" && o.constructor) n = o.constructor.name;
+  if (n === "Map" || n === "Set") return Array.from(o);
+  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray$2(o, minLen);
+}
+
+function _nonIterableSpread() {
+  throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+}
+
+function _toConsumableArray(arr) {
+  return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray$2(arr) || _nonIterableSpread();
+}
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
+  try {
+    var info = gen[key](arg);
+    var value = info.value;
+  } catch (error) {
+    reject(error);
+    return;
+  }
+
+  if (info.done) {
+    resolve(value);
+  } else {
+    Promise.resolve(value).then(_next, _throw);
+  }
+}
+
+function _asyncToGenerator(fn) {
+  return function () {
+    var self = this,
+        args = arguments;
+    return new Promise(function (resolve, reject) {
+      var gen = fn.apply(self, args);
+
+      function _next(value) {
+        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
+      }
+
+      function _throw(err) {
+        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
+      }
+
+      _next(undefined);
+    });
+  };
+}
+
+function _typeof(obj) {
+  "@babel/helpers - typeof";
+
+  return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) {
+    return typeof obj;
+  } : function (obj) {
+    return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+  }, _typeof(obj);
+}
+
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+}
+
+var runtime = {exports: {}};
+
+(function (module) {
+  var runtime = function (exports) {
+
+    var Op = Object.prototype;
+    var hasOwn = Op.hasOwnProperty;
+    var undefined$1; // More compressible than void 0.
+
+    var $Symbol = typeof Symbol === "function" ? Symbol : {};
+    var iteratorSymbol = $Symbol.iterator || "@@iterator";
+    var asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator";
+    var toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag";
+
+    function define(obj, key, value) {
+      Object.defineProperty(obj, key, {
+        value: value,
+        enumerable: true,
+        configurable: true,
+        writable: true
+      });
+      return obj[key];
+    }
+
+    try {
+      // IE 8 has a broken Object.defineProperty that only works on DOM objects.
+      define({}, "");
+    } catch (err) {
+      define = function define(obj, key, value) {
+        return obj[key] = value;
+      };
+    }
+
+    function wrap(innerFn, outerFn, self, tryLocsList) {
+      // If outerFn provided and outerFn.prototype is a Generator, then outerFn.prototype instanceof Generator.
+      var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator;
+      var generator = Object.create(protoGenerator.prototype);
+      var context = new Context(tryLocsList || []); // The ._invoke method unifies the implementations of the .next,
+      // .throw, and .return methods.
+
+      generator._invoke = makeInvokeMethod(innerFn, self, context);
+      return generator;
+    }
+
+    exports.wrap = wrap; // Try/catch helper to minimize deoptimizations. Returns a completion
+    // record like context.tryEntries[i].completion. This interface could
+    // have been (and was previously) designed to take a closure to be
+    // invoked without arguments, but in all the cases we care about we
+    // already have an existing method we want to call, so there's no need
+    // to create a new function object. We can even get away with assuming
+    // the method takes exactly one argument, since that happens to be true
+    // in every case, so we don't have to touch the arguments object. The
+    // only additional allocation required is the completion record, which
+    // has a stable shape and so hopefully should be cheap to allocate.
+
+    function tryCatch(fn, obj, arg) {
+      try {
+        return {
+          type: "normal",
+          arg: fn.call(obj, arg)
+        };
+      } catch (err) {
+        return {
+          type: "throw",
+          arg: err
+        };
+      }
+    }
+
+    var GenStateSuspendedStart = "suspendedStart";
+    var GenStateSuspendedYield = "suspendedYield";
+    var GenStateExecuting = "executing";
+    var GenStateCompleted = "completed"; // Returning this object from the innerFn has the same effect as
+    // breaking out of the dispatch switch statement.
+
+    var ContinueSentinel = {}; // Dummy constructor functions that we use as the .constructor and
+    // .constructor.prototype properties for functions that return Generator
+    // objects. For full spec compliance, you may wish to configure your
+    // minifier not to mangle the names of these two functions.
+
+    function Generator() {}
+
+    function GeneratorFunction() {}
+
+    function GeneratorFunctionPrototype() {} // This is a polyfill for %IteratorPrototype% for environments that
+    // don't natively support it.
+
+
+    var IteratorPrototype = {};
+    define(IteratorPrototype, iteratorSymbol, function () {
+      return this;
+    });
+    var getProto = Object.getPrototypeOf;
+    var NativeIteratorPrototype = getProto && getProto(getProto(values([])));
+
+    if (NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol)) {
+      // This environment has a native %IteratorPrototype%; use it instead
+      // of the polyfill.
+      IteratorPrototype = NativeIteratorPrototype;
+    }
+
+    var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype);
+    GeneratorFunction.prototype = GeneratorFunctionPrototype;
+    define(Gp, "constructor", GeneratorFunctionPrototype);
+    define(GeneratorFunctionPrototype, "constructor", GeneratorFunction);
+    GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"); // Helper for defining the .next, .throw, and .return methods of the
+    // Iterator interface in terms of a single ._invoke method.
+
+    function defineIteratorMethods(prototype) {
+      ["next", "throw", "return"].forEach(function (method) {
+        define(prototype, method, function (arg) {
+          return this._invoke(method, arg);
+        });
+      });
+    }
+
+    exports.isGeneratorFunction = function (genFun) {
+      var ctor = typeof genFun === "function" && genFun.constructor;
+      return ctor ? ctor === GeneratorFunction || // For the native GeneratorFunction constructor, the best we can
+      // do is to check its .name property.
+      (ctor.displayName || ctor.name) === "GeneratorFunction" : false;
+    };
+
+    exports.mark = function (genFun) {
+      if (Object.setPrototypeOf) {
+        Object.setPrototypeOf(genFun, GeneratorFunctionPrototype);
+      } else {
+        genFun.__proto__ = GeneratorFunctionPrototype;
+        define(genFun, toStringTagSymbol, "GeneratorFunction");
+      }
+
+      genFun.prototype = Object.create(Gp);
+      return genFun;
+    }; // Within the body of any async function, `await x` is transformed to
+    // `yield regeneratorRuntime.awrap(x)`, so that the runtime can test
+    // `hasOwn.call(value, "__await")` to determine if the yielded value is
+    // meant to be awaited.
+
+
+    exports.awrap = function (arg) {
+      return {
+        __await: arg
+      };
+    };
+
+    function AsyncIterator(generator, PromiseImpl) {
+      function invoke(method, arg, resolve, reject) {
+        var record = tryCatch(generator[method], generator, arg);
+
+        if (record.type === "throw") {
+          reject(record.arg);
+        } else {
+          var result = record.arg;
+          var value = result.value;
+
+          if (value && _typeof(value) === "object" && hasOwn.call(value, "__await")) {
+            return PromiseImpl.resolve(value.__await).then(function (value) {
+              invoke("next", value, resolve, reject);
+            }, function (err) {
+              invoke("throw", err, resolve, reject);
+            });
+          }
+
+          return PromiseImpl.resolve(value).then(function (unwrapped) {
+            // When a yielded Promise is resolved, its final value becomes
+            // the .value of the Promise<{value,done}> result for the
+            // current iteration.
+            result.value = unwrapped;
+            resolve(result);
+          }, function (error) {
+            // If a rejected Promise was yielded, throw the rejection back
+            // into the async generator function so it can be handled there.
+            return invoke("throw", error, resolve, reject);
+          });
+        }
+      }
+
+      var previousPromise;
+
+      function enqueue(method, arg) {
+        function callInvokeWithMethodAndArg() {
+          return new PromiseImpl(function (resolve, reject) {
+            invoke(method, arg, resolve, reject);
+          });
+        }
+
+        return previousPromise = // If enqueue has been called before, then we want to wait until
+        // all previous Promises have been resolved before calling invoke,
+        // so that results are always delivered in the correct order. If
+        // enqueue has not been called before, then it is important to
+        // call invoke immediately, without waiting on a callback to fire,
+        // so that the async generator function has the opportunity to do
+        // any necessary setup in a predictable way. This predictability
+        // is why the Promise constructor synchronously invokes its
+        // executor callback, and why async functions synchronously
+        // execute code before the first await. Since we implement simple
+        // async functions in terms of async generators, it is especially
+        // important to get this right, even though it requires care.
+        previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, // Avoid propagating failures to Promises returned by later
+        // invocations of the iterator.
+        callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg();
+      } // Define the unified helper method that is used to implement .next,
+      // .throw, and .return (see defineIteratorMethods).
+
+
+      this._invoke = enqueue;
+    }
+
+    defineIteratorMethods(AsyncIterator.prototype);
+    define(AsyncIterator.prototype, asyncIteratorSymbol, function () {
+      return this;
+    });
+    exports.AsyncIterator = AsyncIterator; // Note that simple async functions are implemented on top of
+    // AsyncIterator objects; they just return a Promise for the value of
+    // the final result produced by the iterator.
+
+    exports.async = function (innerFn, outerFn, self, tryLocsList, PromiseImpl) {
+      if (PromiseImpl === void 0) PromiseImpl = Promise;
+      var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl);
+      return exports.isGeneratorFunction(outerFn) ? iter // If outerFn is a generator, return the full iterator.
+      : iter.next().then(function (result) {
+        return result.done ? result.value : iter.next();
+      });
+    };
+
+    function makeInvokeMethod(innerFn, self, context) {
+      var state = GenStateSuspendedStart;
+      return function invoke(method, arg) {
+        if (state === GenStateExecuting) {
+          throw new Error("Generator is already running");
+        }
+
+        if (state === GenStateCompleted) {
+          if (method === "throw") {
+            throw arg;
+          } // Be forgiving, per 25.3.3.3.3 of the spec:
+          // https://people.mozilla.org/~jorendorff/es6-draft.html#sec-generatorresume
+
+
+          return doneResult();
+        }
+
+        context.method = method;
+        context.arg = arg;
+
+        while (true) {
+          var delegate = context.delegate;
+
+          if (delegate) {
+            var delegateResult = maybeInvokeDelegate(delegate, context);
+
+            if (delegateResult) {
+              if (delegateResult === ContinueSentinel) continue;
+              return delegateResult;
+            }
+          }
+
+          if (context.method === "next") {
+            // Setting context._sent for legacy support of Babel's
+            // function.sent implementation.
+            context.sent = context._sent = context.arg;
+          } else if (context.method === "throw") {
+            if (state === GenStateSuspendedStart) {
+              state = GenStateCompleted;
+              throw context.arg;
+            }
+
+            context.dispatchException(context.arg);
+          } else if (context.method === "return") {
+            context.abrupt("return", context.arg);
+          }
+
+          state = GenStateExecuting;
+          var record = tryCatch(innerFn, self, context);
+
+          if (record.type === "normal") {
+            // If an exception is thrown from innerFn, we leave state ===
+            // GenStateExecuting and loop back for another invocation.
+            state = context.done ? GenStateCompleted : GenStateSuspendedYield;
+
+            if (record.arg === ContinueSentinel) {
+              continue;
+            }
+
+            return {
+              value: record.arg,
+              done: context.done
+            };
+          } else if (record.type === "throw") {
+            state = GenStateCompleted; // Dispatch the exception by looping back around to the
+            // context.dispatchException(context.arg) call above.
+
+            context.method = "throw";
+            context.arg = record.arg;
+          }
+        }
+      };
+    } // Call delegate.iterator[context.method](context.arg) and handle the
+    // result, either by returning a { value, done } result from the
+    // delegate iterator, or by modifying context.method and context.arg,
+    // setting context.delegate to null, and returning the ContinueSentinel.
+
+
+    function maybeInvokeDelegate(delegate, context) {
+      var method = delegate.iterator[context.method];
+
+      if (method === undefined$1) {
+        // A .throw or .return when the delegate iterator has no .throw
+        // method always terminates the yield* loop.
+        context.delegate = null;
+
+        if (context.method === "throw") {
+          // Note: ["return"] must be used for ES3 parsing compatibility.
+          if (delegate.iterator["return"]) {
+            // If the delegate iterator has a return method, give it a
+            // chance to clean up.
+            context.method = "return";
+            context.arg = undefined$1;
+            maybeInvokeDelegate(delegate, context);
+
+            if (context.method === "throw") {
+              // If maybeInvokeDelegate(context) changed context.method from
+              // "return" to "throw", let that override the TypeError below.
+              return ContinueSentinel;
+            }
+          }
+
+          context.method = "throw";
+          context.arg = new TypeError("The iterator does not provide a 'throw' method");
+        }
+
+        return ContinueSentinel;
+      }
+
+      var record = tryCatch(method, delegate.iterator, context.arg);
+
+      if (record.type === "throw") {
+        context.method = "throw";
+        context.arg = record.arg;
+        context.delegate = null;
+        return ContinueSentinel;
+      }
+
+      var info = record.arg;
+
+      if (!info) {
+        context.method = "throw";
+        context.arg = new TypeError("iterator result is not an object");
+        context.delegate = null;
+        return ContinueSentinel;
+      }
+
+      if (info.done) {
+        // Assign the result of the finished delegate to the temporary
+        // variable specified by delegate.resultName (see delegateYield).
+        context[delegate.resultName] = info.value; // Resume execution at the desired location (see delegateYield).
+
+        context.next = delegate.nextLoc; // If context.method was "throw" but the delegate handled the
+        // exception, let the outer generator proceed normally. If
+        // context.method was "next", forget context.arg since it has been
+        // "consumed" by the delegate iterator. If context.method was
+        // "return", allow the original .return call to continue in the
+        // outer generator.
+
+        if (context.method !== "return") {
+          context.method = "next";
+          context.arg = undefined$1;
+        }
+      } else {
+        // Re-yield the result returned by the delegate method.
+        return info;
+      } // The delegate iterator is finished, so forget it and continue with
+      // the outer generator.
+
+
+      context.delegate = null;
+      return ContinueSentinel;
+    } // Define Generator.prototype.{next,throw,return} in terms of the
+    // unified ._invoke helper method.
+
+
+    defineIteratorMethods(Gp);
+    define(Gp, toStringTagSymbol, "Generator"); // A Generator should always return itself as the iterator object when the
+    // @@iterator function is called on it. Some browsers' implementations of the
+    // iterator prototype chain incorrectly implement this, causing the Generator
+    // object to not be returned from this call. This ensures that doesn't happen.
+    // See https://github.com/facebook/regenerator/issues/274 for more details.
+
+    define(Gp, iteratorSymbol, function () {
+      return this;
+    });
+    define(Gp, "toString", function () {
+      return "[object Generator]";
+    });
+
+    function pushTryEntry(locs) {
+      var entry = {
+        tryLoc: locs[0]
+      };
+
+      if (1 in locs) {
+        entry.catchLoc = locs[1];
+      }
+
+      if (2 in locs) {
+        entry.finallyLoc = locs[2];
+        entry.afterLoc = locs[3];
+      }
+
+      this.tryEntries.push(entry);
+    }
+
+    function resetTryEntry(entry) {
+      var record = entry.completion || {};
+      record.type = "normal";
+      delete record.arg;
+      entry.completion = record;
+    }
+
+    function Context(tryLocsList) {
+      // The root entry object (effectively a try statement without a catch
+      // or a finally block) gives us a place to store values thrown from
+      // locations where there is no enclosing try statement.
+      this.tryEntries = [{
+        tryLoc: "root"
+      }];
+      tryLocsList.forEach(pushTryEntry, this);
+      this.reset(true);
+    }
+
+    exports.keys = function (object) {
+      var keys = [];
+
+      for (var key in object) {
+        keys.push(key);
+      }
+
+      keys.reverse(); // Rather than returning an object with a next method, we keep
+      // things simple and return the next function itself.
+
+      return function next() {
+        while (keys.length) {
+          var key = keys.pop();
+
+          if (key in object) {
+            next.value = key;
+            next.done = false;
+            return next;
+          }
+        } // To avoid creating an additional object, we just hang the .value
+        // and .done properties off the next function object itself. This
+        // also ensures that the minifier will not anonymize the function.
+
+
+        next.done = true;
+        return next;
+      };
+    };
+
+    function values(iterable) {
+      if (iterable) {
+        var iteratorMethod = iterable[iteratorSymbol];
+
+        if (iteratorMethod) {
+          return iteratorMethod.call(iterable);
+        }
+
+        if (typeof iterable.next === "function") {
+          return iterable;
+        }
+
+        if (!isNaN(iterable.length)) {
+          var i = -1,
+              next = function next() {
+            while (++i < iterable.length) {
+              if (hasOwn.call(iterable, i)) {
+                next.value = iterable[i];
+                next.done = false;
+                return next;
+              }
+            }
+
+            next.value = undefined$1;
+            next.done = true;
+            return next;
+          };
+
+          return next.next = next;
+        }
+      } // Return an iterator with no values.
+
+
+      return {
+        next: doneResult
+      };
+    }
+
+    exports.values = values;
+
+    function doneResult() {
+      return {
+        value: undefined$1,
+        done: true
+      };
+    }
+
+    Context.prototype = {
+      constructor: Context,
+      reset: function reset(skipTempReset) {
+        this.prev = 0;
+        this.next = 0; // Resetting context._sent for legacy support of Babel's
+        // function.sent implementation.
+
+        this.sent = this._sent = undefined$1;
+        this.done = false;
+        this.delegate = null;
+        this.method = "next";
+        this.arg = undefined$1;
+        this.tryEntries.forEach(resetTryEntry);
+
+        if (!skipTempReset) {
+          for (var name in this) {
+            // Not sure about the optimal order of these conditions:
+            if (name.charAt(0) === "t" && hasOwn.call(this, name) && !isNaN(+name.slice(1))) {
+              this[name] = undefined$1;
+            }
+          }
+        }
+      },
+      stop: function stop() {
+        this.done = true;
+        var rootEntry = this.tryEntries[0];
+        var rootRecord = rootEntry.completion;
+
+        if (rootRecord.type === "throw") {
+          throw rootRecord.arg;
+        }
+
+        return this.rval;
+      },
+      dispatchException: function dispatchException(exception) {
+        if (this.done) {
+          throw exception;
+        }
+
+        var context = this;
+
+        function handle(loc, caught) {
+          record.type = "throw";
+          record.arg = exception;
+          context.next = loc;
+
+          if (caught) {
+            // If the dispatched exception was caught by a catch block,
+            // then let that catch block handle the exception normally.
+            context.method = "next";
+            context.arg = undefined$1;
+          }
+
+          return !!caught;
+        }
+
+        for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+          var entry = this.tryEntries[i];
+          var record = entry.completion;
+
+          if (entry.tryLoc === "root") {
+            // Exception thrown outside of any try block that could handle
+            // it, so set the completion value of the entire function to
+            // throw the exception.
+            return handle("end");
+          }
+
+          if (entry.tryLoc <= this.prev) {
+            var hasCatch = hasOwn.call(entry, "catchLoc");
+            var hasFinally = hasOwn.call(entry, "finallyLoc");
+
+            if (hasCatch && hasFinally) {
+              if (this.prev < entry.catchLoc) {
+                return handle(entry.catchLoc, true);
+              } else if (this.prev < entry.finallyLoc) {
+                return handle(entry.finallyLoc);
+              }
+            } else if (hasCatch) {
+              if (this.prev < entry.catchLoc) {
+                return handle(entry.catchLoc, true);
+              }
+            } else if (hasFinally) {
+              if (this.prev < entry.finallyLoc) {
+                return handle(entry.finallyLoc);
+              }
+            } else {
+              throw new Error("try statement without catch or finally");
+            }
+          }
+        }
+      },
+      abrupt: function abrupt(type, arg) {
+        for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+          var entry = this.tryEntries[i];
+
+          if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) {
+            var finallyEntry = entry;
+            break;
+          }
+        }
+
+        if (finallyEntry && (type === "break" || type === "continue") && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc) {
+          // Ignore the finally entry if control is not jumping to a
+          // location outside the try/catch block.
+          finallyEntry = null;
+        }
+
+        var record = finallyEntry ? finallyEntry.completion : {};
+        record.type = type;
+        record.arg = arg;
+
+        if (finallyEntry) {
+          this.method = "next";
+          this.next = finallyEntry.finallyLoc;
+          return ContinueSentinel;
+        }
+
+        return this.complete(record);
+      },
+      complete: function complete(record, afterLoc) {
+        if (record.type === "throw") {
+          throw record.arg;
+        }
+
+        if (record.type === "break" || record.type === "continue") {
+          this.next = record.arg;
+        } else if (record.type === "return") {
+          this.rval = this.arg = record.arg;
+          this.method = "return";
+          this.next = "end";
+        } else if (record.type === "normal" && afterLoc) {
+          this.next = afterLoc;
+        }
+
+        return ContinueSentinel;
+      },
+      finish: function finish(finallyLoc) {
+        for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+          var entry = this.tryEntries[i];
+
+          if (entry.finallyLoc === finallyLoc) {
+            this.complete(entry.completion, entry.afterLoc);
+            resetTryEntry(entry);
+            return ContinueSentinel;
+          }
+        }
+      },
+      "catch": function _catch(tryLoc) {
+        for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+          var entry = this.tryEntries[i];
+
+          if (entry.tryLoc === tryLoc) {
+            var record = entry.completion;
+
+            if (record.type === "throw") {
+              var thrown = record.arg;
+              resetTryEntry(entry);
+            }
+
+            return thrown;
+          }
+        } // The context.catch method must only be called with a location
+        // argument that corresponds to a known catch block.
+
+
+        throw new Error("illegal catch attempt");
+      },
+      delegateYield: function delegateYield(iterable, resultName, nextLoc) {
+        this.delegate = {
+          iterator: values(iterable),
+          resultName: resultName,
+          nextLoc: nextLoc
+        };
+
+        if (this.method === "next") {
+          // Deliberately forget the last sent value so that we don't
+          // accidentally pass it on to the delegate.
+          this.arg = undefined$1;
+        }
+
+        return ContinueSentinel;
+      }
+    }; // Regardless of whether this script is executing as a CommonJS module
+    // or not, return the runtime object so that we can declare the variable
+    // regeneratorRuntime in the outer scope, which allows this module to be
+    // injected easily by `bin/regenerator --include-runtime script.js`.
+
+    return exports;
+  }( // If this script is executing as a CommonJS module, use module.exports
+  // as the regeneratorRuntime namespace. Otherwise create a new empty
+  // object. Either way, the resulting object will be used to initialize
+  // the regeneratorRuntime variable at the top of this file.
+  module.exports );
+
+  try {
+    regeneratorRuntime = runtime;
+  } catch (accidentalStrictMode) {
+    // This module should not be running in strict mode, so the above
+    // assignment should always work unless something is misconfigured. Just
+    // in case runtime.js accidentally runs in strict mode, in modern engines
+    // we can explicitly access globalThis. In older engines we can escape
+    // strict mode using a global Function call. This could conceivably fail
+    // if a Content Security Policy forbids using Function, but in that case
+    // the proper solution is to fix the accidental strict mode problem. If
+    // you've misconfigured your bundler to force strict mode and applied a
+    // CSP to forbid Function, and you're not willing to fix either of those
+    // problems, please detail your unique predicament in a GitHub issue.
+    if ((typeof globalThis === "undefined" ? "undefined" : _typeof(globalThis)) === "object") {
+      globalThis.regeneratorRuntime = runtime;
+    } else {
+      Function("r", "regeneratorRuntime = r")(runtime);
+    }
+  }
+})(runtime);
+
+var regenerator = runtime.exports;
+
+function _arrayWithHoles(arr) {
+  if (Array.isArray(arr)) return arr;
+}
+
+function _iterableToArrayLimit(arr, i) {
+  var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"];
+
+  if (_i == null) return;
+  var _arr = [];
+  var _n = true;
+  var _d = false;
+
+  var _s, _e;
+
+  try {
+    for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) {
+      _arr.push(_s.value);
+
+      if (i && _arr.length === i) break;
+    }
+  } catch (err) {
+    _d = true;
+    _e = err;
+  } finally {
+    try {
+      if (!_n && _i["return"] != null) _i["return"]();
+    } finally {
+      if (_d) throw _e;
+    }
+  }
+
+  return _arr;
+}
+
+function _nonIterableRest() {
+  throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+}
+
+function _slicedToArray(arr, i) {
+  return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray$2(arr, i) || _nonIterableRest();
+}
+
+function _assertThisInitialized(self) {
+  if (self === void 0) {
+    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+  }
+
+  return self;
+}
+
+function _setPrototypeOf(o, p) {
+  _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+    o.__proto__ = p;
+    return o;
+  };
+
+  return _setPrototypeOf(o, p);
+}
+
+function _inherits(subClass, superClass) {
+  if (typeof superClass !== "function" && superClass !== null) {
+    throw new TypeError("Super expression must either be null or a function");
+  }
+
+  subClass.prototype = Object.create(superClass && superClass.prototype, {
+    constructor: {
+      value: subClass,
+      writable: true,
+      configurable: true
+    }
+  });
+  Object.defineProperty(subClass, "prototype", {
+    writable: false
+  });
+  if (superClass) _setPrototypeOf(subClass, superClass);
+}
+
+function _possibleConstructorReturn(self, call) {
+  if (call && (_typeof(call) === "object" || typeof call === "function")) {
+    return call;
+  } else if (call !== void 0) {
+    throw new TypeError("Derived constructors may only return object or undefined");
+  }
+
+  return _assertThisInitialized(self);
+}
+
+function _getPrototypeOf(o) {
+  _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
+    return o.__proto__ || Object.getPrototypeOf(o);
+  };
+  return _getPrototypeOf(o);
+}
+
+function _isNativeFunction(fn) {
+  return Function.toString.call(fn).indexOf("[native code]") !== -1;
+}
+
+function _isNativeReflectConstruct$2() {
+  if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+  if (Reflect.construct.sham) return false;
+  if (typeof Proxy === "function") return true;
+
+  try {
+    Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+function _construct(Parent, args, Class) {
+  if (_isNativeReflectConstruct$2()) {
+    _construct = Reflect.construct;
+  } else {
+    _construct = function _construct(Parent, args, Class) {
+      var a = [null];
+      a.push.apply(a, args);
+      var Constructor = Function.bind.apply(Parent, a);
+      var instance = new Constructor();
+      if (Class) _setPrototypeOf(instance, Class.prototype);
+      return instance;
+    };
+  }
+
+  return _construct.apply(null, arguments);
+}
+
+function _wrapNativeSuper(Class) {
+  var _cache = typeof Map === "function" ? new Map() : undefined;
+
+  _wrapNativeSuper = function _wrapNativeSuper(Class) {
+    if (Class === null || !_isNativeFunction(Class)) return Class;
+
+    if (typeof Class !== "function") {
+      throw new TypeError("Super expression must either be null or a function");
+    }
+
+    if (typeof _cache !== "undefined") {
+      if (_cache.has(Class)) return _cache.get(Class);
+
+      _cache.set(Class, Wrapper);
+    }
+
+    function Wrapper() {
+      return _construct(Class, arguments, _getPrototypeOf(this).constructor);
+    }
+
+    Wrapper.prototype = Object.create(Class.prototype, {
+      constructor: {
+        value: Wrapper,
+        enumerable: false,
+        writable: true,
+        configurable: true
+      }
+    });
+    return _setPrototypeOf(Wrapper, Class);
+  };
+
+  return _wrapNativeSuper(Class);
+}
+
+function _createSuper$1(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct$1(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _isNativeReflectConstruct$1() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+/**
+ * @license
+ * Copyright 2017 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+
+var stringToByteArray$1 = function stringToByteArray$1(str) {
+  // TODO(user): Use native implementations if/when available
+  var out = [];
+  var p = 0;
+
+  for (var i = 0; i < str.length; i++) {
+    var c = str.charCodeAt(i);
+
+    if (c < 128) {
+      out[p++] = c;
+    } else if (c < 2048) {
+      out[p++] = c >> 6 | 192;
+      out[p++] = c & 63 | 128;
+    } else if ((c & 0xfc00) === 0xd800 && i + 1 < str.length && (str.charCodeAt(i + 1) & 0xfc00) === 0xdc00) {
+      // Surrogate Pair
+      c = 0x10000 + ((c & 0x03ff) << 10) + (str.charCodeAt(++i) & 0x03ff);
+      out[p++] = c >> 18 | 240;
+      out[p++] = c >> 12 & 63 | 128;
+      out[p++] = c >> 6 & 63 | 128;
+      out[p++] = c & 63 | 128;
+    } else {
+      out[p++] = c >> 12 | 224;
+      out[p++] = c >> 6 & 63 | 128;
+      out[p++] = c & 63 | 128;
+    }
+  }
+
+  return out;
+};
+/**
+ * Turns an array of numbers into the string given by the concatenation of the
+ * characters to which the numbers correspond.
+ * @param bytes Array of numbers representing characters.
+ * @return Stringification of the array.
+ */
+
+
+var byteArrayToString = function byteArrayToString(bytes) {
+  // TODO(user): Use native implementations if/when available
+  var out = [];
+  var pos = 0,
+      c = 0;
+
+  while (pos < bytes.length) {
+    var c1 = bytes[pos++];
+
+    if (c1 < 128) {
+      out[c++] = String.fromCharCode(c1);
+    } else if (c1 > 191 && c1 < 224) {
+      var c2 = bytes[pos++];
+      out[c++] = String.fromCharCode((c1 & 31) << 6 | c2 & 63);
+    } else if (c1 > 239 && c1 < 365) {
+      // Surrogate Pair
+      var _c = bytes[pos++];
+      var c3 = bytes[pos++];
+      var c4 = bytes[pos++];
+      var u = ((c1 & 7) << 18 | (_c & 63) << 12 | (c3 & 63) << 6 | c4 & 63) - 0x10000;
+      out[c++] = String.fromCharCode(0xd800 + (u >> 10));
+      out[c++] = String.fromCharCode(0xdc00 + (u & 1023));
+    } else {
+      var _c2 = bytes[pos++];
+      var _c3 = bytes[pos++];
+      out[c++] = String.fromCharCode((c1 & 15) << 12 | (_c2 & 63) << 6 | _c3 & 63);
+    }
+  }
+
+  return out.join('');
+}; // We define it as an object literal instead of a class because a class compiled down to es5 can't
+// be treeshaked. https://github.com/rollup/rollup/issues/1691
+// Static lookup maps, lazily populated by init_()
+
+
+var base64 = {
+  /**
+   * Maps bytes to characters.
+   */
+  byteToCharMap_: null,
+
+  /**
+   * Maps characters to bytes.
+   */
+  charToByteMap_: null,
+
+  /**
+   * Maps bytes to websafe characters.
+   * @private
+   */
+  byteToCharMapWebSafe_: null,
+
+  /**
+   * Maps websafe characters to bytes.
+   * @private
+   */
+  charToByteMapWebSafe_: null,
+
+  /**
+   * Our default alphabet, shared between
+   * ENCODED_VALS and ENCODED_VALS_WEBSAFE
+   */
+  ENCODED_VALS_BASE: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' + 'abcdefghijklmnopqrstuvwxyz' + '0123456789',
+
+  /**
+   * Our default alphabet. Value 64 (=) is special; it means "nothing."
+   */
+  get ENCODED_VALS() {
+    return this.ENCODED_VALS_BASE + '+/=';
+  },
+
+  /**
+   * Our websafe alphabet.
+   */
+  get ENCODED_VALS_WEBSAFE() {
+    return this.ENCODED_VALS_BASE + '-_.';
+  },
+
+  /**
+   * Whether this browser supports the atob and btoa functions. This extension
+   * started at Mozilla but is now implemented by many browsers. We use the
+   * ASSUME_* variables to avoid pulling in the full useragent detection library
+   * but still allowing the standard per-browser compilations.
+   *
+   */
+  HAS_NATIVE_SUPPORT: typeof atob === 'function',
+
+  /**
+   * Base64-encode an array of bytes.
+   *
+   * @param input An array of bytes (numbers with
+   *     value in [0, 255]) to encode.
+   * @param webSafe Boolean indicating we should use the
+   *     alternative alphabet.
+   * @return The base64 encoded string.
+   */
+  encodeByteArray: function encodeByteArray(input, webSafe) {
+    if (!Array.isArray(input)) {
+      throw Error('encodeByteArray takes an array as a parameter');
+    }
+
+    this.init_();
+    var byteToCharMap = webSafe ? this.byteToCharMapWebSafe_ : this.byteToCharMap_;
+    var output = [];
+
+    for (var i = 0; i < input.length; i += 3) {
+      var byte1 = input[i];
+      var haveByte2 = i + 1 < input.length;
+      var byte2 = haveByte2 ? input[i + 1] : 0;
+      var haveByte3 = i + 2 < input.length;
+      var byte3 = haveByte3 ? input[i + 2] : 0;
+      var outByte1 = byte1 >> 2;
+      var outByte2 = (byte1 & 0x03) << 4 | byte2 >> 4;
+      var outByte3 = (byte2 & 0x0f) << 2 | byte3 >> 6;
+      var outByte4 = byte3 & 0x3f;
+
+      if (!haveByte3) {
+        outByte4 = 64;
+
+        if (!haveByte2) {
+          outByte3 = 64;
+        }
+      }
+
+      output.push(byteToCharMap[outByte1], byteToCharMap[outByte2], byteToCharMap[outByte3], byteToCharMap[outByte4]);
+    }
+
+    return output.join('');
+  },
+
+  /**
+   * Base64-encode a string.
+   *
+   * @param input A string to encode.
+   * @param webSafe If true, we should use the
+   *     alternative alphabet.
+   * @return The base64 encoded string.
+   */
+  encodeString: function encodeString(input, webSafe) {
+    // Shortcut for Mozilla browsers that implement
+    // a native base64 encoder in the form of "btoa/atob"
+    if (this.HAS_NATIVE_SUPPORT && !webSafe) {
+      return btoa(input);
+    }
+
+    return this.encodeByteArray(stringToByteArray$1(input), webSafe);
+  },
+
+  /**
+   * Base64-decode a string.
+   *
+   * @param input to decode.
+   * @param webSafe True if we should use the
+   *     alternative alphabet.
+   * @return string representing the decoded value.
+   */
+  decodeString: function decodeString(input, webSafe) {
+    // Shortcut for Mozilla browsers that implement
+    // a native base64 encoder in the form of "btoa/atob"
+    if (this.HAS_NATIVE_SUPPORT && !webSafe) {
+      return atob(input);
+    }
+
+    return byteArrayToString(this.decodeStringToByteArray(input, webSafe));
+  },
+
+  /**
+   * Base64-decode a string.
+   *
+   * In base-64 decoding, groups of four characters are converted into three
+   * bytes.  If the encoder did not apply padding, the input length may not
+   * be a multiple of 4.
+   *
+   * In this case, the last group will have fewer than 4 characters, and
+   * padding will be inferred.  If the group has one or two characters, it decodes
+   * to one byte.  If the group has three characters, it decodes to two bytes.
+   *
+   * @param input Input to decode.
+   * @param webSafe True if we should use the web-safe alphabet.
+   * @return bytes representing the decoded value.
+   */
+  decodeStringToByteArray: function decodeStringToByteArray(input, webSafe) {
+    this.init_();
+    var charToByteMap = webSafe ? this.charToByteMapWebSafe_ : this.charToByteMap_;
+    var output = [];
+
+    for (var i = 0; i < input.length;) {
+      var byte1 = charToByteMap[input.charAt(i++)];
+      var haveByte2 = i < input.length;
+      var byte2 = haveByte2 ? charToByteMap[input.charAt(i)] : 0;
+      ++i;
+      var haveByte3 = i < input.length;
+      var byte3 = haveByte3 ? charToByteMap[input.charAt(i)] : 64;
+      ++i;
+      var haveByte4 = i < input.length;
+      var byte4 = haveByte4 ? charToByteMap[input.charAt(i)] : 64;
+      ++i;
+
+      if (byte1 == null || byte2 == null || byte3 == null || byte4 == null) {
+        throw Error();
+      }
+
+      var outByte1 = byte1 << 2 | byte2 >> 4;
+      output.push(outByte1);
+
+      if (byte3 !== 64) {
+        var outByte2 = byte2 << 4 & 0xf0 | byte3 >> 2;
+        output.push(outByte2);
+
+        if (byte4 !== 64) {
+          var outByte3 = byte3 << 6 & 0xc0 | byte4;
+          output.push(outByte3);
+        }
+      }
+    }
+
+    return output;
+  },
+
+  /**
+   * Lazy static initialization function. Called before
+   * accessing any of the static map variables.
+   * @private
+   */
+  init_: function init_() {
+    if (!this.byteToCharMap_) {
+      this.byteToCharMap_ = {};
+      this.charToByteMap_ = {};
+      this.byteToCharMapWebSafe_ = {};
+      this.charToByteMapWebSafe_ = {}; // We want quick mappings back and forth, so we precompute two maps.
+
+      for (var i = 0; i < this.ENCODED_VALS.length; i++) {
+        this.byteToCharMap_[i] = this.ENCODED_VALS.charAt(i);
+        this.charToByteMap_[this.byteToCharMap_[i]] = i;
+        this.byteToCharMapWebSafe_[i] = this.ENCODED_VALS_WEBSAFE.charAt(i);
+        this.charToByteMapWebSafe_[this.byteToCharMapWebSafe_[i]] = i; // Be forgiving when decoding and correctly decode both encodings.
+
+        if (i >= this.ENCODED_VALS_BASE.length) {
+          this.charToByteMap_[this.ENCODED_VALS_WEBSAFE.charAt(i)] = i;
+          this.charToByteMapWebSafe_[this.ENCODED_VALS.charAt(i)] = i;
+        }
+      }
+    }
+  }
+};
+/**
+ * URL-safe base64 encoding
+ */
+
+var base64Encode = function base64Encode(str) {
+  var utf8Bytes = stringToByteArray$1(str);
+  return base64.encodeByteArray(utf8Bytes, true);
+};
+/**
+ * URL-safe base64 encoding (without "." padding in the end).
+ * e.g. Used in JSON Web Token (JWT) parts.
+ */
+
+
+var base64urlEncodeWithoutPadding = function base64urlEncodeWithoutPadding(str) {
+  // Use base64url encoding and remove padding in the end (dot characters).
+  return base64Encode(str).replace(/\./g, '');
+};
+/**
+ * @license
+ * Copyright 2017 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+
+var Deferred = /*#__PURE__*/function () {
+  function Deferred() {
+    var _this = this;
+
+    _classCallCheck(this, Deferred);
+
+    this.reject = function () {};
+
+    this.resolve = function () {};
+
+    this.promise = new Promise(function (resolve, reject) {
+      _this.resolve = resolve;
+      _this.reject = reject;
+    });
+  }
+  /**
+   * Our API internals are not promiseified and cannot because our callback APIs have subtle expectations around
+   * invoking promises inline, which Promises are forbidden to do. This method accepts an optional node-style callback
+   * and returns a node-style callback which will resolve or reject the Deferred's promise.
+   */
+
+
+  _createClass(Deferred, [{
+    key: "wrapCallback",
+    value: function wrapCallback(callback) {
+      var _this2 = this;
+
+      return function (error, value) {
+        if (error) {
+          _this2.reject(error);
+        } else {
+          _this2.resolve(value);
+        }
+
+        if (typeof callback === 'function') {
+          // Attaching noop handler just in case developer wasn't expecting
+          // promises
+          _this2.promise.catch(function () {}); // Some of our callbacks don't expect a value and our own tests
+          // assert that the parameter length is 1
+
+
+          if (callback.length === 1) {
+            callback(error);
+          } else {
+            callback(error, value);
+          }
+        }
+      };
+    }
+  }]);
+
+  return Deferred;
+}();
+/**
+ * This method checks if indexedDB is supported by current browser/service worker context
+ * @return true if indexedDB is supported by current browser/service worker context
+ */
+
+
+function isIndexedDBAvailable() {
+  return (typeof indexedDB === "undefined" ? "undefined" : _typeof(indexedDB)) === 'object';
+}
+/**
+ * This method validates browser/sw context for indexedDB by opening a dummy indexedDB database and reject
+ * if errors occur during the database open operation.
+ *
+ * @throws exception if current browser/sw context can't run idb.open (ex: Safari iframe, Firefox
+ * private browsing)
+ */
+
+
+function validateIndexedDBOpenable() {
+  return new Promise(function (resolve, reject) {
+    try {
+      var preExist = true;
+      var DB_CHECK_NAME = 'validate-browser-context-for-indexeddb-analytics-module';
+      var request = self.indexedDB.open(DB_CHECK_NAME);
+
+      request.onsuccess = function () {
+        request.result.close(); // delete database only when it doesn't pre-exist
+
+        if (!preExist) {
+          self.indexedDB.deleteDatabase(DB_CHECK_NAME);
+        }
+
+        resolve(true);
+      };
+
+      request.onupgradeneeded = function () {
+        preExist = false;
+      };
+
+      request.onerror = function () {
+        var _a;
+
+        reject(((_a = request.error) === null || _a === void 0 ? void 0 : _a.message) || '');
+      };
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+/**
+ * @license
+ * Copyright 2017 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * @fileoverview Standardized Firebase Error.
+ *
+ * Usage:
+ *
+ *   // Typescript string literals for type-safe codes
+ *   type Err =
+ *     'unknown' |
+ *     'object-not-found'
+ *     ;
+ *
+ *   // Closure enum for type-safe error codes
+ *   // at-enum {string}
+ *   var Err = {
+ *     UNKNOWN: 'unknown',
+ *     OBJECT_NOT_FOUND: 'object-not-found',
+ *   }
+ *
+ *   let errors: Map<Err, string> = {
+ *     'generic-error': "Unknown error",
+ *     'file-not-found': "Could not find file: {$file}",
+ *   };
+ *
+ *   // Type-safe function - must pass a valid error code as param.
+ *   let error = new ErrorFactory<Err>('service', 'Service', errors);
+ *
+ *   ...
+ *   throw error.create(Err.GENERIC);
+ *   ...
+ *   throw error.create(Err.FILE_NOT_FOUND, {'file': fileName});
+ *   ...
+ *   // Service: Could not file file: foo.txt (service/file-not-found).
+ *
+ *   catch (e) {
+ *     assert(e.message === "Could not find file: foo.txt.");
+ *     if (e.code === 'service/file-not-found') {
+ *       console.log("Could not read file: " + e['file']);
+ *     }
+ *   }
+ */
+
+
+var ERROR_NAME = 'FirebaseError'; // Based on code from:
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error#Custom_Error_Types
+
+var FirebaseError = /*#__PURE__*/function (_Error) {
+  _inherits(FirebaseError, _Error);
+
+  var _super = _createSuper$1(FirebaseError);
+
+  function FirebaseError(
+  /** The error code for this error. */
+  code, message,
+  /** Custom data for this error. */
+  customData) {
+    var _this3;
+
+    _classCallCheck(this, FirebaseError);
+
+    _this3 = _super.call(this, message);
+    _this3.code = code;
+    _this3.customData = customData;
+    /** The custom name for all FirebaseErrors. */
+
+    _this3.name = ERROR_NAME; // Fix For ES5
+    // https://github.com/Microsoft/TypeScript-wiki/blob/master/Breaking-Changes.md#extending-built-ins-like-error-array-and-map-may-no-longer-work
+
+    Object.setPrototypeOf(_assertThisInitialized(_this3), FirebaseError.prototype); // Maintains proper stack trace for where our error was thrown.
+    // Only available on V8.
+
+    if (Error.captureStackTrace) {
+      Error.captureStackTrace(_assertThisInitialized(_this3), ErrorFactory.prototype.create);
+    }
+
+    return _this3;
+  }
+
+  return _createClass(FirebaseError);
+}( /*#__PURE__*/_wrapNativeSuper(Error));
+
+var ErrorFactory = /*#__PURE__*/function () {
+  function ErrorFactory(service, serviceName, errors) {
+    _classCallCheck(this, ErrorFactory);
+
+    this.service = service;
+    this.serviceName = serviceName;
+    this.errors = errors;
+  }
+
+  _createClass(ErrorFactory, [{
+    key: "create",
+    value: function create(code) {
+      var customData = (arguments.length <= 1 ? undefined : arguments[1]) || {};
+      var fullCode = "".concat(this.service, "/").concat(code);
+      var template = this.errors[code];
+      var message = template ? replaceTemplate(template, customData) : 'Error'; // Service Name: Error message (service/code).
+
+      var fullMessage = "".concat(this.serviceName, ": ").concat(message, " (").concat(fullCode, ").");
+      var error = new FirebaseError(fullCode, fullMessage, customData);
+      return error;
+    }
+  }]);
+
+  return ErrorFactory;
+}();
+
+function replaceTemplate(template, data) {
+  return template.replace(PATTERN, function (_, key) {
+    var value = data[key];
+    return value != null ? String(value) : "<".concat(key, "?>");
+  });
+}
+
+var PATTERN = /\{\$([^}]+)}/g;
+/**
+ * Deep equal two objects. Support Arrays and Objects.
+ */
+
+
+function deepEqual(a, b) {
+  if (a === b) {
+    return true;
+  }
+
+  var aKeys = Object.keys(a);
+  var bKeys = Object.keys(b);
+
+  for (var _i = 0, _aKeys = aKeys; _i < _aKeys.length; _i++) {
+    var k = _aKeys[_i];
+
+    if (!bKeys.includes(k)) {
+      return false;
+    }
+
+    var aProp = a[k];
+    var bProp = b[k];
+
+    if (isObject(aProp) && isObject(bProp)) {
+      if (!deepEqual(aProp, bProp)) {
+        return false;
+      }
+    } else if (aProp !== bProp) {
+      return false;
+    }
+  }
+
+  for (var _i2 = 0, _bKeys = bKeys; _i2 < _bKeys.length; _i2++) {
+    var _k = _bKeys[_i2];
+
+    if (!aKeys.includes(_k)) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+function isObject(thing) {
+  return thing !== null && _typeof(thing) === 'object';
+}
+/**
+ * @license
+ * Copyright 2021 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+
+function getModularInstance(service) {
+  if (service && service._delegate) {
+    return service._delegate;
+  } else {
+    return service;
+  }
+}
+/**
+ * @license
+ * Copyright 2022 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * @internal
+ */
+
+
+function promisifyRequest(request, errorMessage) {
+  return new Promise(function (resolve, reject) {
+    request.onsuccess = function (event) {
+      resolve(event.target.result);
+    };
+
+    request.onerror = function (event) {
+      var _a;
+
+      reject("".concat(errorMessage, ": ").concat((_a = event.target.error) === null || _a === void 0 ? void 0 : _a.message));
+    };
+  });
+}
+/**
+ * @internal
+ */
+
+
+var DBWrapper = /*#__PURE__*/function () {
+  function DBWrapper(_db) {
+    _classCallCheck(this, DBWrapper);
+
+    this._db = _db;
+    this.objectStoreNames = this._db.objectStoreNames;
+  }
+
+  _createClass(DBWrapper, [{
+    key: "transaction",
+    value: function transaction(storeNames) {
+      var mode = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'readonly';
+      return new TransactionWrapper(this._db.transaction.call(this._db, storeNames, mode));
+    }
+  }, {
+    key: "createObjectStore",
+    value: function createObjectStore(storeName, options) {
+      return new ObjectStoreWrapper(this._db.createObjectStore(storeName, options));
+    }
+  }, {
+    key: "close",
+    value: function close() {
+      this._db.close();
+    }
+  }]);
+
+  return DBWrapper;
+}();
+/**
+ * @internal
+ */
+
+
+var TransactionWrapper = /*#__PURE__*/function () {
+  function TransactionWrapper(_transaction) {
+    var _this8 = this;
+
+    _classCallCheck(this, TransactionWrapper);
+
+    this._transaction = _transaction;
+    this.complete = new Promise(function (resolve, reject) {
+      _this8._transaction.oncomplete = function () {
+        resolve();
+      };
+
+      _this8._transaction.onerror = function () {
+        reject(_this8._transaction.error);
+      };
+
+      _this8._transaction.onabort = function () {
+        reject(_this8._transaction.error);
+      };
+    });
+  }
+
+  _createClass(TransactionWrapper, [{
+    key: "objectStore",
+    value: function objectStore(storeName) {
+      return new ObjectStoreWrapper(this._transaction.objectStore(storeName));
+    }
+  }]);
+
+  return TransactionWrapper;
+}();
+/**
+ * @internal
+ */
+
+
+var ObjectStoreWrapper = /*#__PURE__*/function () {
+  function ObjectStoreWrapper(_store) {
+    _classCallCheck(this, ObjectStoreWrapper);
+
+    this._store = _store;
+  }
+
+  _createClass(ObjectStoreWrapper, [{
+    key: "index",
+    value: function index(name) {
+      return new IndexWrapper(this._store.index(name));
+    }
+  }, {
+    key: "createIndex",
+    value: function createIndex(name, keypath, options) {
+      return new IndexWrapper(this._store.createIndex(name, keypath, options));
+    }
+  }, {
+    key: "get",
+    value: function get(key) {
+      var request = this._store.get(key);
+
+      return promisifyRequest(request, 'Error reading from IndexedDB');
+    }
+  }, {
+    key: "put",
+    value: function put(value, key) {
+      var request = this._store.put(value, key);
+
+      return promisifyRequest(request, 'Error writing to IndexedDB');
+    }
+  }, {
+    key: "delete",
+    value: function _delete(key) {
+      var request = this._store.delete(key);
+
+      return promisifyRequest(request, 'Error deleting from IndexedDB');
+    }
+  }, {
+    key: "clear",
+    value: function clear() {
+      var request = this._store.clear();
+
+      return promisifyRequest(request, 'Error clearing IndexedDB object store');
+    }
+  }]);
+
+  return ObjectStoreWrapper;
+}();
+/**
+ * @internal
+ */
+
+
+var IndexWrapper = /*#__PURE__*/function () {
+  function IndexWrapper(_index) {
+    _classCallCheck(this, IndexWrapper);
+
+    this._index = _index;
+  }
+
+  _createClass(IndexWrapper, [{
+    key: "get",
+    value: function get(key) {
+      var request = this._index.get(key);
+
+      return promisifyRequest(request, 'Error reading from IndexedDB');
+    }
+  }]);
+
+  return IndexWrapper;
+}();
+/**
+ * @internal
+ */
+
+
+function openDB(dbName, dbVersion, upgradeCallback) {
+  return new Promise(function (resolve, reject) {
+    try {
+      var request = indexedDB.open(dbName, dbVersion);
+
+      request.onsuccess = function (event) {
+        resolve(new DBWrapper(event.target.result));
+      };
+
+      request.onerror = function (event) {
+        var _a;
+
+        reject("Error opening indexedDB: ".concat((_a = event.target.error) === null || _a === void 0 ? void 0 : _a.message));
+      };
+
+      request.onupgradeneeded = function (event) {
+        upgradeCallback(new DBWrapper(request.result), event.oldVersion, event.newVersion, new TransactionWrapper(request.transaction));
+      };
+    } catch (e) {
+      reject("Error opening indexedDB: ".concat(e.message));
+    }
+  });
+}
+
+function _createForOfIteratorHelper$1(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray$1(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
+
+function _unsupportedIterableToArray$1(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray$1(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray$1(o, minLen); }
+
+function _arrayLikeToArray$1(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+/**
+ * Component for service name T, e.g. `auth`, `auth-internal`
+ */
+
+var Component = /*#__PURE__*/function () {
+  /**
+   *
+   * @param name The public service name, e.g. app, auth, firestore, database
+   * @param instanceFactory Service factory responsible for creating the public interface
+   * @param type whether the service provided by the component is public or private
+   */
+  function Component(name, instanceFactory, type) {
+    _classCallCheck(this, Component);
+
+    this.name = name;
+    this.instanceFactory = instanceFactory;
+    this.type = type;
+    this.multipleInstances = false;
+    /**
+     * Properties to be added to the service namespace
+     */
+
+    this.serviceProps = {};
+    this.instantiationMode = "LAZY"
+    /* LAZY */
+    ;
+    this.onInstanceCreated = null;
+  }
+
+  _createClass(Component, [{
+    key: "setInstantiationMode",
+    value: function setInstantiationMode(mode) {
+      this.instantiationMode = mode;
+      return this;
+    }
+  }, {
+    key: "setMultipleInstances",
+    value: function setMultipleInstances(multipleInstances) {
+      this.multipleInstances = multipleInstances;
+      return this;
+    }
+  }, {
+    key: "setServiceProps",
+    value: function setServiceProps(props) {
+      this.serviceProps = props;
+      return this;
+    }
+  }, {
+    key: "setInstanceCreatedCallback",
+    value: function setInstanceCreatedCallback(callback) {
+      this.onInstanceCreated = callback;
+      return this;
+    }
+  }]);
+
+  return Component;
+}();
+/**
+ * @license
+ * Copyright 2019 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+
+var DEFAULT_ENTRY_NAME$1 = '[DEFAULT]';
+/**
+ * @license
+ * Copyright 2019 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * Provider for instance for service name T, e.g. 'auth', 'auth-internal'
+ * NameServiceMapping[T] is an alias for the type of the instance
+ */
+
+var Provider = /*#__PURE__*/function () {
+  function Provider(name, container) {
+    _classCallCheck(this, Provider);
+
+    this.name = name;
+    this.container = container;
+    this.component = null;
+    this.instances = new Map();
+    this.instancesDeferred = new Map();
+    this.instancesOptions = new Map();
+    this.onInitCallbacks = new Map();
+  }
+  /**
+   * @param identifier A provider can provide mulitple instances of a service
+   * if this.component.multipleInstances is true.
+   */
+
+
+  _createClass(Provider, [{
+    key: "get",
+    value: function get(identifier) {
+      // if multipleInstances is not supported, use the default name
+      var normalizedIdentifier = this.normalizeInstanceIdentifier(identifier);
+
+      if (!this.instancesDeferred.has(normalizedIdentifier)) {
+        var deferred = new Deferred();
+        this.instancesDeferred.set(normalizedIdentifier, deferred);
+
+        if (this.isInitialized(normalizedIdentifier) || this.shouldAutoInitialize()) {
+          // initialize the service if it can be auto-initialized
+          try {
+            var instance = this.getOrInitializeService({
+              instanceIdentifier: normalizedIdentifier
+            });
+
+            if (instance) {
+              deferred.resolve(instance);
+            }
+          } catch (e) {// when the instance factory throws an exception during get(), it should not cause
+            // a fatal error. We just return the unresolved promise in this case.
+          }
+        }
+      }
+
+      return this.instancesDeferred.get(normalizedIdentifier).promise;
+    }
+  }, {
+    key: "getImmediate",
+    value: function getImmediate(options) {
+      var _a; // if multipleInstances is not supported, use the default name
+
+
+      var normalizedIdentifier = this.normalizeInstanceIdentifier(options === null || options === void 0 ? void 0 : options.identifier);
+      var optional = (_a = options === null || options === void 0 ? void 0 : options.optional) !== null && _a !== void 0 ? _a : false;
+
+      if (this.isInitialized(normalizedIdentifier) || this.shouldAutoInitialize()) {
+        try {
+          return this.getOrInitializeService({
+            instanceIdentifier: normalizedIdentifier
+          });
+        } catch (e) {
+          if (optional) {
+            return null;
+          } else {
+            throw e;
+          }
+        }
+      } else {
+        // In case a component is not initialized and should/can not be auto-initialized at the moment, return null if the optional flag is set, or throw
+        if (optional) {
+          return null;
+        } else {
+          throw Error("Service ".concat(this.name, " is not available"));
+        }
+      }
+    }
+  }, {
+    key: "getComponent",
+    value: function getComponent() {
+      return this.component;
+    }
+  }, {
+    key: "setComponent",
+    value: function setComponent(component) {
+      if (component.name !== this.name) {
+        throw Error("Mismatching Component ".concat(component.name, " for Provider ").concat(this.name, "."));
+      }
+
+      if (this.component) {
+        throw Error("Component for ".concat(this.name, " has already been provided"));
+      }
+
+      this.component = component; // return early without attempting to initialize the component if the component requires explicit initialization (calling `Provider.initialize()`)
+
+      if (!this.shouldAutoInitialize()) {
+        return;
+      } // if the service is eager, initialize the default instance
+
+
+      if (isComponentEager(component)) {
+        try {
+          this.getOrInitializeService({
+            instanceIdentifier: DEFAULT_ENTRY_NAME$1
+          });
+        } catch (e) {// when the instance factory for an eager Component throws an exception during the eager
+          // initialization, it should not cause a fatal error.
+          // TODO: Investigate if we need to make it configurable, because some component may want to cause
+          // a fatal error in this case?
+        }
+      } // Create service instances for the pending promises and resolve them
+      // NOTE: if this.multipleInstances is false, only the default instance will be created
+      // and all promises with resolve with it regardless of the identifier.
+
+
+      var _iterator = _createForOfIteratorHelper$1(this.instancesDeferred.entries()),
+          _step;
+
+      try {
+        for (_iterator.s(); !(_step = _iterator.n()).done;) {
+          var _step$value = _slicedToArray(_step.value, 2),
+              instanceIdentifier = _step$value[0],
+              instanceDeferred = _step$value[1];
+
+          var normalizedIdentifier = this.normalizeInstanceIdentifier(instanceIdentifier);
+
+          try {
+            // `getOrInitializeService()` should always return a valid instance since a component is guaranteed. use ! to make typescript happy.
+            var instance = this.getOrInitializeService({
+              instanceIdentifier: normalizedIdentifier
+            });
+            instanceDeferred.resolve(instance);
+          } catch (e) {// when the instance factory throws an exception, it should not cause
+            // a fatal error. We just leave the promise unresolved.
+          }
+        }
+      } catch (err) {
+        _iterator.e(err);
+      } finally {
+        _iterator.f();
+      }
+    }
+  }, {
+    key: "clearInstance",
+    value: function clearInstance() {
+      var identifier = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : DEFAULT_ENTRY_NAME$1;
+      this.instancesDeferred.delete(identifier);
+      this.instancesOptions.delete(identifier);
+      this.instances.delete(identifier);
+    } // app.delete() will call this method on every provider to delete the services
+    // TODO: should we mark the provider as deleted?
+
+  }, {
+    key: "delete",
+    value: function () {
+      var _delete2 = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee() {
+        var services;
+        return regenerator.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                services = Array.from(this.instances.values());
+                _context.next = 3;
+                return Promise.all([].concat(_toConsumableArray(services.filter(function (service) {
+                  return 'INTERNAL' in service;
+                }) // legacy services
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                .map(function (service) {
+                  return service.INTERNAL.delete();
+                })), _toConsumableArray(services.filter(function (service) {
+                  return '_delete' in service;
+                }) // modularized services
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                .map(function (service) {
+                  return service._delete();
+                }))));
+
+              case 3:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function _delete() {
+        return _delete2.apply(this, arguments);
+      }
+
+      return _delete;
+    }()
+  }, {
+    key: "isComponentSet",
+    value: function isComponentSet() {
+      return this.component != null;
+    }
+  }, {
+    key: "isInitialized",
+    value: function isInitialized() {
+      var identifier = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : DEFAULT_ENTRY_NAME$1;
+      return this.instances.has(identifier);
+    }
+  }, {
+    key: "getOptions",
+    value: function getOptions() {
+      var identifier = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : DEFAULT_ENTRY_NAME$1;
+      return this.instancesOptions.get(identifier) || {};
+    }
+  }, {
+    key: "initialize",
+    value: function initialize() {
+      var opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var _opts$options = opts.options,
+          options = _opts$options === void 0 ? {} : _opts$options;
+      var normalizedIdentifier = this.normalizeInstanceIdentifier(opts.instanceIdentifier);
+
+      if (this.isInitialized(normalizedIdentifier)) {
+        throw Error("".concat(this.name, "(").concat(normalizedIdentifier, ") has already been initialized"));
+      }
+
+      if (!this.isComponentSet()) {
+        throw Error("Component ".concat(this.name, " has not been registered yet"));
+      }
+
+      var instance = this.getOrInitializeService({
+        instanceIdentifier: normalizedIdentifier,
+        options: options
+      }); // resolve any pending promise waiting for the service instance
+
+      var _iterator2 = _createForOfIteratorHelper$1(this.instancesDeferred.entries()),
+          _step2;
+
+      try {
+        for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+          var _step2$value = _slicedToArray(_step2.value, 2),
+              instanceIdentifier = _step2$value[0],
+              instanceDeferred = _step2$value[1];
+
+          var normalizedDeferredIdentifier = this.normalizeInstanceIdentifier(instanceIdentifier);
+
+          if (normalizedIdentifier === normalizedDeferredIdentifier) {
+            instanceDeferred.resolve(instance);
+          }
+        }
+      } catch (err) {
+        _iterator2.e(err);
+      } finally {
+        _iterator2.f();
+      }
+
+      return instance;
+    }
+    /**
+     *
+     * @param callback - a function that will be invoked  after the provider has been initialized by calling provider.initialize().
+     * The function is invoked SYNCHRONOUSLY, so it should not execute any longrunning tasks in order to not block the program.
+     *
+     * @param identifier An optional instance identifier
+     * @returns a function to unregister the callback
+     */
+
+  }, {
+    key: "onInit",
+    value: function onInit(callback, identifier) {
+      var _a;
+
+      var normalizedIdentifier = this.normalizeInstanceIdentifier(identifier);
+      var existingCallbacks = (_a = this.onInitCallbacks.get(normalizedIdentifier)) !== null && _a !== void 0 ? _a : new Set();
+      existingCallbacks.add(callback);
+      this.onInitCallbacks.set(normalizedIdentifier, existingCallbacks);
+      var existingInstance = this.instances.get(normalizedIdentifier);
+
+      if (existingInstance) {
+        callback(existingInstance, normalizedIdentifier);
+      }
+
+      return function () {
+        existingCallbacks.delete(callback);
+      };
+    }
+    /**
+     * Invoke onInit callbacks synchronously
+     * @param instance the service instance`
+     */
+
+  }, {
+    key: "invokeOnInitCallbacks",
+    value: function invokeOnInitCallbacks(instance, identifier) {
+      var callbacks = this.onInitCallbacks.get(identifier);
+
+      if (!callbacks) {
+        return;
+      }
+
+      var _iterator3 = _createForOfIteratorHelper$1(callbacks),
+          _step3;
+
+      try {
+        for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
+          var callback = _step3.value;
+
+          try {
+            callback(instance, identifier);
+          } catch (_a) {// ignore errors in the onInit callback
+          }
+        }
+      } catch (err) {
+        _iterator3.e(err);
+      } finally {
+        _iterator3.f();
+      }
+    }
+  }, {
+    key: "getOrInitializeService",
+    value: function getOrInitializeService(_ref) {
+      var instanceIdentifier = _ref.instanceIdentifier,
+          _ref$options = _ref.options,
+          options = _ref$options === void 0 ? {} : _ref$options;
+      var instance = this.instances.get(instanceIdentifier);
+
+      if (!instance && this.component) {
+        instance = this.component.instanceFactory(this.container, {
+          instanceIdentifier: normalizeIdentifierForFactory(instanceIdentifier),
+          options: options
+        });
+        this.instances.set(instanceIdentifier, instance);
+        this.instancesOptions.set(instanceIdentifier, options);
+        /**
+         * Invoke onInit listeners.
+         * Note this.component.onInstanceCreated is different, which is used by the component creator,
+         * while onInit listeners are registered by consumers of the provider.
+         */
+
+        this.invokeOnInitCallbacks(instance, instanceIdentifier);
+        /**
+         * Order is important
+         * onInstanceCreated() should be called after this.instances.set(instanceIdentifier, instance); which
+         * makes `isInitialized()` return true.
+         */
+
+        if (this.component.onInstanceCreated) {
+          try {
+            this.component.onInstanceCreated(this.container, instanceIdentifier, instance);
+          } catch (_a) {// ignore errors in the onInstanceCreatedCallback
+          }
+        }
+      }
+
+      return instance || null;
+    }
+  }, {
+    key: "normalizeInstanceIdentifier",
+    value: function normalizeInstanceIdentifier() {
+      var identifier = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : DEFAULT_ENTRY_NAME$1;
+
+      if (this.component) {
+        return this.component.multipleInstances ? identifier : DEFAULT_ENTRY_NAME$1;
+      } else {
+        return identifier; // assume multiple instances are supported before the component is provided.
+      }
+    }
+  }, {
+    key: "shouldAutoInitialize",
+    value: function shouldAutoInitialize() {
+      return !!this.component && this.component.instantiationMode !== "EXPLICIT"
+      /* EXPLICIT */
+      ;
+    }
+  }]);
+
+  return Provider;
+}(); // undefined should be passed to the service factory for the default instance
+
+
+function normalizeIdentifierForFactory(identifier) {
+  return identifier === DEFAULT_ENTRY_NAME$1 ? undefined : identifier;
+}
+
+function isComponentEager(component) {
+  return component.instantiationMode === "EAGER"
+  /* EAGER */
+  ;
+}
+/**
+ * @license
+ * Copyright 2019 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * ComponentContainer that provides Providers for service name T, e.g. `auth`, `auth-internal`
+ */
+
+
+var ComponentContainer = /*#__PURE__*/function () {
+  function ComponentContainer(name) {
+    _classCallCheck(this, ComponentContainer);
+
+    this.name = name;
+    this.providers = new Map();
+  }
+  /**
+   *
+   * @param component Component being added
+   * @param overwrite When a component with the same name has already been registered,
+   * if overwrite is true: overwrite the existing component with the new component and create a new
+   * provider with the new component. It can be useful in tests where you want to use different mocks
+   * for different tests.
+   * if overwrite is false: throw an exception
+   */
+
+
+  _createClass(ComponentContainer, [{
+    key: "addComponent",
+    value: function addComponent(component) {
+      var provider = this.getProvider(component.name);
+
+      if (provider.isComponentSet()) {
+        throw new Error("Component ".concat(component.name, " has already been registered with ").concat(this.name));
+      }
+
+      provider.setComponent(component);
+    }
+  }, {
+    key: "addOrOverwriteComponent",
+    value: function addOrOverwriteComponent(component) {
+      var provider = this.getProvider(component.name);
+
+      if (provider.isComponentSet()) {
+        // delete the existing provider from the container, so we can register the new component
+        this.providers.delete(component.name);
+      }
+
+      this.addComponent(component);
+    }
+    /**
+     * getProvider provides a type safe interface where it can only be called with a field name
+     * present in NameServiceMapping interface.
+     *
+     * Firebase SDKs providing services should extend NameServiceMapping interface to register
+     * themselves.
+     */
+
+  }, {
+    key: "getProvider",
+    value: function getProvider(name) {
+      if (this.providers.has(name)) {
+        return this.providers.get(name);
+      } // create a Provider for a service that hasn't registered with Firebase
+
+
+      var provider = new Provider(name, this);
+      this.providers.set(name, provider);
+      return provider;
+    }
+  }, {
+    key: "getProviders",
+    value: function getProviders() {
+      return Array.from(this.providers.values());
+    }
+  }]);
+
+  return ComponentContainer;
+}();
+
+var _ConsoleMethod;
+/**
+ * The JS SDK supports 5 log levels and also allows a user the ability to
+ * silence the logs altogether.
+ *
+ * The order is a follows:
+ * DEBUG < VERBOSE < INFO < WARN < ERROR
+ *
+ * All of the log types above the current log level will be captured (i.e. if
+ * you set the log level to `INFO`, errors will still be logged, but `DEBUG` and
+ * `VERBOSE` logs will not)
+ */
+
+var LogLevel;
+
+(function (LogLevel) {
+  LogLevel[LogLevel["DEBUG"] = 0] = "DEBUG";
+  LogLevel[LogLevel["VERBOSE"] = 1] = "VERBOSE";
+  LogLevel[LogLevel["INFO"] = 2] = "INFO";
+  LogLevel[LogLevel["WARN"] = 3] = "WARN";
+  LogLevel[LogLevel["ERROR"] = 4] = "ERROR";
+  LogLevel[LogLevel["SILENT"] = 5] = "SILENT";
+})(LogLevel || (LogLevel = {}));
+
+var levelStringToEnum = {
+  'debug': LogLevel.DEBUG,
+  'verbose': LogLevel.VERBOSE,
+  'info': LogLevel.INFO,
+  'warn': LogLevel.WARN,
+  'error': LogLevel.ERROR,
+  'silent': LogLevel.SILENT
+};
+/**
+ * The default log level
+ */
+
+var defaultLogLevel = LogLevel.INFO;
+/**
+ * By default, `console.debug` is not displayed in the developer console (in
+ * chrome). To avoid forcing users to have to opt-in to these logs twice
+ * (i.e. once for firebase, and once in the console), we are sending `DEBUG`
+ * logs to the `console.log` function.
+ */
+
+var ConsoleMethod = (_ConsoleMethod = {}, _defineProperty(_ConsoleMethod, LogLevel.DEBUG, 'log'), _defineProperty(_ConsoleMethod, LogLevel.VERBOSE, 'log'), _defineProperty(_ConsoleMethod, LogLevel.INFO, 'info'), _defineProperty(_ConsoleMethod, LogLevel.WARN, 'warn'), _defineProperty(_ConsoleMethod, LogLevel.ERROR, 'error'), _ConsoleMethod);
+/**
+ * The default log handler will forward DEBUG, VERBOSE, INFO, WARN, and ERROR
+ * messages on to their corresponding console counterparts (if the log method
+ * is supported by the current log level)
+ */
+
+var defaultLogHandler = function defaultLogHandler(instance, logType) {
+  if (logType < instance.logLevel) {
+    return;
+  }
+
+  var now = new Date().toISOString();
+  var method = ConsoleMethod[logType];
+
+  if (method) {
+    var _console;
+
+    for (var _len = arguments.length, args = new Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
+      args[_key - 2] = arguments[_key];
+    }
+
+    (_console = console)[method].apply(_console, ["[".concat(now, "]  ").concat(instance.name, ":")].concat(args));
+  } else {
+    throw new Error("Attempted to log a message with an invalid logType (value: ".concat(logType, ")"));
+  }
+};
+
+var Logger = /*#__PURE__*/function () {
+  /**
+   * Gives you an instance of a Logger to capture messages according to
+   * Firebase's logging scheme.
+   *
+   * @param name The name that the logs will be associated with
+   */
+  function Logger(name) {
+    _classCallCheck(this, Logger);
+
+    this.name = name;
+    /**
+     * The log level of the given Logger instance.
+     */
+
+    this._logLevel = defaultLogLevel;
+    /**
+     * The main (internal) log handler for the Logger instance.
+     * Can be set to a new function in internal package code but not by user.
+     */
+
+    this._logHandler = defaultLogHandler;
+    /**
+     * The optional, additional, user-defined log handler for the Logger instance.
+     */
+
+    this._userLogHandler = null;
+  }
+
+  _createClass(Logger, [{
+    key: "logLevel",
+    get: function get() {
+      return this._logLevel;
+    },
+    set: function set(val) {
+      if (!(val in LogLevel)) {
+        throw new TypeError("Invalid value \"".concat(val, "\" assigned to `logLevel`"));
+      }
+
+      this._logLevel = val;
+    } // Workaround for setter/getter having to be the same type.
+
+  }, {
+    key: "setLogLevel",
+    value: function setLogLevel(val) {
+      this._logLevel = typeof val === 'string' ? levelStringToEnum[val] : val;
+    }
+  }, {
+    key: "logHandler",
+    get: function get() {
+      return this._logHandler;
+    },
+    set: function set(val) {
+      if (typeof val !== 'function') {
+        throw new TypeError('Value assigned to `logHandler` must be a function');
+      }
+
+      this._logHandler = val;
+    }
+  }, {
+    key: "userLogHandler",
+    get: function get() {
+      return this._userLogHandler;
+    },
+    set: function set(val) {
+      this._userLogHandler = val;
+    }
+    /**
+     * The functions below are all based on the `console` interface
+     */
+
+  }, {
+    key: "debug",
+    value: function debug() {
+      for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+        args[_key2] = arguments[_key2];
+      }
+
+      this._userLogHandler && this._userLogHandler.apply(this, [this, LogLevel.DEBUG].concat(args));
+
+      this._logHandler.apply(this, [this, LogLevel.DEBUG].concat(args));
+    }
+  }, {
+    key: "log",
+    value: function log() {
+      for (var _len3 = arguments.length, args = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+        args[_key3] = arguments[_key3];
+      }
+
+      this._userLogHandler && this._userLogHandler.apply(this, [this, LogLevel.VERBOSE].concat(args));
+
+      this._logHandler.apply(this, [this, LogLevel.VERBOSE].concat(args));
+    }
+  }, {
+    key: "info",
+    value: function info() {
+      for (var _len4 = arguments.length, args = new Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
+        args[_key4] = arguments[_key4];
+      }
+
+      this._userLogHandler && this._userLogHandler.apply(this, [this, LogLevel.INFO].concat(args));
+
+      this._logHandler.apply(this, [this, LogLevel.INFO].concat(args));
+    }
+  }, {
+    key: "warn",
+    value: function warn() {
+      for (var _len5 = arguments.length, args = new Array(_len5), _key5 = 0; _key5 < _len5; _key5++) {
+        args[_key5] = arguments[_key5];
+      }
+
+      this._userLogHandler && this._userLogHandler.apply(this, [this, LogLevel.WARN].concat(args));
+
+      this._logHandler.apply(this, [this, LogLevel.WARN].concat(args));
+    }
+  }, {
+    key: "error",
+    value: function error() {
+      for (var _len6 = arguments.length, args = new Array(_len6), _key6 = 0; _key6 < _len6; _key6++) {
+        args[_key6] = arguments[_key6];
+      }
+
+      this._userLogHandler && this._userLogHandler.apply(this, [this, LogLevel.ERROR].concat(args));
+
+      this._logHandler.apply(this, [this, LogLevel.ERROR].concat(args));
+    }
+  }]);
+
+  return Logger;
+}();
+
+var _PLATFORM_LOG_STRING, _ERRORS;
+
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+/**
+ * @license
+ * Copyright 2019 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+var PlatformLoggerServiceImpl = /*#__PURE__*/function () {
+  function PlatformLoggerServiceImpl(container) {
+    _classCallCheck(this, PlatformLoggerServiceImpl);
+
+    this.container = container;
+  } // In initial implementation, this will be called by installations on
+  // auth token refresh, and installations will send this string.
+
+
+  _createClass(PlatformLoggerServiceImpl, [{
+    key: "getPlatformInfoString",
+    value: function getPlatformInfoString() {
+      var providers = this.container.getProviders(); // Loop through providers and get library/version pairs from any that are
+      // version components.
+
+      return providers.map(function (provider) {
+        if (isVersionServiceProvider(provider)) {
+          var service = provider.getImmediate();
+          return "".concat(service.library, "/").concat(service.version);
+        } else {
+          return null;
+        }
+      }).filter(function (logString) {
+        return logString;
+      }).join(' ');
+    }
+  }]);
+
+  return PlatformLoggerServiceImpl;
+}();
+/**
+ *
+ * @param provider check if this provider provides a VersionService
+ *
+ * NOTE: Using Provider<'app-version'> is a hack to indicate that the provider
+ * provides VersionService. The provider is not necessarily a 'app-version'
+ * provider.
+ */
+
+
+function isVersionServiceProvider(provider) {
+  var component = provider.getComponent();
+  return (component === null || component === void 0 ? void 0 : component.type) === "VERSION"
+  /* VERSION */
+  ;
+}
+
+var name$o = "@firebase/app";
+var version$1 = "0.7.22";
+/**
+ * @license
+ * Copyright 2019 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+var logger = new Logger('@firebase/app');
+var name$n = "@firebase/app-compat";
+var name$m = "@firebase/analytics-compat";
+var name$l = "@firebase/analytics";
+var name$k = "@firebase/app-check-compat";
+var name$j = "@firebase/app-check";
+var name$i = "@firebase/auth";
+var name$h = "@firebase/auth-compat";
+var name$g = "@firebase/database";
+var name$f = "@firebase/database-compat";
+var name$e = "@firebase/functions";
+var name$d = "@firebase/functions-compat";
+var name$c = "@firebase/installations";
+var name$b = "@firebase/installations-compat";
+var name$a = "@firebase/messaging";
+var name$9 = "@firebase/messaging-compat";
+var name$8 = "@firebase/performance";
+var name$7 = "@firebase/performance-compat";
+var name$6 = "@firebase/remote-config";
+var name$5 = "@firebase/remote-config-compat";
+var name$4 = "@firebase/storage";
+var name$3 = "@firebase/storage-compat";
+var name$2 = "@firebase/firestore";
+var name$1 = "@firebase/firestore-compat";
+var name$p = "firebase";
+var version$2 = "9.7.0";
+/**
+ * @license
+ * Copyright 2019 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * The default app name
+ *
+ * @internal
+ */
+
+var DEFAULT_ENTRY_NAME = '[DEFAULT]';
+var PLATFORM_LOG_STRING = (_PLATFORM_LOG_STRING = {}, _defineProperty(_PLATFORM_LOG_STRING, name$o, 'fire-core'), _defineProperty(_PLATFORM_LOG_STRING, name$n, 'fire-core-compat'), _defineProperty(_PLATFORM_LOG_STRING, name$l, 'fire-analytics'), _defineProperty(_PLATFORM_LOG_STRING, name$m, 'fire-analytics-compat'), _defineProperty(_PLATFORM_LOG_STRING, name$j, 'fire-app-check'), _defineProperty(_PLATFORM_LOG_STRING, name$k, 'fire-app-check-compat'), _defineProperty(_PLATFORM_LOG_STRING, name$i, 'fire-auth'), _defineProperty(_PLATFORM_LOG_STRING, name$h, 'fire-auth-compat'), _defineProperty(_PLATFORM_LOG_STRING, name$g, 'fire-rtdb'), _defineProperty(_PLATFORM_LOG_STRING, name$f, 'fire-rtdb-compat'), _defineProperty(_PLATFORM_LOG_STRING, name$e, 'fire-fn'), _defineProperty(_PLATFORM_LOG_STRING, name$d, 'fire-fn-compat'), _defineProperty(_PLATFORM_LOG_STRING, name$c, 'fire-iid'), _defineProperty(_PLATFORM_LOG_STRING, name$b, 'fire-iid-compat'), _defineProperty(_PLATFORM_LOG_STRING, name$a, 'fire-fcm'), _defineProperty(_PLATFORM_LOG_STRING, name$9, 'fire-fcm-compat'), _defineProperty(_PLATFORM_LOG_STRING, name$8, 'fire-perf'), _defineProperty(_PLATFORM_LOG_STRING, name$7, 'fire-perf-compat'), _defineProperty(_PLATFORM_LOG_STRING, name$6, 'fire-rc'), _defineProperty(_PLATFORM_LOG_STRING, name$5, 'fire-rc-compat'), _defineProperty(_PLATFORM_LOG_STRING, name$4, 'fire-gcs'), _defineProperty(_PLATFORM_LOG_STRING, name$3, 'fire-gcs-compat'), _defineProperty(_PLATFORM_LOG_STRING, name$2, 'fire-fst'), _defineProperty(_PLATFORM_LOG_STRING, name$1, 'fire-fst-compat'), _defineProperty(_PLATFORM_LOG_STRING, 'fire-js', 'fire-js'), _defineProperty(_PLATFORM_LOG_STRING, name$p, 'fire-js-all'), _PLATFORM_LOG_STRING);
+/**
+ * @license
+ * Copyright 2019 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * @internal
+ */
+
+var _apps = new Map();
+/**
+ * Registered components.
+ *
+ * @internal
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+
+
+var _components = new Map();
+/**
+ * @param component - the component being added to this app's container
+ *
+ * @internal
+ */
+
+
+function _addComponent(app, component) {
+  try {
+    app.container.addComponent(component);
+  } catch (e) {
+    logger.debug("Component ".concat(component.name, " failed to register with FirebaseApp ").concat(app.name), e);
+  }
+}
+/**
+ *
+ * @param component - the component to register
+ * @returns whether or not the component is registered successfully
+ *
+ * @internal
+ */
+
+
+function _registerComponent(component) {
+  var componentName = component.name;
+
+  if (_components.has(componentName)) {
+    logger.debug("There were multiple attempts to register component ".concat(componentName, "."));
+    return false;
+  }
+
+  _components.set(componentName, component); // add the component to existing app instances
+
+
+  var _iterator = _createForOfIteratorHelper(_apps.values()),
+      _step;
+
+  try {
+    for (_iterator.s(); !(_step = _iterator.n()).done;) {
+      var app = _step.value;
+
+      _addComponent(app, component);
+    }
+  } catch (err) {
+    _iterator.e(err);
+  } finally {
+    _iterator.f();
+  }
+
+  return true;
+}
+/**
+ *
+ * @param app - FirebaseApp instance
+ * @param name - service name
+ *
+ * @returns the provider for the service with the matching name
+ *
+ * @internal
+ */
+
+
+function _getProvider(app, name) {
+  var heartbeatController = app.container.getProvider('heartbeat').getImmediate({
+    optional: true
+  });
+
+  if (heartbeatController) {
+    void heartbeatController.triggerHeartbeat();
+  }
+
+  return app.container.getProvider(name);
+}
+/**
+ * @license
+ * Copyright 2019 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+
+var ERRORS = (_ERRORS = {}, _defineProperty(_ERRORS, "no-app"
+/* NO_APP */
+, "No Firebase App '{$appName}' has been created - " + 'call Firebase App.initializeApp()'), _defineProperty(_ERRORS, "bad-app-name"
+/* BAD_APP_NAME */
+, "Illegal App name: '{$appName}"), _defineProperty(_ERRORS, "duplicate-app"
+/* DUPLICATE_APP */
+, "Firebase App named '{$appName}' already exists with different options or config"), _defineProperty(_ERRORS, "app-deleted"
+/* APP_DELETED */
+, "Firebase App named '{$appName}' already deleted"), _defineProperty(_ERRORS, "invalid-app-argument"
+/* INVALID_APP_ARGUMENT */
+, 'firebase.{$appName}() takes either no argument or a ' + 'Firebase App instance.'), _defineProperty(_ERRORS, "invalid-log-argument"
+/* INVALID_LOG_ARGUMENT */
+, 'First argument to `onLog` must be null or a function.'), _defineProperty(_ERRORS, "storage-open"
+/* STORAGE_OPEN */
+, 'Error thrown when opening storage. Original error: {$originalErrorMessage}.'), _defineProperty(_ERRORS, "storage-get"
+/* STORAGE_GET */
+, 'Error thrown when reading from storage. Original error: {$originalErrorMessage}.'), _defineProperty(_ERRORS, "storage-set"
+/* STORAGE_WRITE */
+, 'Error thrown when writing to storage. Original error: {$originalErrorMessage}.'), _defineProperty(_ERRORS, "storage-delete"
+/* STORAGE_DELETE */
+, 'Error thrown when deleting from storage. Original error: {$originalErrorMessage}.'), _ERRORS);
+var ERROR_FACTORY = new ErrorFactory('app', 'Firebase', ERRORS);
+/**
+ * @license
+ * Copyright 2019 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+var FirebaseAppImpl = /*#__PURE__*/function () {
+  function FirebaseAppImpl(options, config, container) {
+    var _this = this;
+
+    _classCallCheck(this, FirebaseAppImpl);
+
+    this._isDeleted = false;
+    this._options = Object.assign({}, options);
+    this._config = Object.assign({}, config);
+    this._name = config.name;
+    this._automaticDataCollectionEnabled = config.automaticDataCollectionEnabled;
+    this._container = container;
+    this.container.addComponent(new Component('app', function () {
+      return _this;
+    }, "PUBLIC"
+    /* PUBLIC */
+    ));
+  }
+
+  _createClass(FirebaseAppImpl, [{
+    key: "automaticDataCollectionEnabled",
+    get: function get() {
+      this.checkDestroyed();
+      return this._automaticDataCollectionEnabled;
+    },
+    set: function set(val) {
+      this.checkDestroyed();
+      this._automaticDataCollectionEnabled = val;
+    }
+  }, {
+    key: "name",
+    get: function get() {
+      this.checkDestroyed();
+      return this._name;
+    }
+  }, {
+    key: "options",
+    get: function get() {
+      this.checkDestroyed();
+      return this._options;
+    }
+  }, {
+    key: "config",
+    get: function get() {
+      this.checkDestroyed();
+      return this._config;
+    }
+  }, {
+    key: "container",
+    get: function get() {
+      return this._container;
+    }
+  }, {
+    key: "isDeleted",
+    get: function get() {
+      return this._isDeleted;
+    },
+    set: function set(val) {
+      this._isDeleted = val;
+    }
+    /**
+     * This function will throw an Error if the App has already been deleted -
+     * use before performing API actions on the App.
+     */
+
+  }, {
+    key: "checkDestroyed",
+    value: function checkDestroyed() {
+      if (this.isDeleted) {
+        throw ERROR_FACTORY.create("app-deleted"
+        /* APP_DELETED */
+        , {
+          appName: this._name
+        });
+      }
+    }
+  }]);
+
+  return FirebaseAppImpl;
+}();
+/**
+ * @license
+ * Copyright 2019 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * The current SDK version.
+ *
+ * @public
+ */
+
+
+var SDK_VERSION = version$2;
+
+function initializeApp(options) {
+  var rawConfig = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+  if (_typeof(rawConfig) !== 'object') {
+    var _name = rawConfig;
+    rawConfig = {
+      name: _name
+    };
+  }
+
+  var config = Object.assign({
+    name: DEFAULT_ENTRY_NAME,
+    automaticDataCollectionEnabled: false
+  }, rawConfig);
+  var name = config.name;
+
+  if (typeof name !== 'string' || !name) {
+    throw ERROR_FACTORY.create("bad-app-name"
+    /* BAD_APP_NAME */
+    , {
+      appName: String(name)
+    });
+  }
+
+  var existingApp = _apps.get(name);
+
+  if (existingApp) {
+    // return the existing app if options and config deep equal the ones in the existing app.
+    if (deepEqual(options, existingApp.options) && deepEqual(config, existingApp.config)) {
+      return existingApp;
+    } else {
+      throw ERROR_FACTORY.create("duplicate-app"
+      /* DUPLICATE_APP */
+      , {
+        appName: name
+      });
+    }
+  }
+
+  var container = new ComponentContainer(name);
+
+  var _iterator2 = _createForOfIteratorHelper(_components.values()),
+      _step2;
+
+  try {
+    for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+      var component = _step2.value;
+      container.addComponent(component);
+    }
+  } catch (err) {
+    _iterator2.e(err);
+  } finally {
+    _iterator2.f();
+  }
+
+  var newApp = new FirebaseAppImpl(options, config, container);
+
+  _apps.set(name, newApp);
+
+  return newApp;
+}
+/**
+ * Retrieves a {@link @firebase/app#FirebaseApp} instance.
+ *
+ * When called with no arguments, the default app is returned. When an app name
+ * is provided, the app corresponding to that name is returned.
+ *
+ * An exception is thrown if the app being retrieved has not yet been
+ * initialized.
+ *
+ * @example
+ * ```javascript
+ * // Return the default app
+ * const app = getApp();
+ * ```
+ *
+ * @example
+ * ```javascript
+ * // Return a named app
+ * const otherApp = getApp("otherApp");
+ * ```
+ *
+ * @param name - Optional name of the app to return. If no name is
+ *   provided, the default is `"[DEFAULT]"`.
+ *
+ * @returns The app corresponding to the provided app name.
+ *   If no app name is provided, the default app is returned.
+ *
+ * @public
+ */
+
+
+function getApp() {
+  var name = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : DEFAULT_ENTRY_NAME;
+
+  var app = _apps.get(name);
+
+  if (!app) {
+    throw ERROR_FACTORY.create("no-app"
+    /* NO_APP */
+    , {
+      appName: name
+    });
+  }
+
+  return app;
+}
+
+function registerVersion(libraryKeyOrName, version, variant) {
+  var _a; // TODO: We can use this check to whitelist strings when/if we set up
+  // a good whitelist system.
+
+
+  var library = (_a = PLATFORM_LOG_STRING[libraryKeyOrName]) !== null && _a !== void 0 ? _a : libraryKeyOrName;
+
+  if (variant) {
+    library += "-".concat(variant);
+  }
+
+  var libraryMismatch = library.match(/\s|\//);
+  var versionMismatch = version.match(/\s|\//);
+
+  if (libraryMismatch || versionMismatch) {
+    var warning = ["Unable to register library \"".concat(library, "\" with version \"").concat(version, "\":")];
+
+    if (libraryMismatch) {
+      warning.push("library name \"".concat(library, "\" contains illegal characters (whitespace or \"/\")"));
+    }
+
+    if (libraryMismatch && versionMismatch) {
+      warning.push('and');
+    }
+
+    if (versionMismatch) {
+      warning.push("version name \"".concat(version, "\" contains illegal characters (whitespace or \"/\")"));
+    }
+
+    logger.warn(warning.join(' '));
+    return;
+  }
+
+  _registerComponent(new Component("".concat(library, "-version"), function () {
+    return {
+      library: library,
+      version: version
+    };
+  }, "VERSION"
+  /* VERSION */
+  ));
+}
+/**
+ * @license
+ * Copyright 2021 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+
+var DB_NAME = 'firebase-heartbeat-database';
+var DB_VERSION = 1;
+var STORE_NAME = 'firebase-heartbeat-store';
+var dbPromise = null;
+
+function getDbPromise() {
+  if (!dbPromise) {
+    dbPromise = openDB(DB_NAME, DB_VERSION, function (db, oldVersion) {
+      // We don't use 'break' in this switch statement, the fall-through
+      // behavior is what we want, because if there are multiple versions between
+      // the old version and the current version, we want ALL the migrations
+      // that correspond to those versions to run, not only the last one.
+      // eslint-disable-next-line default-case
+      switch (oldVersion) {
+        case 0:
+          db.createObjectStore(STORE_NAME);
+      }
+    }).catch(function (e) {
+      throw ERROR_FACTORY.create("storage-open"
+      /* STORAGE_OPEN */
+      , {
+        originalErrorMessage: e.message
+      });
+    });
+  }
+
+  return dbPromise;
+}
+
+function readHeartbeatsFromIndexedDB(_x2) {
+  return _readHeartbeatsFromIndexedDB.apply(this, arguments);
+}
+
+function _readHeartbeatsFromIndexedDB() {
+  _readHeartbeatsFromIndexedDB = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee8(app) {
+    var db;
+    return regenerator.wrap(function _callee8$(_context8) {
+      while (1) {
+        switch (_context8.prev = _context8.next) {
+          case 0:
+            _context8.prev = 0;
+            _context8.next = 3;
+            return getDbPromise();
+
+          case 3:
+            db = _context8.sent;
+            return _context8.abrupt("return", db.transaction(STORE_NAME).objectStore(STORE_NAME).get(computeKey(app)));
+
+          case 7:
+            _context8.prev = 7;
+            _context8.t0 = _context8["catch"](0);
+            throw ERROR_FACTORY.create("storage-get"
+            /* STORAGE_GET */
+            , {
+              originalErrorMessage: _context8.t0.message
+            });
+
+          case 10:
+          case "end":
+            return _context8.stop();
+        }
+      }
+    }, _callee8, null, [[0, 7]]);
+  }));
+  return _readHeartbeatsFromIndexedDB.apply(this, arguments);
+}
+
+function writeHeartbeatsToIndexedDB(_x3, _x4) {
+  return _writeHeartbeatsToIndexedDB.apply(this, arguments);
+}
+
+function _writeHeartbeatsToIndexedDB() {
+  _writeHeartbeatsToIndexedDB = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee9(app, heartbeatObject) {
+    var db, tx, objectStore;
+    return regenerator.wrap(function _callee9$(_context9) {
+      while (1) {
+        switch (_context9.prev = _context9.next) {
+          case 0:
+            _context9.prev = 0;
+            _context9.next = 3;
+            return getDbPromise();
+
+          case 3:
+            db = _context9.sent;
+            tx = db.transaction(STORE_NAME, 'readwrite');
+            objectStore = tx.objectStore(STORE_NAME);
+            _context9.next = 8;
+            return objectStore.put(heartbeatObject, computeKey(app));
+
+          case 8:
+            return _context9.abrupt("return", tx.complete);
+
+          case 11:
+            _context9.prev = 11;
+            _context9.t0 = _context9["catch"](0);
+            throw ERROR_FACTORY.create("storage-set"
+            /* STORAGE_WRITE */
+            , {
+              originalErrorMessage: _context9.t0.message
+            });
+
+          case 14:
+          case "end":
+            return _context9.stop();
+        }
+      }
+    }, _callee9, null, [[0, 11]]);
+  }));
+  return _writeHeartbeatsToIndexedDB.apply(this, arguments);
+}
+
+function computeKey(app) {
+  return "".concat(app.name, "!").concat(app.options.appId);
+}
+/**
+ * @license
+ * Copyright 2021 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+
+var MAX_HEADER_BYTES = 1024; // 30 days
+
+var STORED_HEARTBEAT_RETENTION_MAX_MILLIS = 30 * 24 * 60 * 60 * 1000;
+
+var HeartbeatServiceImpl = /*#__PURE__*/function () {
+  function HeartbeatServiceImpl(container) {
+    var _this2 = this;
+
+    _classCallCheck(this, HeartbeatServiceImpl);
+
+    this.container = container;
+    /**
+     * In-memory cache for heartbeats, used by getHeartbeatsHeader() to generate
+     * the header string.
+     * Stores one record per date. This will be consolidated into the standard
+     * format of one record per user agent string before being sent as a header.
+     * Populated from indexedDB when the controller is instantiated and should
+     * be kept in sync with indexedDB.
+     * Leave public for easier testing.
+     */
+
+    this._heartbeatsCache = null;
+    var app = this.container.getProvider('app').getImmediate();
+    this._storage = new HeartbeatStorageImpl(app);
+    this._heartbeatsCachePromise = this._storage.read().then(function (result) {
+      _this2._heartbeatsCache = result;
+      return result;
+    });
+  }
+  /**
+   * Called to report a heartbeat. The function will generate
+   * a HeartbeatsByUserAgent object, update heartbeatsCache, and persist it
+   * to IndexedDB.
+   * Note that we only store one heartbeat per day. So if a heartbeat for today is
+   * already logged, subsequent calls to this function in the same day will be ignored.
+   */
+
+
+  _createClass(HeartbeatServiceImpl, [{
+    key: "triggerHeartbeat",
+    value: function () {
+      var _triggerHeartbeat = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee() {
+        var platformLogger, agent, date;
+        return regenerator.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                platformLogger = this.container.getProvider('platform-logger').getImmediate(); // This is the "Firebase user agent" string from the platform logger
+                // service, not the browser user agent.
+
+                agent = platformLogger.getPlatformInfoString();
+                date = getUTCDateString();
+
+                if (!(this._heartbeatsCache === null)) {
+                  _context.next = 7;
+                  break;
+                }
+
+                _context.next = 6;
+                return this._heartbeatsCachePromise;
+
+              case 6:
+                this._heartbeatsCache = _context.sent;
+
+              case 7:
+                if (!(this._heartbeatsCache.lastSentHeartbeatDate === date || this._heartbeatsCache.heartbeats.some(function (singleDateHeartbeat) {
+                  return singleDateHeartbeat.date === date;
+                }))) {
+                  _context.next = 11;
+                  break;
+                }
+
+                return _context.abrupt("return");
+
+              case 11:
+                // There is no entry for this date. Create one.
+                this._heartbeatsCache.heartbeats.push({
+                  date: date,
+                  agent: agent
+                });
+
+              case 12:
+                // Remove entries older than 30 days.
+                this._heartbeatsCache.heartbeats = this._heartbeatsCache.heartbeats.filter(function (singleDateHeartbeat) {
+                  var hbTimestamp = new Date(singleDateHeartbeat.date).valueOf();
+                  var now = Date.now();
+                  return now - hbTimestamp <= STORED_HEARTBEAT_RETENTION_MAX_MILLIS;
+                });
+                return _context.abrupt("return", this._storage.overwrite(this._heartbeatsCache));
+
+              case 14:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function triggerHeartbeat() {
+        return _triggerHeartbeat.apply(this, arguments);
+      }
+
+      return triggerHeartbeat;
+    }()
+    /**
+     * Returns a base64 encoded string which can be attached to the heartbeat-specific header directly.
+     * It also clears all heartbeats from memory as well as in IndexedDB.
+     *
+     * NOTE: Consuming product SDKs should not send the header if this method
+     * returns an empty string.
+     */
+
+  }, {
+    key: "getHeartbeatsHeader",
+    value: function () {
+      var _getHeartbeatsHeader = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee2() {
+        var date, _extractHeartbeatsFor, heartbeatsToSend, unsentEntries, headerString;
+
+        return regenerator.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                if (!(this._heartbeatsCache === null)) {
+                  _context2.next = 3;
+                  break;
+                }
+
+                _context2.next = 3;
+                return this._heartbeatsCachePromise;
+
+              case 3:
+                if (!(this._heartbeatsCache === null || this._heartbeatsCache.heartbeats.length === 0)) {
+                  _context2.next = 5;
+                  break;
+                }
+
+                return _context2.abrupt("return", '');
+
+              case 5:
+                date = getUTCDateString(); // Extract as many heartbeats from the cache as will fit under the size limit.
+
+                _extractHeartbeatsFor = extractHeartbeatsForHeader(this._heartbeatsCache.heartbeats), heartbeatsToSend = _extractHeartbeatsFor.heartbeatsToSend, unsentEntries = _extractHeartbeatsFor.unsentEntries;
+                headerString = base64urlEncodeWithoutPadding(JSON.stringify({
+                  version: 2,
+                  heartbeats: heartbeatsToSend
+                })); // Store last sent date to prevent another being logged/sent for the same day.
+
+                this._heartbeatsCache.lastSentHeartbeatDate = date;
+
+                if (!(unsentEntries.length > 0)) {
+                  _context2.next = 15;
+                  break;
+                }
+
+                // Store any unsent entries if they exist.
+                this._heartbeatsCache.heartbeats = unsentEntries; // This seems more likely than emptying the array (below) to lead to some odd state
+                // since the cache isn't empty and this will be called again on the next request,
+                // and is probably safest if we await it.
+
+                _context2.next = 13;
+                return this._storage.overwrite(this._heartbeatsCache);
+
+              case 13:
+                _context2.next = 17;
+                break;
+
+              case 15:
+                this._heartbeatsCache.heartbeats = []; // Do not wait for this, to reduce latency.
+
+                void this._storage.overwrite(this._heartbeatsCache);
+
+              case 17:
+                return _context2.abrupt("return", headerString);
+
+              case 18:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
+
+      function getHeartbeatsHeader() {
+        return _getHeartbeatsHeader.apply(this, arguments);
+      }
+
+      return getHeartbeatsHeader;
+    }()
+  }]);
+
+  return HeartbeatServiceImpl;
+}();
+
+function getUTCDateString() {
+  var today = new Date(); // Returns date format 'YYYY-MM-DD'
+
+  return today.toISOString().substring(0, 10);
+}
+
+function extractHeartbeatsForHeader(heartbeatsCache) {
+  var maxSize = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : MAX_HEADER_BYTES;
+  // Heartbeats grouped by user agent in the standard format to be sent in
+  // the header.
+  var heartbeatsToSend = []; // Single date format heartbeats that are not sent.
+
+  var unsentEntries = heartbeatsCache.slice();
+
+  var _iterator3 = _createForOfIteratorHelper(heartbeatsCache),
+      _step3;
+
+  try {
+    var _loop = function _loop() {
+      var singleDateHeartbeat = _step3.value;
+      // Look for an existing entry with the same user agent.
+      var heartbeatEntry = heartbeatsToSend.find(function (hb) {
+        return hb.agent === singleDateHeartbeat.agent;
+      });
+
+      if (!heartbeatEntry) {
+        // If no entry for this user agent exists, create one.
+        heartbeatsToSend.push({
+          agent: singleDateHeartbeat.agent,
+          dates: [singleDateHeartbeat.date]
+        });
+
+        if (countBytes(heartbeatsToSend) > maxSize) {
+          // If the header would exceed max size, remove the added heartbeat
+          // entry and stop adding to the header.
+          heartbeatsToSend.pop();
+          return "break";
+        }
+      } else {
+        heartbeatEntry.dates.push(singleDateHeartbeat.date); // If the header would exceed max size, remove the added date
+        // and stop adding to the header.
+
+        if (countBytes(heartbeatsToSend) > maxSize) {
+          heartbeatEntry.dates.pop();
+          return "break";
+        }
+      } // Pop unsent entry from queue. (Skipped if adding the entry exceeded
+      // quota and the loop breaks early.)
+
+
+      unsentEntries = unsentEntries.slice(1);
+    };
+
+    for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
+      var _ret = _loop();
+
+      if (_ret === "break") break;
+    }
+  } catch (err) {
+    _iterator3.e(err);
+  } finally {
+    _iterator3.f();
+  }
+
+  return {
+    heartbeatsToSend: heartbeatsToSend,
+    unsentEntries: unsentEntries
+  };
+}
+
+var HeartbeatStorageImpl = /*#__PURE__*/function () {
+  function HeartbeatStorageImpl(app) {
+    _classCallCheck(this, HeartbeatStorageImpl);
+
+    this.app = app;
+    this._canUseIndexedDBPromise = this.runIndexedDBEnvironmentCheck();
+  }
+
+  _createClass(HeartbeatStorageImpl, [{
+    key: "runIndexedDBEnvironmentCheck",
+    value: function () {
+      var _runIndexedDBEnvironmentCheck = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee3() {
+        return regenerator.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                if (isIndexedDBAvailable()) {
+                  _context3.next = 4;
+                  break;
+                }
+
+                return _context3.abrupt("return", false);
+
+              case 4:
+                return _context3.abrupt("return", validateIndexedDBOpenable().then(function () {
+                  return true;
+                }).catch(function () {
+                  return false;
+                }));
+
+              case 5:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3);
+      }));
+
+      function runIndexedDBEnvironmentCheck() {
+        return _runIndexedDBEnvironmentCheck.apply(this, arguments);
+      }
+
+      return runIndexedDBEnvironmentCheck;
+    }()
+    /**
+     * Read all heartbeats.
+     */
+
+  }, {
+    key: "read",
+    value: function () {
+      var _read = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee4() {
+        var canUseIndexedDB, idbHeartbeatObject;
+        return regenerator.wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                _context4.next = 2;
+                return this._canUseIndexedDBPromise;
+
+              case 2:
+                canUseIndexedDB = _context4.sent;
+
+                if (canUseIndexedDB) {
+                  _context4.next = 7;
+                  break;
+                }
+
+                return _context4.abrupt("return", {
+                  heartbeats: []
+                });
+
+              case 7:
+                _context4.next = 9;
+                return readHeartbeatsFromIndexedDB(this.app);
+
+              case 9:
+                idbHeartbeatObject = _context4.sent;
+                return _context4.abrupt("return", idbHeartbeatObject || {
+                  heartbeats: []
+                });
+
+              case 11:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4, this);
+      }));
+
+      function read() {
+        return _read.apply(this, arguments);
+      }
+
+      return read;
+    }() // overwrite the storage with the provided heartbeats
+
+  }, {
+    key: "overwrite",
+    value: function () {
+      var _overwrite = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee5(heartbeatsObject) {
+        var _a, canUseIndexedDB, existingHeartbeatsObject;
+
+        return regenerator.wrap(function _callee5$(_context5) {
+          while (1) {
+            switch (_context5.prev = _context5.next) {
+              case 0:
+                _context5.next = 2;
+                return this._canUseIndexedDBPromise;
+
+              case 2:
+                canUseIndexedDB = _context5.sent;
+
+                if (canUseIndexedDB) {
+                  _context5.next = 7;
+                  break;
+                }
+
+                return _context5.abrupt("return");
+
+              case 7:
+                _context5.next = 9;
+                return this.read();
+
+              case 9:
+                existingHeartbeatsObject = _context5.sent;
+                return _context5.abrupt("return", writeHeartbeatsToIndexedDB(this.app, {
+                  lastSentHeartbeatDate: (_a = heartbeatsObject.lastSentHeartbeatDate) !== null && _a !== void 0 ? _a : existingHeartbeatsObject.lastSentHeartbeatDate,
+                  heartbeats: heartbeatsObject.heartbeats
+                }));
+
+              case 11:
+              case "end":
+                return _context5.stop();
+            }
+          }
+        }, _callee5, this);
+      }));
+
+      function overwrite(_x5) {
+        return _overwrite.apply(this, arguments);
+      }
+
+      return overwrite;
+    }() // add heartbeats
+
+  }, {
+    key: "add",
+    value: function () {
+      var _add = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee6(heartbeatsObject) {
+        var _a, canUseIndexedDB, existingHeartbeatsObject;
+
+        return regenerator.wrap(function _callee6$(_context6) {
+          while (1) {
+            switch (_context6.prev = _context6.next) {
+              case 0:
+                _context6.next = 2;
+                return this._canUseIndexedDBPromise;
+
+              case 2:
+                canUseIndexedDB = _context6.sent;
+
+                if (canUseIndexedDB) {
+                  _context6.next = 7;
+                  break;
+                }
+
+                return _context6.abrupt("return");
+
+              case 7:
+                _context6.next = 9;
+                return this.read();
+
+              case 9:
+                existingHeartbeatsObject = _context6.sent;
+                return _context6.abrupt("return", writeHeartbeatsToIndexedDB(this.app, {
+                  lastSentHeartbeatDate: (_a = heartbeatsObject.lastSentHeartbeatDate) !== null && _a !== void 0 ? _a : existingHeartbeatsObject.lastSentHeartbeatDate,
+                  heartbeats: [].concat(_toConsumableArray(existingHeartbeatsObject.heartbeats), _toConsumableArray(heartbeatsObject.heartbeats))
+                }));
+
+              case 11:
+              case "end":
+                return _context6.stop();
+            }
+          }
+        }, _callee6, this);
+      }));
+
+      function add(_x6) {
+        return _add.apply(this, arguments);
+      }
+
+      return add;
+    }()
+  }]);
+
+  return HeartbeatStorageImpl;
+}();
+/**
+ * Calculate bytes of a HeartbeatsByUserAgent array after being wrapped
+ * in a platform logging header JSON object, stringified, and converted
+ * to base 64.
+ */
+
+
+function countBytes(heartbeatsCache) {
+  // base64 has a restricted set of characters, all of which should be 1 byte.
+  return base64urlEncodeWithoutPadding( // heartbeatsCache wrapper properties
+  JSON.stringify({
+    version: 2,
+    heartbeats: heartbeatsCache
+  })).length;
+}
+/**
+ * @license
+ * Copyright 2019 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+
+function registerCoreComponents(variant) {
+  _registerComponent(new Component('platform-logger', function (container) {
+    return new PlatformLoggerServiceImpl(container);
+  }, "PRIVATE"
+  /* PRIVATE */
+  ));
+
+  _registerComponent(new Component('heartbeat', function (container) {
+    return new HeartbeatServiceImpl(container);
+  }, "PRIVATE"
+  /* PRIVATE */
+  )); // Register `app` package.
+
+
+  registerVersion(name$o, version$1, variant); // BUILD_TARGET will be replaced by values like esm5, esm2017, cjs5, etc during the compilation
+
+  registerVersion(name$o, version$1, 'esm2017'); // Register platform SDK identifier (no version).
+
+  registerVersion('fire-js', '');
+}
+/**
+ * Firebase App
+ *
+ * @remarks This package coordinates the communication between the different Firebase components
+ * @packageDocumentation
+ */
+
+
+registerCoreComponents('');
+
+var name = "firebase";
+var version = "9.7.0";
+/**
+ * @license
+ * Copyright 2020 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+registerVersion(name, version, 'app');
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+/**
+ * @license
+ * Copyright 2017 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * Simple wrapper around a nullable UID. Mostly exists to make code more
+ * readable.
+ */
+
+var l = /*#__PURE__*/function () {
+  function l(t) {
+    _classCallCheck(this, l);
+
+    this.uid = t;
+  }
+
+  _createClass(l, [{
+    key: "isAuthenticated",
+    value: function isAuthenticated() {
+      return null != this.uid;
+    }
+    /**
+     * Returns a key representing this user, suitable for inclusion in a
+     * dictionary.
+     */
+
+  }, {
+    key: "toKey",
+    value: function toKey() {
+      return this.isAuthenticated() ? "uid:" + this.uid : "anonymous-user";
+    }
+  }, {
+    key: "isEqual",
+    value: function isEqual(t) {
+      return t.uid === this.uid;
+    }
+  }]);
+
+  return l;
+}();
+/** A user with a null UID. */
+
+
+l.UNAUTHENTICATED = new l(null), // TODO(mikelehen): Look into getting a proper uid-equivalent for
+// non-FirebaseAuth providers.
+l.GOOGLE_CREDENTIALS = new l("google-credentials-uid"), l.FIRST_PARTY = new l("first-party-uid"), l.MOCK_USER = new l("mock-user");
+/**
+ * @license
+ * Copyright 2017 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+var f = "9.6.11";
+/**
+ * @license
+ * Copyright 2017 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+var d = new Logger("@firebase/firestore");
+
+function _m(t) {
+  if (d.logLevel <= LogLevel.DEBUG) {
+    for (var _len = arguments.length, e = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+      e[_key - 1] = arguments[_key];
+    }
+
+    var n = e.map(_);
+    d.debug.apply(d, ["Firestore (".concat(f, "): ").concat(t)].concat(_toConsumableArray(n)));
+  }
+}
+
+function p(t) {
+  if (d.logLevel <= LogLevel.ERROR) {
+    for (var _len2 = arguments.length, e = new Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
+      e[_key2 - 1] = arguments[_key2];
+    }
+
+    var n = e.map(_);
+    d.error.apply(d, ["Firestore (".concat(f, "): ").concat(t)].concat(_toConsumableArray(n)));
+  }
+}
+/**
+ * Converts an additional log parameter to a string representation.
+ */
+
+
+function _(t) {
+  if ("string" == typeof t) return t;
+
+  try {
+    return e = t, JSON.stringify(e);
+  } catch (e) {
+    // Converting to JSON failed, just log the object directly
+    return t;
+  }
+  /**
+  * @license
+  * Copyright 2020 Google LLC
+  *
+  * Licensed under the Apache License, Version 2.0 (the "License");
+  * you may not use this file except in compliance with the License.
+  * You may obtain a copy of the License at
+  *
+  *   http://www.apache.org/licenses/LICENSE-2.0
+  *
+  * Unless required by applicable law or agreed to in writing, software
+  * distributed under the License is distributed on an "AS IS" BASIS,
+  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  * See the License for the specific language governing permissions and
+  * limitations under the License.
+  */
+
+  /** Formats an object as a JSON string, suitable for logging. */
+
+
+  var e;
+}
+/**
+ * @license
+ * Copyright 2017 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * Unconditionally fails, throwing an Error with the given message.
+ * Messages are stripped in production builds.
+ *
+ * Returns `never` and can be used in expressions:
+ * @example
+ * let futureVar = fail('not implemented yet');
+ */
+
+
+function g() {
+  var t = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "Unexpected state";
+  // Log the failure in addition to throw an exception, just in case the
+  // exception is swallowed.
+  var e = "FIRESTORE (".concat(f, ") INTERNAL ASSERTION FAILED: ") + t; // NOTE: We don't use FirestoreError here because these are internal failures
+  // that cannot be handled by the user. (Also it would create a circular
+  // dependency between the error and assert modules which doesn't work.)
+
+  throw p(e), new Error(e);
+}
+/**
+ * Fails if the given assertion condition is false, throwing an Error with the
+ * given message if it did.
+ *
+ * Messages are stripped in production builds.
+ */
+
+
+function v(t, e) {
+  t || g();
+}
+/**
+ * @license
+ * Copyright 2017 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+
+var A = "invalid-argument",
+    S = "failed-precondition";
+/** An error returned by a Firestore operation. */
+
+var U = /*#__PURE__*/function (_FirebaseError) {
+  _inherits(U, _FirebaseError);
+
+  var _super = _createSuper(U);
+
+  /** @hideconstructor */
+  function U(
+  /**
+   * The backend error code associated with this error.
+   */
+  t,
+  /**
+   * A custom error description.
+   */
+  e) {
+    var _this;
+
+    _classCallCheck(this, U);
+
+    _this = _super.call(this, t, e), _this.code = t, _this.message = e, // HACK: We write a toString property directly because Error is not a real
+    // class and so inheritance does not work correctly. We could alternatively
+    // do the same "back-door inheritance" trick that FirebaseError does.
+    _this.toString = function () {
+      return "".concat(_this.name, ": [code=").concat(_this.code, "]: ").concat(_this.message);
+    };
+    return _this;
+  }
+
+  return _createClass(U);
+}(FirebaseError);
+/**
+ * @license
+ * Copyright 2017 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+
+var j = /*#__PURE__*/_createClass(function j(t, e) {
+  _classCallCheck(this, j);
+
+  this.user = e, this.type = "OAuth", this.headers = new Map(), this.headers.set("Authorization", "Bearer ".concat(t));
+});
+/**
+ * A CredentialsProvider that always yields an empty token.
+ * @internal
+ */
+
+
+var M = /*#__PURE__*/function () {
+  function M() {
+    _classCallCheck(this, M);
+  }
+
+  _createClass(M, [{
+    key: "getToken",
+    value: function getToken() {
+      return Promise.resolve(null);
+    }
+  }, {
+    key: "invalidateToken",
+    value: function invalidateToken() {}
+  }, {
+    key: "start",
+    value: function start(t, e) {
+      // Fire with initial user.
+      t.enqueueRetryable(function () {
+        return e(l.UNAUTHENTICATED);
+      });
+    }
+  }, {
+    key: "shutdown",
+    value: function shutdown() {}
+  }]);
+
+  return M;
+}();
+/** Credential provider for the Lite SDK. */
+
+
+var z = /*#__PURE__*/function () {
+  function z(t) {
+    var _this4 = this;
+
+    _classCallCheck(this, z);
+
+    this.auth = null, t.onInit(function (t) {
+      _this4.auth = t;
+    });
+  }
+
+  _createClass(z, [{
+    key: "getToken",
+    value: function getToken() {
+      var _this5 = this;
+
+      return this.auth ? this.auth.getToken().then(function (t) {
+        return t ? (v("string" == typeof t.accessToken), new j(t.accessToken, new l(_this5.auth.getUid()))) : null;
+      }) : Promise.resolve(null);
+    }
+  }, {
+    key: "invalidateToken",
+    value: function invalidateToken() {}
+  }, {
+    key: "start",
+    value: function start(t, e) {}
+  }, {
+    key: "shutdown",
+    value: function shutdown() {}
+  }]);
+
+  return z;
+}();
+/*
+ * FirstPartyToken provides a fresh token each time its value
+ * is requested, because if the token is too old, requests will be rejected.
+ * Technically this may no longer be necessary since the SDK should gracefully
+ * recover from unauthenticated errors (see b/33147818 for context), but it's
+ * safer to keep the implementation as-is.
+ */
+
+
+var G = /*#__PURE__*/_createClass(function G(t, e, n) {
+  _classCallCheck(this, G);
+
+  this.type = "FirstParty", this.user = l.FIRST_PARTY, this.headers = new Map(), this.headers.set("X-Goog-AuthUser", e);
+  var r = t.auth.getAuthHeaderValueForFirstParty([]);
+  r && this.headers.set("Authorization", r), n && this.headers.set("X-Goog-Iam-Authorization-Token", n);
+});
+/*
+ * Provides user credentials required for the Firestore JavaScript SDK
+ * to authenticate the user, using technique that is only available
+ * to applications hosted by Google.
+ */
+
+
+var Q = /*#__PURE__*/function () {
+  function Q(t, e, n) {
+    _classCallCheck(this, Q);
+
+    this.t = t, this.i = e, this.o = n;
+  }
+
+  _createClass(Q, [{
+    key: "getToken",
+    value: function getToken() {
+      return Promise.resolve(new G(this.t, this.i, this.o));
+    }
+  }, {
+    key: "start",
+    value: function start(t, e) {
+      // Fire with initial uid.
+      t.enqueueRetryable(function () {
+        return e(l.FIRST_PARTY);
+      });
+    }
+  }, {
+    key: "shutdown",
+    value: function shutdown() {}
+  }, {
+    key: "invalidateToken",
+    value: function invalidateToken() {}
+  }]);
+
+  return Q;
+}();
+
+var W = /*#__PURE__*/_createClass(function W(t) {
+  _classCallCheck(this, W);
+
+  this.value = t, this.type = "AppCheck", this.headers = new Map(), t && t.length > 0 && this.headers.set("x-firebase-appcheck", this.value);
+});
+/** AppCheck token provider for the Lite SDK. */
+
+
+var Y = /*#__PURE__*/function () {
+  function Y(t) {
+    var _this6 = this;
+
+    _classCallCheck(this, Y);
+
+    this.u = t, this.appCheck = null, t.onInit(function (t) {
+      _this6.appCheck = t;
+    });
+  }
+
+  _createClass(Y, [{
+    key: "getToken",
+    value: function getToken() {
+      return this.appCheck ? this.appCheck.getToken().then(function (t) {
+        return t ? (v("string" == typeof t.token), new W(t.token)) : null;
+      }) : Promise.resolve(null);
+    }
+  }, {
+    key: "invalidateToken",
+    value: function invalidateToken() {}
+  }, {
+    key: "start",
+    value: function start(t, e) {}
+  }, {
+    key: "shutdown",
+    value: function shutdown() {}
+  }]);
+
+  return Y;
+}();
+/** The default database name for a project. */
+
+/**
+ * Represents the database ID a Firestore client is associated with.
+ * @internal
+ */
+
+
+var K = /*#__PURE__*/function () {
+  function K(t, e) {
+    _classCallCheck(this, K);
+
+    this.projectId = t, this.database = e || "(default)";
+  }
+
+  _createClass(K, [{
+    key: "isDefaultDatabase",
+    get: function get() {
+      return "(default)" === this.database;
+    }
+  }, {
+    key: "isEqual",
+    value: function isEqual(t) {
+      return t instanceof K && t.projectId === this.projectId && t.database === this.database;
+    }
+  }], [{
+    key: "empty",
+    value: function empty() {
+      return new K("", "");
+    }
+  }]);
+
+  return K;
+}();
+/**
+ * @license
+ * Copyright 2017 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * Path represents an ordered sequence of string segments.
+ */
+
+
+var J = /*#__PURE__*/function () {
+  function J(t, e, n) {
+    _classCallCheck(this, J);
+
+    void 0 === e ? e = 0 : e > t.length && g(), void 0 === n ? n = t.length - e : n > t.length - e && g(), this.segments = t, this.offset = e, this.len = n;
+  }
+
+  _createClass(J, [{
+    key: "length",
+    get: function get() {
+      return this.len;
+    }
+  }, {
+    key: "isEqual",
+    value: function isEqual(t) {
+      return 0 === J.comparator(this, t);
+    }
+  }, {
+    key: "child",
+    value: function child(t) {
+      var e = this.segments.slice(this.offset, this.limit());
+      return t instanceof J ? t.forEach(function (t) {
+        e.push(t);
+      }) : e.push(t), this.construct(e);
+    }
+    /** The index of one past the last segment of the path. */
+
+  }, {
+    key: "limit",
+    value: function limit() {
+      return this.offset + this.length;
+    }
+  }, {
+    key: "popFirst",
+    value: function popFirst(t) {
+      return t = void 0 === t ? 1 : t, this.construct(this.segments, this.offset + t, this.length - t);
+    }
+  }, {
+    key: "popLast",
+    value: function popLast() {
+      return this.construct(this.segments, this.offset, this.length - 1);
+    }
+  }, {
+    key: "firstSegment",
+    value: function firstSegment() {
+      return this.segments[this.offset];
+    }
+  }, {
+    key: "lastSegment",
+    value: function lastSegment() {
+      return this.get(this.length - 1);
+    }
+  }, {
+    key: "get",
+    value: function get(t) {
+      return this.segments[this.offset + t];
+    }
+  }, {
+    key: "isEmpty",
+    value: function isEmpty() {
+      return 0 === this.length;
+    }
+  }, {
+    key: "isPrefixOf",
+    value: function isPrefixOf(t) {
+      if (t.length < this.length) return !1;
+
+      for (var e = 0; e < this.length; e++) {
+        if (this.get(e) !== t.get(e)) return !1;
+      }
+
+      return !0;
+    }
+  }, {
+    key: "isImmediateParentOf",
+    value: function isImmediateParentOf(t) {
+      if (this.length + 1 !== t.length) return !1;
+
+      for (var e = 0; e < this.length; e++) {
+        if (this.get(e) !== t.get(e)) return !1;
+      }
+
+      return !0;
+    }
+  }, {
+    key: "forEach",
+    value: function forEach(t) {
+      for (var e = this.offset, n = this.limit(); e < n; e++) {
+        t(this.segments[e]);
+      }
+    }
+  }, {
+    key: "toArray",
+    value: function toArray() {
+      return this.segments.slice(this.offset, this.limit());
+    }
+  }], [{
+    key: "comparator",
+    value: function comparator(t, e) {
+      var n = Math.min(t.length, e.length);
+
+      for (var r = 0; r < n; r++) {
+        var _n2 = t.get(r),
+            s = e.get(r);
+
+        if (_n2 < s) return -1;
+        if (_n2 > s) return 1;
+      }
+
+      return t.length < e.length ? -1 : t.length > e.length ? 1 : 0;
+    }
+  }]);
+
+  return J;
+}();
+/**
+ * A slash-separated path for navigating resources (documents and collections)
+ * within Firestore.
+ *
+ * @internal
+ */
+
+
+var X = /*#__PURE__*/function (_J) {
+  _inherits(X, _J);
+
+  var _super2 = _createSuper(X);
+
+  function X() {
+    _classCallCheck(this, X);
+
+    return _super2.apply(this, arguments);
+  }
+
+  _createClass(X, [{
+    key: "construct",
+    value: function construct(t, e, n) {
+      return new X(t, e, n);
+    }
+  }, {
+    key: "canonicalString",
+    value: function canonicalString() {
+      // NOTE: The client is ignorant of any path segments containing escape
+      // sequences (e.g. __id123__) and just passes them through raw (they exist
+      // for legacy reasons and should not be used frequently).
+      return this.toArray().join("/");
+    }
+  }, {
+    key: "toString",
+    value: function toString() {
+      return this.canonicalString();
+    }
+    /**
+     * Creates a resource path from the given slash-delimited string. If multiple
+     * arguments are provided, all components are combined. Leading and trailing
+     * slashes from all components are ignored.
+     */
+
+  }], [{
+    key: "fromString",
+    value: function fromString() {
+      // NOTE: The client is ignorant of any path segments containing escape
+      // sequences (e.g. __id123__) and just passes them through raw (they exist
+      // for legacy reasons and should not be used frequently).
+      var e = [];
+
+      for (var _len4 = arguments.length, t = new Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
+        t[_key4] = arguments[_key4];
+      }
+
+      for (var _i = 0, _t2 = t; _i < _t2.length; _i++) {
+        var n = _t2[_i];
+        if (n.indexOf("//") >= 0) throw new U(A, "Invalid segment (".concat(n, "). Paths must not contain // in them.")); // Strip leading and traling slashed.
+
+        e.push.apply(e, _toConsumableArray(n.split("/").filter(function (t) {
+          return t.length > 0;
+        })));
+      }
+
+      return new X(e);
+    }
+  }, {
+    key: "emptyPath",
+    value: function emptyPath() {
+      return new X([]);
+    }
+  }]);
+
+  return X;
+}(J);
+/**
+ * @license
+ * Copyright 2017 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * @internal
+ */
+
+
+var et = /*#__PURE__*/function () {
+  function et(t) {
+    _classCallCheck(this, et);
+
+    this.path = t;
+  }
+
+  _createClass(et, [{
+    key: "collectionGroup",
+    get: function get() {
+      return this.path.popLast().lastSegment();
+    }
+    /** Returns true if the document is in the specified collectionId. */
+
+  }, {
+    key: "hasCollectionId",
+    value: function hasCollectionId(t) {
+      return this.path.length >= 2 && this.path.get(this.path.length - 2) === t;
+    }
+    /** Returns the collection group (i.e. the name of the parent collection) for this key. */
+
+  }, {
+    key: "getCollectionGroup",
+    value: function getCollectionGroup() {
+      return this.path.get(this.path.length - 2);
+    }
+    /** Returns the fully qualified path to the parent collection. */
+
+  }, {
+    key: "getCollectionPath",
+    value: function getCollectionPath() {
+      return this.path.popLast();
+    }
+  }, {
+    key: "isEqual",
+    value: function isEqual(t) {
+      return null !== t && 0 === X.comparator(this.path, t.path);
+    }
+  }, {
+    key: "toString",
+    value: function toString() {
+      return this.path.toString();
+    }
+  }], [{
+    key: "fromPath",
+    value: function fromPath(t) {
+      return new et(X.fromString(t));
+    }
+  }, {
+    key: "fromName",
+    value: function fromName(t) {
+      return new et(X.fromString(t).popFirst(5));
+    }
+  }, {
+    key: "empty",
+    value: function empty() {
+      return new et(X.emptyPath());
+    }
+  }, {
+    key: "comparator",
+    value: function comparator(t, e) {
+      return X.comparator(t.path, e.path);
+    }
+  }, {
+    key: "isDocumentKey",
+    value: function isDocumentKey(t) {
+      return t.length % 2 == 0;
+    }
+    /**
+     * Creates and returns a new document key with the given segments.
+     *
+     * @param segments - The segments of the path to the document
+     * @returns A new instance of DocumentKey
+     */
+
+  }, {
+    key: "fromSegments",
+    value: function fromSegments(t) {
+      return new et(new X(t.slice()));
+    }
+  }]);
+
+  return et;
+}();
+/**
+ * @license
+ * Copyright 2017 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+
+function nt(t, e, n) {
+  if (!n) throw new U(A, "Function ".concat(t, "() cannot be called with an empty ").concat(e, "."));
+}
+/**
+ * Validates that `path` refers to a collection (indicated by the fact it
+ * contains an odd numbers of segments).
+ */
+
+
+function st(t) {
+  if (et.isDocumentKey(t)) throw new U(A, "Invalid collection reference. Collection references must have an odd number of segments, but ".concat(t, " has ").concat(t.length, "."));
+}
+/**
+ * Maps RPC names to the corresponding REST endpoint name.
+ *
+ * We use array notation to avoid mangling.
+ */
+
+/**
+ * @license
+ * Copyright 2017 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * Error Codes describing the different ways GRPC can fail. These are copied
+ * directly from GRPC's sources here:
+ *
+ * https://github.com/grpc/grpc/blob/bceec94ea4fc5f0085d81235d8e1c06798dc341a/include/grpc%2B%2B/impl/codegen/status_code_enum.h
+ *
+ * Important! The names of these identifiers matter because the string forms
+ * are used for reverse lookups from the webchannel stream. Do NOT change the
+ * names of these identifiers or change this into a const enum.
+ */
+
+var lt, ft;
+/**
+ * @license
+ * Copyright 2020 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * A Rest-based connection that relies on the native HTTP stack
+ * (e.g. `fetch` or a polyfill).
+ */
+
+
+(ft = lt || (lt = {}))[ft.OK = 0] = "OK", ft[ft.CANCELLED = 1] = "CANCELLED", ft[ft.UNKNOWN = 2] = "UNKNOWN", ft[ft.INVALID_ARGUMENT = 3] = "INVALID_ARGUMENT", ft[ft.DEADLINE_EXCEEDED = 4] = "DEADLINE_EXCEEDED", ft[ft.NOT_FOUND = 5] = "NOT_FOUND", ft[ft.ALREADY_EXISTS = 6] = "ALREADY_EXISTS", ft[ft.PERMISSION_DENIED = 7] = "PERMISSION_DENIED", ft[ft.UNAUTHENTICATED = 16] = "UNAUTHENTICATED", ft[ft.RESOURCE_EXHAUSTED = 8] = "RESOURCE_EXHAUSTED", ft[ft.FAILED_PRECONDITION = 9] = "FAILED_PRECONDITION", ft[ft.ABORTED = 10] = "ABORTED", ft[ft.OUT_OF_RANGE = 11] = "OUT_OF_RANGE", ft[ft.UNIMPLEMENTED = 12] = "UNIMPLEMENTED", ft[ft.INTERNAL = 13] = "INTERNAL", ft[ft.UNAVAILABLE = 14] = "UNAVAILABLE", ft[ft.DATA_LOSS = 15] = "DATA_LOSS";
+
+function yt(t, e) {
+  return t < e ? -1 : t > e ? 1 : 0;
+}
+/**
+ * @license
+ * Copyright 2020 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/** Converts a Base64 encoded string to a binary string. */
+
+/**
+ * @license
+ * Copyright 2020 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * Immutable class that represents a "proto" byte string.
+ *
+ * Proto byte strings can either be Base64-encoded strings or Uint8Arrays when
+ * sent on the wire. This class abstracts away this differentiation by holding
+ * the proto byte string in a common class that must be converted into a string
+ * before being sent as a proto.
+ * @internal
+ */
+
+
+var It = /*#__PURE__*/function (_Symbol$iterator) {
+  function It(t) {
+    _classCallCheck(this, It);
+
+    this.binaryString = t;
+  }
+
+  _createClass(It, [{
+    key: _Symbol$iterator,
+    value: function value() {
+      var _this8 = this;
+
+      var t = 0;
+      return {
+        next: function next() {
+          return t < _this8.binaryString.length ? {
+            value: _this8.binaryString.charCodeAt(t++),
+            done: !1
+          } : {
+            value: void 0,
+            done: !0
+          };
+        }
+      };
+    }
+  }, {
+    key: "toBase64",
+    value: function toBase64() {
+      return t = this.binaryString, btoa(t);
+      /** Converts a binary string to a Base64 encoded string. */
+
+      var t;
+    }
+  }, {
+    key: "toUint8Array",
+    value: function toUint8Array() {
+      return function (t) {
+        var e = new Uint8Array(t.length);
+
+        for (var n = 0; n < t.length; n++) {
+          e[n] = t.charCodeAt(n);
+        }
+
+        return e;
+      }
+      /**
+      * @license
+      * Copyright 2020 Google LLC
+      *
+      * Licensed under the Apache License, Version 2.0 (the "License");
+      * you may not use this file except in compliance with the License.
+      * You may obtain a copy of the License at
+      *
+      *   http://www.apache.org/licenses/LICENSE-2.0
+      *
+      * Unless required by applicable law or agreed to in writing, software
+      * distributed under the License is distributed on an "AS IS" BASIS,
+      * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+      * See the License for the specific language governing permissions and
+      * limitations under the License.
+      */
+      // A RegExp matching ISO 8601 UTC timestamps with optional fraction.
+      (this.binaryString);
+    }
+  }, {
+    key: "approximateByteSize",
+    value: function approximateByteSize() {
+      return 2 * this.binaryString.length;
+    }
+  }, {
+    key: "compareTo",
+    value: function compareTo(t) {
+      return yt(this.binaryString, t.binaryString);
+    }
+  }, {
+    key: "isEqual",
+    value: function isEqual(t) {
+      return this.binaryString === t.binaryString;
+    }
+  }], [{
+    key: "fromBase64String",
+    value: function fromBase64String(t) {
+      var e = atob(t);
+      return new It(e);
+    }
+  }, {
+    key: "fromUint8Array",
+    value: function fromUint8Array(t) {
+      // TODO(indexing); Remove the copy of the byte string here as this method
+      // is frequently called during indexing.
+      var e =
+      /**
+      * Helper function to convert an Uint8array to a binary string.
+      */
+      function (t) {
+        var e = "";
+
+        for (var n = 0; n < t.length; ++n) {
+          e += String.fromCharCode(t[n]);
+        }
+
+        return e;
+      }
+      /**
+      * Helper function to convert a binary string to an Uint8Array.
+      */
+      (t);
+
+      return new It(e);
+    }
+  }]);
+
+  return It;
+}(Symbol.iterator);
+
+It.EMPTY_BYTE_STRING = new It("");
+/**
+ * @license
+ * Copyright 2017 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * Query encapsulates all the query attributes we support in the SDK. It can
+ * be run against the LocalStore, as well as be converted to a `Target` to
+ * query the RemoteStore results.
+ *
+ * Visible for testing.
+ */
+
+
+var oe = /*#__PURE__*/_createClass(
+/**
+ * Initializes a Query with a path and optional additional query constraints.
+ * Path must currently be empty if this is a collection group query.
+ */
+function oe(t) {
+  var e = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+  var n = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
+  var r = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : [];
+  var s = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : null;
+  var i = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : "F";
+  var o = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : null;
+  var u = arguments.length > 7 && arguments[7] !== undefined ? arguments[7] : null;
+
+  _classCallCheck(this, oe);
+
+  this.path = t, this.collectionGroup = e, this.explicitOrderBy = n, this.filters = r, this.limit = s, this.limitType = i, this.startAt = o, this.endAt = u, this.$ = null, // The corresponding `Target` of this `Query` instance.
+  this.S = null, this.startAt, this.endAt;
+});
+
+var tn = new Map();
+/**
+ * Removes all components associated with the provided instance. Must be called
+ * when the `Firestore` instance is terminated.
+ */
+
+/**
+ * A concrete type describing all the values that can be applied via a
+ * user-supplied `FirestoreSettings` object. This is a separate type so that
+ * defaults can be supplied and the value can be checked for equality.
+ */
+
+
+var nn = /*#__PURE__*/function () {
+  function nn(t) {
+    _classCallCheck(this, nn);
+
+    var e;
+
+    if (void 0 === t.host) {
+      if (void 0 !== t.ssl) throw new U(A, "Can't provide ssl option if host option is not set");
+      this.host = "firestore.googleapis.com", this.ssl = true;
+    } else this.host = t.host, this.ssl = null === (e = t.ssl) || void 0 === e || e;
+
+    if (this.credentials = t.credentials, this.ignoreUndefinedProperties = !!t.ignoreUndefinedProperties, void 0 === t.cacheSizeBytes) this.cacheSizeBytes = 41943040;else {
+      if (-1 !== t.cacheSizeBytes && t.cacheSizeBytes < 1048576) throw new U(A, "cacheSizeBytes must be at least 1048576");
+      this.cacheSizeBytes = t.cacheSizeBytes;
+    }
+    this.experimentalForceLongPolling = !!t.experimentalForceLongPolling, this.experimentalAutoDetectLongPolling = !!t.experimentalAutoDetectLongPolling, this.useFetchStreams = !!t.useFetchStreams, function (t, e, n, r) {
+      if (!0 === e && !0 === r) throw new U(A, "".concat(t, " and ").concat(n, " cannot be used together."));
+    }("experimentalForceLongPolling", t.experimentalForceLongPolling, "experimentalAutoDetectLongPolling", t.experimentalAutoDetectLongPolling);
+  }
+
+  _createClass(nn, [{
+    key: "isEqual",
+    value: function isEqual(t) {
+      return this.host === t.host && this.ssl === t.ssl && this.credentials === t.credentials && this.cacheSizeBytes === t.cacheSizeBytes && this.experimentalForceLongPolling === t.experimentalForceLongPolling && this.experimentalAutoDetectLongPolling === t.experimentalAutoDetectLongPolling && this.ignoreUndefinedProperties === t.ignoreUndefinedProperties && this.useFetchStreams === t.useFetchStreams;
+    }
+  }]);
+
+  return nn;
+}();
+/**
+ * @license
+ * Copyright 2020 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * The Cloud Firestore service interface.
+ *
+ * Do not call this constructor directly. Instead, use {@link getFirestore}.
+ */
+
+
+var rn = /*#__PURE__*/function () {
+  /** @hideconstructor */
+  function rn(t, e, n) {
+    _classCallCheck(this, rn);
+
+    this._authCredentials = e, this._appCheckCredentials = n,
+    /**
+     * Whether it's a Firestore or Firestore Lite instance.
+     */
+    this.type = "firestore-lite", this._persistenceKey = "(lite)", this._settings = new nn({}), this._settingsFrozen = !1, t instanceof K ? this._databaseId = t : (this._app = t, this._databaseId = function (t) {
+      if (!Object.prototype.hasOwnProperty.apply(t.options, ["projectId"])) throw new U(A, '"projectId" not provided in firebase.initializeApp.');
+      return new K(t.options.projectId);
+    }
+    /**
+    * Initializes a new instance of Cloud Firestore with the provided settings.
+    * Can only be called before any other functions, including
+    * {@link getFirestore}. If the custom settings are empty, this function is
+    * equivalent to calling {@link getFirestore}.
+    *
+    * @param app - The {@link @firebase/app#FirebaseApp} with which the `Firestore` instance will
+    * be associated.
+    * @param settings - A settings object to configure the `Firestore` instance.
+    * @returns A newly initialized `Firestore` instance.
+    */
+    (t));
+  }
+  /**
+   * The {@link @firebase/app#FirebaseApp} associated with this `Firestore` service
+   * instance.
+   */
+
+
+  _createClass(rn, [{
+    key: "app",
+    get: function get() {
+      if (!this._app) throw new U(S, "Firestore was not initialized using the Firebase SDK. 'app' is not available");
+      return this._app;
+    }
+  }, {
+    key: "_initialized",
+    get: function get() {
+      return this._settingsFrozen;
+    }
+  }, {
+    key: "_terminated",
+    get: function get() {
+      return void 0 !== this._terminateTask;
+    }
+  }, {
+    key: "_setSettings",
+    value: function _setSettings(t) {
+      if (this._settingsFrozen) throw new U(S, "Firestore has already been started and its settings can no longer be changed. You can only modify settings before calling any other methods on a Firestore object.");
+      this._settings = new nn(t), void 0 !== t.credentials && (this._authCredentials = function (t) {
+        if (!t) return new M();
+
+        switch (t.type) {
+          case "gapi":
+            var e = t.client; // Make sure this really is a Gapi client.
+
+            return v(!("object" != _typeof(e) || null === e || !e.auth || !e.auth.getAuthHeaderValueForFirstParty)), new Q(e, t.sessionIndex || "0", t.iamToken || null);
+
+          case "provider":
+            return t.client;
+
+          default:
+            throw new U(A, "makeAuthCredentialsProvider failed due to invalid credential type");
+        }
+      }(t.credentials));
+    }
+  }, {
+    key: "_getSettings",
+    value: function _getSettings() {
+      return this._settings;
+    }
+  }, {
+    key: "_freezeSettings",
+    value: function _freezeSettings() {
+      return this._settingsFrozen = !0, this._settings;
+    }
+  }, {
+    key: "_delete",
+    value: function _delete() {
+      return this._terminateTask || (this._terminateTask = this._terminate()), this._terminateTask;
+    }
+    /** Returns a JSON-serializable representation of this `Firestore` instance. */
+
+  }, {
+    key: "toJSON",
+    value: function toJSON() {
+      return {
+        app: this._app,
+        databaseId: this._databaseId,
+        settings: this._settings
+      };
+    }
+    /**
+     * Terminates all components used by this client. Subclasses can override
+     * this method to clean up their own dependencies, but must also call this
+     * method.
+     *
+     * Only ever called once.
+     */
+
+  }, {
+    key: "_terminate",
+    value: function _terminate() {
+      return function (t) {
+        var e = tn.get(t);
+        e && (_m("ComponentProvider", "Removing Datastore"), tn.delete(t), e.terminate());
+      }(this), Promise.resolve();
+    }
+  }]);
+
+  return rn;
+}();
+/**
+ * Returns the existing `Firestore` instance that is associated with the
+ * provided {@link @firebase/app#FirebaseApp}. If no instance exists, initializes a new
+ * instance with default settings.
+ *
+ * @param app - The {@link @firebase/app#FirebaseApp} instance that the returned `Firestore`
+ * instance is associated with.
+ * @returns The `Firestore` instance of the provided app.
+ */
+
+
+function on() {
+  var e = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : getApp();
+  return _getProvider(e, "firestore/lite").getImmediate();
+}
+/**
+ * @license
+ * Copyright 2020 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * @license
+ * Copyright 2020 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * A `DocumentReference` refers to a document location in a Firestore database
+ * and can be used to write, read, or listen to the location. The document at
+ * the referenced location may or may not exist.
+ */
+
+
+var an = /*#__PURE__*/function () {
+  /** @hideconstructor */
+  function an(t,
+  /**
+   * If provided, the `FirestoreDataConverter` associated with this instance.
+   */
+  e, n) {
+    _classCallCheck(this, an);
+
+    this.converter = e, this._key = n,
+    /** The type of this Firestore reference. */
+    this.type = "document", this.firestore = t;
+  }
+
+  _createClass(an, [{
+    key: "_path",
+    get: function get() {
+      return this._key.path;
+    }
+    /**
+     * The document's identifier within its collection.
+     */
+
+  }, {
+    key: "id",
+    get: function get() {
+      return this._key.path.lastSegment();
+    }
+    /**
+     * A string representing the path of the referenced document (relative
+     * to the root of the database).
+     */
+
+  }, {
+    key: "path",
+    get: function get() {
+      return this._key.path.canonicalString();
+    }
+    /**
+     * The collection this `DocumentReference` belongs to.
+     */
+
+  }, {
+    key: "parent",
+    get: function get() {
+      return new ln(this.firestore, this.converter, this._key.path.popLast());
+    }
+  }, {
+    key: "withConverter",
+    value: function withConverter(t) {
+      return new an(this.firestore, t, this._key);
+    }
+  }]);
+
+  return an;
+}();
+/**
+ * A `Query` refers to a query which you can read or listen to. You can also
+ * construct refined `Query` objects by adding filters and ordering.
+ */
+
+
+var hn = /*#__PURE__*/function () {
+  // This is the lite version of the Query class in the main SDK.
+
+  /** @hideconstructor protected */
+  function hn(t,
+  /**
+   * If provided, the `FirestoreDataConverter` associated with this instance.
+   */
+  e, n) {
+    _classCallCheck(this, hn);
+
+    this.converter = e, this._query = n,
+    /** The type of this Firestore reference. */
+    this.type = "query", this.firestore = t;
+  }
+
+  _createClass(hn, [{
+    key: "withConverter",
+    value: function withConverter(t) {
+      return new hn(this.firestore, t, this._query);
+    }
+  }]);
+
+  return hn;
+}();
+/**
+ * A `CollectionReference` object can be used for adding documents, getting
+ * document references, and querying for documents (using {@link query}).
+ */
+
+
+var ln = /*#__PURE__*/function (_hn) {
+  _inherits(ln, _hn);
+
+  var _super22 = _createSuper(ln);
+
+  /** @hideconstructor */
+  function ln(t, e, n) {
+    var _this26;
+
+    _classCallCheck(this, ln);
+
+    _this26 = _super22.call(this, t, e, new oe(n)), _this26._path = n,
+    /** The type of this Firestore reference. */
+    _this26.type = "collection";
+    return _this26;
+  }
+  /** The collection's identifier. */
+
+
+  _createClass(ln, [{
+    key: "id",
+    get: function get() {
+      return this._query.path.lastSegment();
+    }
+    /**
+     * A string representing the path of the referenced collection (relative
+     * to the root of the database).
+     */
+
+  }, {
+    key: "path",
+    get: function get() {
+      return this._query.path.canonicalString();
+    }
+    /**
+     * A reference to the containing `DocumentReference` if this is a
+     * subcollection. If this isn't a subcollection, the reference is null.
+     */
+
+  }, {
+    key: "parent",
+    get: function get() {
+      var t = this._path.popLast();
+
+      return t.isEmpty() ? null : new an(this.firestore,
+      /* converter= */
+      null, new et(t));
+    }
+  }, {
+    key: "withConverter",
+    value: function withConverter(t) {
+      return new ln(this.firestore, t, this._path);
+    }
+  }]);
+
+  return ln;
+}(hn);
+
+function fn(t, e) {
+  for (var _len5 = arguments.length, n = new Array(_len5 > 2 ? _len5 - 2 : 0), _key5 = 2; _key5 < _len5; _key5++) {
+    n[_key5 - 2] = arguments[_key5];
+  }
+
+  if (t = getModularInstance(t), nt("collection", "path", e), t instanceof rn) {
+    var r = X.fromString.apply(X, [e].concat(n));
+    return st(r), new ln(t,
+    /* converter= */
+    null, r);
+  }
+
+  {
+    if (!(t instanceof an || t instanceof ln)) throw new U(A, "Expected first argument to collection() to be a CollectionReference, a DocumentReference or FirebaseFirestore");
+
+    var _r2 = t._path.child(X.fromString.apply(X, [e].concat(n)));
+
+    return st(_r2), new ln(t.firestore,
+    /* converter= */
+    null, _r2);
+  }
+} // TODO(firestorelite): Consider using ErrorFactory -
+/**
+ * Firestore Lite
+ *
+ * @remarks Firestore Lite is a small online-only SDK that allows read
+ * and write access to your Firestore database. All operations connect
+ * directly to the backend, and `onSnapshot()` APIs are not supported.
+ * @packageDocumentation
+ */
+
+
+!function (t) {
+  f = t;
+}("".concat(SDK_VERSION, "_lite")), _registerComponent(new Component("firestore/lite", function (t, _ref10) {
+  var e = _ref10.options;
+  var n = t.getProvider("app").getImmediate(),
+      r = new rn(n, new z(t.getProvider("auth-internal")), new Y(t.getProvider("app-check-internal")));
+  return e && r._setSettings(e), r;
+}, "PUBLIC")), // RUNTIME_ENV and BUILD_TARGET are replaced by real values during the compilation
+registerVersion("firestore-lite", "3.4.8", ""), registerVersion("firestore-lite", "3.4.8", "esm2017");
+
 var crypto = {};
 
-require("firebase/app");
-
-require("firebase/firestore");
 /**
  * Formatter which is used for translation.
  * This will be replaced which is used in the runtime.
  * @param {object} messageData - format-message object
  * @returns {string} - message for the locale
  */
-
 
 var formatMessage = function formatMessage(messageData) {
   return messageData.defaultMessage;
@@ -678,15 +6068,15 @@ var ExtensionBlocks = /*#__PURE__*/function () {
 
         try {
           fbApp = initializeApp(cloudConfig_mkb);
-          db = getFirestore(fbApp); // fnc = getFunctions();
+          db = on(fbApp); // fnc = getFunctions();
         } catch (e) {
           // v8
           firebase.initializeApp(cloudConfig_mkb);
           db = firebase.firestore(); // fnc = getFunctions();
         }
 
-        collection(db, 'bank');
-        collection(db, 'card'); // console.log('fb_db_cpmplete');
+        fn(db, 'bank');
+        fn(db, 'card'); // console.log('fb_db_cpmplete');
 
         inoutFlag = false;
         return ioWaiter(1);
