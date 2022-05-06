@@ -2934,7 +2934,7 @@ var version$1 = "0.7.22";
  * limitations under the License.
  */
 
-var logger = new Logger('@firebase/app');
+var logger$5 = new Logger('@firebase/app');
 var name$n = "@firebase/app-compat";
 var name$m = "@firebase/analytics-compat";
 var name$l = "@firebase/analytics";
@@ -3027,7 +3027,7 @@ function _addComponent(app, component) {
   try {
     app.container.addComponent(component);
   } catch (e) {
-    logger.debug("Component ".concat(component.name, " failed to register with FirebaseApp ").concat(app.name), e);
+    logger$5.debug("Component ".concat(component.name, " failed to register with FirebaseApp ").concat(app.name), e);
   }
 }
 /**
@@ -3043,7 +3043,7 @@ function _registerComponent(component) {
   var componentName = component.name;
 
   if (_components.has(componentName)) {
-    logger.debug("There were multiple attempts to register component ".concat(componentName, "."));
+    logger$5.debug("There were multiple attempts to register component ".concat(componentName, "."));
     return false;
   }
 
@@ -3389,7 +3389,7 @@ function registerVersion(libraryKeyOrName, version, variant) {
       warning.push("version name \"".concat(version, "\" contains illegal characters (whitespace or \"/\")"));
     }
 
-    logger.warn(warning.join(' '));
+    logger$5.warn(warning.join(' '));
     return;
   }
 
@@ -4382,7 +4382,7 @@ var j = /*#__PURE__*/_createClass(function j(t, e) {
  */
 
 
-var M = /*#__PURE__*/function () {
+var M$1 = /*#__PURE__*/function () {
   function M() {
     _classCallCheck(this, M);
   }
@@ -5312,7 +5312,7 @@ var rn = /*#__PURE__*/function () {
     value: function _setSettings(t) {
       if (this._settingsFrozen) throw new U(S, "Firestore has already been started and its settings can no longer be changed. You can only modify settings before calling any other methods on a Firestore object.");
       this._settings = new nn(t), void 0 !== t.credentials && (this._authCredentials = function (t) {
-        if (!t) return new M();
+        if (!t) return new M$1();
 
         switch (t.type) {
           case "gapi":
@@ -5625,14 +5625,749 @@ registerVersion("firestore-lite", "3.4.8", ""), registerVersion("firestore-lite"
 
 var crypto = {};
 
-var Variable = require('../../engine/variable');
+/**
+ * @fileoverview UID generator, from Blockly.
+ */
+/**
+ * Legal characters for the unique ID.
+ * Should be all on a US keyboard.  No XML special characters or control codes.
+ * Removed $ due to issue 251.
+ * @private
+ */
+
+var soup_ = '!#%()*+,-./:;=?@[]^_`{|}~' + 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+/**
+ * Generate a unique ID, from Blockly.  This should be globally unique.
+ * 87 characters ^ 20 length > 128 bits (better than a UUID).
+ * @return {string} A globally unique ID string.
+ */
+
+var uid$1 = function uid() {
+  var length = 20;
+  var soupLength = soup_.length;
+  var id = [];
+
+  for (var i = 0; i < length; i++) {
+    id[i] = soup_.charAt(Math.random() * soupLength);
+  }
+
+  return id.join('');
+};
+
+var uid_1 = uid$1;
+
+var web = {exports: {}};
+
+var minilog$2 = {exports: {}};
+
+function M() {
+  this._events = {};
+}
+
+M.prototype = {
+  on: function on(ev, cb) {
+    this._events || (this._events = {});
+    var e = this._events;
+    (e[ev] || (e[ev] = [])).push(cb);
+    return this;
+  },
+  removeListener: function removeListener(ev, cb) {
+    var e = this._events[ev] || [],
+        i;
+
+    for (i = e.length - 1; i >= 0 && e[i]; i--) {
+      if (e[i] === cb || e[i].cb === cb) {
+        e.splice(i, 1);
+      }
+    }
+  },
+  removeAllListeners: function removeAllListeners(ev) {
+    if (!ev) {
+      this._events = {};
+    } else {
+      this._events[ev] && (this._events[ev] = []);
+    }
+  },
+  listeners: function listeners(ev) {
+    return this._events ? this._events[ev] || [] : [];
+  },
+  emit: function emit(ev) {
+    this._events || (this._events = {});
+    var args = Array.prototype.slice.call(arguments, 1),
+        i,
+        e = this._events[ev] || [];
+
+    for (i = e.length - 1; i >= 0 && e[i]; i--) {
+      e[i].apply(this, args);
+    }
+
+    return this;
+  },
+  when: function when(ev, cb) {
+    return this.once(ev, cb, true);
+  },
+  once: function once(ev, cb, when) {
+    if (!cb) return this;
+
+    function c() {
+      if (!when) this.removeListener(ev, c);
+      if (cb.apply(this, arguments) && when) this.removeListener(ev, c);
+    }
+
+    c.cb = cb;
+    this.on(ev, c);
+    return this;
+  }
+};
+
+M.mixin = function (dest) {
+  var o = M.prototype,
+      k;
+
+  for (k in o) {
+    o.hasOwnProperty(k) && (dest.prototype[k] = o[k]);
+  }
+};
+
+var microee$1 = M;
+
+var microee = microee$1; // Implements a subset of Node's stream.Transform - in a cross-platform manner.
+
+function Transform$7() {}
+
+microee.mixin(Transform$7); // The write() signature is different from Node's
+// --> makes it much easier to work with objects in logs.
+// One of the lessons from v1 was that it's better to target
+// a good browser rather than the lowest common denominator
+// internally.
+// If you want to use external streams, pipe() to ./stringify.js first.
+
+Transform$7.prototype.write = function (name, level, args) {
+  this.emit('item', name, level, args);
+};
+
+Transform$7.prototype.end = function () {
+  this.emit('end');
+  this.removeAllListeners();
+};
+
+Transform$7.prototype.pipe = function (dest) {
+  var s = this; // prevent double piping
+
+  s.emit('unpipe', dest); // tell the dest that it's being piped to
+
+  dest.emit('pipe', s);
+
+  function onItem() {
+    dest.write.apply(dest, Array.prototype.slice.call(arguments));
+  }
+
+  function onEnd() {
+    !dest._isStdio && dest.end();
+  }
+
+  s.on('item', onItem);
+  s.on('end', onEnd);
+  s.when('unpipe', function (from) {
+    var match = from === dest || typeof from == 'undefined';
+
+    if (match) {
+      s.removeListener('item', onItem);
+      s.removeListener('end', onEnd);
+      dest.emit('unpipe');
+    }
+
+    return match;
+  });
+  return dest;
+};
+
+Transform$7.prototype.unpipe = function (from) {
+  this.emit('unpipe', from);
+  return this;
+};
+
+Transform$7.prototype.format = function (dest) {
+  throw new Error(['Warning: .format() is deprecated in Minilog v2! Use .pipe() instead. For example:', 'var Minilog = require(\'minilog\');', 'Minilog', '  .pipe(Minilog.backends.console.formatClean)', '  .pipe(Minilog.backends.console);'].join('\n'));
+};
+
+Transform$7.mixin = function (dest) {
+  var o = Transform$7.prototype,
+      k;
+
+  for (k in o) {
+    o.hasOwnProperty(k) && (dest.prototype[k] = o[k]);
+  }
+};
+
+var transform = Transform$7;
+
+var Transform$6 = transform;
+var levelMap = {
+  debug: 1,
+  info: 2,
+  warn: 3,
+  error: 4
+};
+
+function Filter() {
+  this.enabled = true;
+  this.defaultResult = true;
+  this.clear();
+}
+
+Transform$6.mixin(Filter); // allow all matching, with level >= given level
+
+Filter.prototype.allow = function (name, level) {
+  this._white.push({
+    n: name,
+    l: levelMap[level]
+  });
+
+  return this;
+}; // deny all matching, with level <= given level
+
+
+Filter.prototype.deny = function (name, level) {
+  this._black.push({
+    n: name,
+    l: levelMap[level]
+  });
+
+  return this;
+};
+
+Filter.prototype.clear = function () {
+  this._white = [];
+  this._black = [];
+  return this;
+};
+
+function test(rule, name) {
+  // use .test for RegExps
+  return rule.n.test ? rule.n.test(name) : rule.n == name;
+}
+
+Filter.prototype.test = function (name, level) {
+  var i,
+      len = Math.max(this._white.length, this._black.length);
+
+  for (i = 0; i < len; i++) {
+    if (this._white[i] && test(this._white[i], name) && levelMap[level] >= this._white[i].l) {
+      return true;
+    }
+
+    if (this._black[i] && test(this._black[i], name) && levelMap[level] <= this._black[i].l) {
+      return false;
+    }
+  }
+
+  return this.defaultResult;
+};
+
+Filter.prototype.write = function (name, level, args) {
+  if (!this.enabled || this.test(name, level)) {
+    return this.emit('item', name, level, args);
+  }
+};
+
+var filter = Filter;
+
+(function (module, exports) {
+  var Transform = transform,
+      Filter = filter;
+  var log = new Transform(),
+      slice = Array.prototype.slice;
+
+  exports = module.exports = function create(name) {
+    var o = function o() {
+      log.write(name, undefined, slice.call(arguments));
+      return o;
+    };
+
+    o.debug = function () {
+      log.write(name, 'debug', slice.call(arguments));
+      return o;
+    };
+
+    o.info = function () {
+      log.write(name, 'info', slice.call(arguments));
+      return o;
+    };
+
+    o.warn = function () {
+      log.write(name, 'warn', slice.call(arguments));
+      return o;
+    };
+
+    o.error = function () {
+      log.write(name, 'error', slice.call(arguments));
+      return o;
+    };
+
+    o.log = o.debug; // for interface compliance with Node and browser consoles
+
+    o.suggest = exports.suggest;
+    o.format = log.format;
+    return o;
+  }; // filled in separately
+
+
+  exports.defaultBackend = exports.defaultFormatter = null;
+
+  exports.pipe = function (dest) {
+    return log.pipe(dest);
+  };
+
+  exports.end = exports.unpipe = exports.disable = function (from) {
+    return log.unpipe(from);
+  };
+
+  exports.Transform = Transform;
+  exports.Filter = Filter; // this is the default filter that's applied when .enable() is called normally
+  // you can bypass it completely and set up your own pipes
+
+  exports.suggest = new Filter();
+
+  exports.enable = function () {
+    if (exports.defaultFormatter) {
+      return log.pipe(exports.suggest) // filter
+      .pipe(exports.defaultFormatter) // formatter
+      .pipe(exports.defaultBackend); // backend
+    }
+
+    return log.pipe(exports.suggest) // filter
+    .pipe(exports.defaultBackend); // formatter
+  };
+})(minilog$2, minilog$2.exports);
+
+var hex = {
+  black: '#000',
+  red: '#c23621',
+  green: '#25bc26',
+  yellow: '#bbbb00',
+  blue: '#492ee1',
+  magenta: '#d338d3',
+  cyan: '#33bbc8',
+  gray: '#808080',
+  purple: '#708'
+};
+
+function color$2(fg, isInverse) {
+  if (isInverse) {
+    return 'color: #fff; background: ' + hex[fg] + ';';
+  } else {
+    return 'color: ' + hex[fg] + ';';
+  }
+}
+
+var util = color$2;
+
+var Transform$5 = transform,
+    color$1 = util;
+var colors$1 = {
+  debug: ['cyan'],
+  info: ['purple'],
+  warn: ['yellow', true],
+  error: ['red', true]
+},
+    logger$4 = new Transform$5();
+
+logger$4.write = function (name, level, args) {
+  var fn = console.log;
+
+  if (console[level] && console[level].apply) {
+    fn = console[level];
+    fn.apply(console, ['%c' + name + ' %c' + level, color$1('gray'), color$1.apply(color$1, colors$1[level])].concat(args));
+  }
+}; // NOP, because piping the formatted logs can only cause trouble.
+
+
+logger$4.pipe = function () {};
+
+var color_1 = logger$4;
+
+var Transform$4 = transform,
+    color = util,
+    colors = {
+  debug: ['gray'],
+  info: ['purple'],
+  warn: ['yellow', true],
+  error: ['red', true]
+},
+    logger$3 = new Transform$4();
+
+logger$3.write = function (name, level, args) {
+  var fn = console.log;
+
+  if (level != 'debug' && console[level]) {
+    fn = console[level];
+  }
+
+  var i = 0;
+
+  if (level != 'info') {
+    for (; i < args.length; i++) {
+      if (typeof args[i] != 'string') break;
+    }
+
+    fn.apply(console, ['%c' + name + ' ' + args.slice(0, i).join(' '), color.apply(color, colors[level])].concat(args.slice(i)));
+  } else {
+    fn.apply(console, ['%c' + name, color.apply(color, colors[level])].concat(args));
+  }
+}; // NOP, because piping the formatted logs can only cause trouble.
+
+
+logger$3.pipe = function () {};
+
+var minilog$1 = logger$3;
+
+var Transform$3 = transform;
+var newlines = /\n+$/,
+    logger$2 = new Transform$3();
+
+logger$2.write = function (name, level, args) {
+  var i = args.length - 1;
+
+  if (typeof console === 'undefined' || !console.log) {
+    return;
+  }
+
+  if (console.log.apply) {
+    return console.log.apply(console, [name, level].concat(args));
+  } else if (JSON && JSON.stringify) {
+    // console.log.apply is undefined in IE8 and IE9
+    // for IE8/9: make console.log at least a bit less awful
+    if (args[i] && typeof args[i] == 'string') {
+      args[i] = args[i].replace(newlines, '');
+    }
+
+    try {
+      for (i = 0; i < args.length; i++) {
+        args[i] = JSON.stringify(args[i]);
+      }
+    } catch (e) {}
+
+    console.log(args.join(' '));
+  }
+};
+
+logger$2.formatters = ['color', 'minilog'];
+logger$2.color = color_1;
+logger$2.minilog = minilog$1;
+var console_1 = logger$2;
+
+var Transform$2 = transform,
+    cache$1 = [];
+var logger$1 = new Transform$2();
+
+logger$1.write = function (name, level, args) {
+  cache$1.push([name, level, args]);
+}; // utility functions
+
+
+logger$1.get = function () {
+  return cache$1;
+};
+
+logger$1.empty = function () {
+  cache$1 = [];
+};
+
+var array = logger$1;
+
+var Transform$1 = transform,
+    cache = false;
+var logger = new Transform$1();
+
+logger.write = function (name, level, args) {
+  if (typeof window == 'undefined' || typeof JSON == 'undefined' || !JSON.stringify || !JSON.parse) return;
+
+  try {
+    if (!cache) {
+      cache = window.localStorage.minilog ? JSON.parse(window.localStorage.minilog) : [];
+    }
+
+    cache.push([new Date().toString(), name, level, args]);
+    window.localStorage.minilog = JSON.stringify(cache);
+  } catch (e) {}
+};
+
+var localstorage = logger;
+
+var Transform = transform;
+var cid = new Date().valueOf().toString(36);
+
+function AjaxLogger(options) {
+  this.url = options.url || '';
+  this.cache = [];
+  this.timer = null;
+  this.interval = options.interval || 30 * 1000;
+  this.enabled = true;
+  this.jQuery = window.jQuery;
+  this.extras = {};
+}
+
+Transform.mixin(AjaxLogger);
+
+AjaxLogger.prototype.write = function (name, level, args) {
+  if (!this.timer) {
+    this.init();
+  }
+
+  this.cache.push([name, level].concat(args));
+};
+
+AjaxLogger.prototype.init = function () {
+  if (!this.enabled || !this.jQuery) return;
+  var self = this;
+  this.timer = setTimeout(function () {
+    var i,
+        logs = [],
+        ajaxData,
+        url = self.url;
+    if (self.cache.length == 0) return self.init(); // Test each log line and only log the ones that are valid (e.g. don't have circular references).
+    // Slight performance hit but benefit is we log all valid lines.
+
+    for (i = 0; i < self.cache.length; i++) {
+      try {
+        JSON.stringify(self.cache[i]);
+        logs.push(self.cache[i]);
+      } catch (e) {}
+    }
+
+    if (self.jQuery.isEmptyObject(self.extras)) {
+      ajaxData = JSON.stringify({
+        logs: logs
+      });
+      url = self.url + '?client_id=' + cid;
+    } else {
+      ajaxData = JSON.stringify(self.jQuery.extend({
+        logs: logs
+      }, self.extras));
+    }
+
+    self.jQuery.ajax(url, {
+      type: 'POST',
+      cache: false,
+      processData: false,
+      data: ajaxData,
+      contentType: 'application/json',
+      timeout: 10000
+    }).success(function (data, status, jqxhr) {
+      if (data.interval) {
+        self.interval = Math.max(1000, data.interval);
+      }
+    }).error(function () {
+      self.interval = 30000;
+    }).always(function () {
+      self.init();
+    });
+    self.cache = [];
+  }, this.interval);
+};
+
+AjaxLogger.prototype.end = function () {}; // wait until jQuery is defined. Useful if you don't control the load order.
+
+
+AjaxLogger.jQueryWait = function (onDone) {
+  if (typeof window !== 'undefined' && (window.jQuery || window.$)) {
+    return onDone(window.jQuery || window.$);
+  } else if (typeof window !== 'undefined') {
+    setTimeout(function () {
+      AjaxLogger.jQueryWait(onDone);
+    }, 200);
+  }
+};
+
+var jquery_simple = AjaxLogger;
+
+(function (module, exports) {
+  var Minilog = minilog$2.exports;
+  var oldEnable = Minilog.enable,
+      oldDisable = Minilog.disable,
+      isChrome = typeof navigator != 'undefined' && /chrome/i.test(navigator.userAgent),
+      console = console_1; // Use a more capable logging backend if on Chrome
+
+  Minilog.defaultBackend = isChrome ? console.minilog : console; // apply enable inputs from localStorage and from the URL
+
+  if (typeof window != 'undefined') {
+    try {
+      Minilog.enable(JSON.parse(window.localStorage['minilogSettings']));
+    } catch (e) {}
+
+    if (window.location && window.location.search) {
+      var match = RegExp('[?&]minilog=([^&]*)').exec(window.location.search);
+      match && Minilog.enable(decodeURIComponent(match[1]));
+    }
+  } // Make enable also add to localStorage
+
+
+  Minilog.enable = function () {
+    oldEnable.call(Minilog, true);
+
+    try {
+      window.localStorage['minilogSettings'] = JSON.stringify(true);
+    } catch (e) {}
+
+    return this;
+  };
+
+  Minilog.disable = function () {
+    oldDisable.call(Minilog);
+
+    try {
+      delete window.localStorage.minilogSettings;
+    } catch (e) {}
+
+    return this;
+  };
+
+  exports = module.exports = Minilog;
+  exports.backends = {
+    array: array,
+    browser: Minilog.defaultBackend,
+    localStorage: localstorage,
+    jQuery: jquery_simple
+  };
+})(web, web.exports);
+
+var minilog = web.exports;
+minilog.enable();
+var log$1 = minilog('vm');
+
+var log = log$1;
+/**
+ * Escape a string to be safe to use in XML content.
+ * CC-BY-SA: hgoebl
+ * https://stackoverflow.com/questions/7918868/
+ * how-to-escape-xml-entities-in-javascript
+ * @param {!string | !Array.<string>} unsafe Unsafe string.
+ * @return {string} XML-escaped string, for use within an XML tag.
+ */
+
+var xmlEscape$1 = function xmlEscape(unsafe) {
+  if (typeof unsafe !== 'string') {
+    if (Array.isArray(unsafe)) {
+      // This happens when we have hacked blocks from 2.0
+      // See #1030
+      unsafe = String(unsafe);
+    } else {
+      log.error('Unexpected input recieved in replaceUnsafeChars');
+      return unsafe;
+    }
+  }
+
+  return unsafe.replace(/[<>&'"]/g, function (c) {
+    switch (c) {
+      case '<':
+        return '&lt;';
+
+      case '>':
+        return '&gt;';
+
+      case '&':
+        return '&amp;';
+
+      case '\'':
+        return '&apos;';
+
+      case '"':
+        return '&quot;';
+    }
+  });
+};
+
+var xmlEscape_1 = xmlEscape$1;
+
+var uid = uid_1;
+var xmlEscape = xmlEscape_1;
+
+var Variable = /*#__PURE__*/function () {
+  /**
+   * @param {string} id Id of the variable.
+   * @param {string} name Name of the variable.
+   * @param {string} type Type of the variable, one of '' or 'list'
+   * @param {boolean} isCloud Whether the variable is stored in the cloud.
+   * @constructor
+   */
+  function Variable(id, name, type, isCloud) {
+    _classCallCheck(this, Variable);
+
+    this.id = id || uid();
+    this.name = name;
+    this.type = type;
+    this.isCloud = isCloud;
+
+    switch (this.type) {
+      case Variable.SCALAR_TYPE:
+        this.value = 0;
+        break;
+
+      case Variable.LIST_TYPE:
+        this.value = [];
+        break;
+
+      case Variable.BROADCAST_MESSAGE_TYPE:
+        this.value = this.name;
+        break;
+
+      default:
+        throw new Error("Invalid variable type: ".concat(this.type));
+    }
+  }
+
+  _createClass(Variable, [{
+    key: "toXML",
+    value: function toXML(isLocal) {
+      isLocal = isLocal === true;
+      return "<variable type=\"".concat(this.type, "\" id=\"").concat(this.id, "\" islocal=\"").concat(isLocal, "\" iscloud=\"").concat(this.isCloud, "\">").concat(xmlEscape(this.name), "</variable>");
+    }
+    /**
+     * Type representation for scalar variables.
+     * This is currently represented as ''
+     * for compatibility with blockly.
+     * @const {string}
+     */
+
+  }], [{
+    key: "SCALAR_TYPE",
+    get: function get() {
+      return '';
+    }
+    /**
+     * Type representation for list variables.
+     * @const {string}
+     */
+
+  }, {
+    key: "LIST_TYPE",
+    get: function get() {
+      return 'list';
+    }
+    /**
+     * Type representation for list variables.
+     * @const {string}
+     */
+
+  }, {
+    key: "BROADCAST_MESSAGE_TYPE",
+    get: function get() {
+      return 'broadcast_msg';
+    }
+  }]);
+
+  return Variable;
+}();
+
+var variable = Variable;
+
 /**
  * Formatter which is used for translation.
  * This will be replaced which is used in the runtime.
  * @param {object} messageData - format-message object
  * @returns {string} - message for the locale
  */
-
 
 var formatMessage = function formatMessage(messageData) {
   return messageData.defaultMessage;
@@ -6154,7 +6889,7 @@ var ExtensionBlocks = /*#__PURE__*/function () {
             VAL: {
               type: argumentType.STRING,
               fieldName: 'VARIABLE',
-              variableType: Variable.SCALAR_TYPE,
+              variableType: variable.SCALAR_TYPE,
               menu: 'valMenu'
             }
           }
@@ -6267,7 +7002,7 @@ var ExtensionBlocks = /*#__PURE__*/function () {
   }, {
     key: "getDynamicMenuItems",
     value: function getDynamicMenuItems() {
-      return this.runtime.getEditingTarget().getAllVariableNamesInScopeByType(Variable.SCALAR_TYPE);
+      return this.runtime.getEditingTarget().getAllVariableNamesInScopeByType(variable.SCALAR_TYPE);
     }
   }], [{
     key: "EXTENSION_NAME",
