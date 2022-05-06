@@ -938,20 +938,30 @@ function hexString(textStr) {
 }
 
 
+/*
+//機能拡張上では動作せず（025_）
 const encryptSha256 = (str) => {
     const hash = crypto.createHash('sha256');
     hash.update(str);
     return hash.digest('hex')
 }
-
-/*
-const encryptSha256 = (str) => {
-    const hash = SHA256(str);
-    return hexString(hash.toString())
-//    return hash.toString()
-}
 */
 
+
+//hexStringとの組合せ
+const encryptSha256 = (str) => {
+    const hash = SHA256(str);
+    return hexString(hash)
+}
+
+
+/*
+// もともと
+const encryptSha256 = (str) => {
+    const hash = SHA256(str);
+    return hash.toString()
+}
+*/
 
 
 // Firebase関連
