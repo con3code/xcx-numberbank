@@ -5,6 +5,8 @@ import blockIcon from './numberbank_icon.png';
 import { initializeApp } from 'firebase/app';
 import { getFirestore, collection } from 'firebase/firestore/lite';
 import crypto from 'crypto';
+ 
+const Variable = require('../../engine/variable');
 
 /**
  * Formatter which is used for translation.

@@ -5625,12 +5625,14 @@ registerVersion("firestore-lite", "3.4.8", ""), registerVersion("firestore-lite"
 
 var crypto = {};
 
+var Variable = require('../../engine/variable');
 /**
  * Formatter which is used for translation.
  * This will be replaced which is used in the runtime.
  * @param {object} messageData - format-message object
  * @returns {string} - message for the locale
  */
+
 
 var formatMessage = function formatMessage(messageData) {
   return messageData.defaultMessage;
