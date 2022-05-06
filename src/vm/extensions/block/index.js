@@ -3,8 +3,9 @@ import ArgumentType from '../../extension-support/argument-type';
 import translations from './translations.json';
 import blockIcon from './numberbank_icon.png';
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection } from 'firebase/firestore/lite';
-import firebase from "firebase/compat/app";
+import { getFirestore } from 'firebase/firestore/lite';
+// import firebase from "firebase/compat/app";
+// import 'firebase/compat/firestore';
 import SHA256 from "crypto-js/sha256";
 import Variable from '../../engine/variable';
 
@@ -575,19 +576,24 @@ class ExtensionBlocks {
                 inoutFlag = true;
                 // Initialize Firebase
 
+                fbApp = initializeApp(cloudConfig_mkey);
+                db = getFirestore(fbApp);
+
+                /*
                 try {
                     fbApp = initializeApp(cloudConfig_mkey);
                     db = getFirestore(fbApp);
-                    // fnc = getFunctions();
                 } catch (e) {
                     // v8
-                    firebase.initializeApp(cloudConfig_mkey);
-                    db = firebase.firestore();
-                    // fnc = getFunctions();
+                    firebase.default.initializeApp(cloudConfig_mkey);
+                    db = firebase.default.firestore();
+//                    firebase.initializeApp(cloudConfig_mkey);
+//                    db = firebase.firestore();
                 }
+                */
 
-                bankDb = collection(db, 'bank');
-                cardDb = collection(db, 'card');
+                // bankDb = collection(db, 'bank');
+                // cardDb = collection(db, 'card');
 
                 // console.log('fb_db_cpmplete');
 
@@ -886,11 +892,12 @@ const encryptSha256 = (str) => {
 }
 
 
+// Firebase関連
+var fbApp;
+var db;
 
 
 // Variables
-let bankDb;
-let cardDb;
 let masterKey = '';
 let bankName = '';
 let bankKey = '';
