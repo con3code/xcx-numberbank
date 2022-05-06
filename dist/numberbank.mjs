@@ -67,6 +67,41 @@ var entry = {
   translationMap: translations$1
 };
 
+function _arrayLikeToArray$3(arr, len) {
+  if (len == null || len > arr.length) len = arr.length;
+
+  for (var i = 0, arr2 = new Array(len); i < len; i++) {
+    arr2[i] = arr[i];
+  }
+
+  return arr2;
+}
+
+function _arrayWithoutHoles(arr) {
+  if (Array.isArray(arr)) return _arrayLikeToArray$3(arr);
+}
+
+function _iterableToArray(iter) {
+  if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter);
+}
+
+function _unsupportedIterableToArray$3(o, minLen) {
+  if (!o) return;
+  if (typeof o === "string") return _arrayLikeToArray$3(o, minLen);
+  var n = Object.prototype.toString.call(o).slice(8, -1);
+  if (n === "Object" && o.constructor) n = o.constructor.name;
+  if (n === "Map" || n === "Set") return Array.from(o);
+  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray$3(o, minLen);
+}
+
+function _nonIterableSpread() {
+  throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+}
+
+function _toConsumableArray(arr) {
+  return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray$3(arr) || _nonIterableSpread();
+}
+
 function _classCallCheck(instance, Constructor) {
   if (!(instance instanceof Constructor)) {
     throw new TypeError("Cannot call a class as a function");
@@ -234,41 +269,6 @@ var translations = {
 };
 
 var img = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAEs2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNS41LjAiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIgogICAgeG1sbnM6ZXhpZj0iaHR0cDovL25zLmFkb2JlLmNvbS9leGlmLzEuMC8iCiAgICB4bWxuczp0aWZmPSJodHRwOi8vbnMuYWRvYmUuY29tL3RpZmYvMS4wLyIKICAgIHhtbG5zOnBob3Rvc2hvcD0iaHR0cDovL25zLmFkb2JlLmNvbS9waG90b3Nob3AvMS4wLyIKICAgIHhtbG5zOnhtcD0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wLyIKICAgIHhtbG5zOnhtcE1NPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvbW0vIgogICAgeG1sbnM6c3RFdnQ9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZUV2ZW50IyIKICAgZXhpZjpQaXhlbFhEaW1lbnNpb249IjQwIgogICBleGlmOlBpeGVsWURpbWVuc2lvbj0iNDAiCiAgIGV4aWY6Q29sb3JTcGFjZT0iMSIKICAgdGlmZjpJbWFnZVdpZHRoPSI0MCIKICAgdGlmZjpJbWFnZUxlbmd0aD0iNDAiCiAgIHRpZmY6UmVzb2x1dGlvblVuaXQ9IjIiCiAgIHRpZmY6WFJlc29sdXRpb249IjcyLzEiCiAgIHRpZmY6WVJlc29sdXRpb249IjcyLzEiCiAgIHBob3Rvc2hvcDpDb2xvck1vZGU9IjMiCiAgIHBob3Rvc2hvcDpJQ0NQcm9maWxlPSJzUkdCIElFQzYxOTY2LTIuMSIKICAgeG1wOk1vZGlmeURhdGU9IjIwMjItMDUt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";
-
-function _arrayLikeToArray$3(arr, len) {
-  if (len == null || len > arr.length) len = arr.length;
-
-  for (var i = 0, arr2 = new Array(len); i < len; i++) {
-    arr2[i] = arr[i];
-  }
-
-  return arr2;
-}
-
-function _arrayWithoutHoles(arr) {
-  if (Array.isArray(arr)) return _arrayLikeToArray$3(arr);
-}
-
-function _iterableToArray(iter) {
-  if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter);
-}
-
-function _unsupportedIterableToArray$3(o, minLen) {
-  if (!o) return;
-  if (typeof o === "string") return _arrayLikeToArray$3(o, minLen);
-  var n = Object.prototype.toString.call(o).slice(8, -1);
-  if (n === "Object" && o.constructor) n = o.constructor.name;
-  if (n === "Map" || n === "Set") return Array.from(o);
-  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray$3(o, minLen);
-}
-
-function _nonIterableSpread() {
-  throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-}
-
-function _toConsumableArray(arr) {
-  return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray$3(arr) || _nonIterableSpread();
-}
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
   try {
@@ -11882,7 +11882,15 @@ function availableWaiter(msec) {
 
 var encryptSha256 = function encryptSha256(str) {
   var hash = SHA256(str);
-  return hash.toString();
+  var byteArray = new Uint8Array(hash);
+
+  var hexCodes = _toConsumableArray(byteArray).map(function (value) {
+    var hexCode = value.toString(16);
+    var paddedHexCode = hexCode.padStart(2, '0');
+    return paddedHexCode;
+  });
+
+  return hexCodes.join('');
 }; // Firebase関連
 
 
