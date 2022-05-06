@@ -10121,10 +10121,9 @@ var Variable = /*#__PURE__*/function () {
 
 var variable = Variable;
 
-var crypto = {};
-
+// import SHA256 from "crypto-js/sha256";
 // const { Crypto } = import ("@peculiar/webcrypto");
-// import Crypto from "@peculiar/webcrypto";
+// import crypto from "@peculiar/webcrypto";
 // const crypto = new Crypto();
 
 /**

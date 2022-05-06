@@ -5,11 +5,11 @@ import blockIcon from './numberbank_icon.png';
 import { initializeApp } from 'firebase/app';
 import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore/lite';
 import Variable from '../../engine/variable';
-import crypto from 'crypto';
+// import crypto from 'crypto';
 // import SHA256 from "crypto-js/sha256";
 
 // const { Crypto } = import ("@peculiar/webcrypto");
-// import Crypto from "@peculiar/webcrypto";
+// import crypto from "@peculiar/webcrypto";
 // const crypto = new Crypto();
 
 /**
