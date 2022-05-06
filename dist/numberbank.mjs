@@ -6765,27 +6765,18 @@ var ExtensionBlocks = /*#__PURE__*/function () {
         inoutFlag = true;
 
         if (response.ok) {
-          console.log(JSON.stringify(response.json()));
           return response.json();
         } else {
           throw new Error('Unexpected responce status ${response.status} or content type');
         }
       }).then(function (resBody) {
-        cloudConfig_mkey.masterKey = resBody.masterKey;
-        cloudConfig_mkey.apiKey = resBody.apiKey;
-        cloudConfig_mkey.authDomain = resBody.authDomain;
-        cloudConfig_mkey.projectId = resBody.projectId;
-        cloudConfig_mkey.storageBucket = resBody.storageBucket;
-        cloudConfig_mkey.messagingSenderId = resBody.messagingSenderId;
-        cloudConfig_mkey.appId = resBody.appId;
-        cloudConfig_mkey.measurementId = resBody.measurementId;
         interval.MsPut = resBody.intervalMsPut;
         interval.MsSet = resBody.intervalMsSet;
         interval.MsGet = resBody.intervalMsGet;
         interval.MsRep = resBody.intervalMsRep;
-        interval.MsAvl = resBody.intervalMsAvl;
-        console.log('cloudConfig_mkey:', cloudConfig_mkey);
-        console.log('interval:', interval);
+        interval.MsAvl = resBody.intervalMsAvl; // console.log('cloudConfig_mkey:', cloudConfig_mkey);
+        // console.log('interval:', interval);
+
         inoutFlag = false;
         return ioWaiter(1);
       }).then(function () {
@@ -7136,21 +7127,5 @@ var cloudConfig_mkb = {
   SessionToken: '',
   Expiration: ''
 }; // mKey格納用
-
-var cloudConfig_mkey = {
-  cloudType: '',
-  apiKey: '',
-  authDomain: '',
-  projectId: '',
-  storageBucket: '',
-  messagingSenderId: '',
-  appId: '',
-  measurementId: '',
-  Version: '',
-  AccessKeyId: '',
-  SecretAccessKey: '',
-  SessionToken: '',
-  Expiration: ''
-};
 
 export { ExtensionBlocks as blockClass, entry };

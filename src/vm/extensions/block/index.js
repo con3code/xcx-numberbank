@@ -538,7 +538,6 @@ class ExtensionBlocks {
                 inoutFlag = true;
 
                 if (response.ok) {
-                    console.log(JSON.stringify(response.json()));
                     return response.json();
                 } else {
                     throw new Error('Unexpected responce status ${response.status} or content type');
@@ -560,8 +559,8 @@ class ExtensionBlocks {
                 interval.MsRep = resBody.intervalMsRep;
                 interval.MsAvl = resBody.intervalMsAvl;
 
-                console.log('cloudConfig_mkey:', cloudConfig_mkey);
-                console.log('interval:', interval);
+                // console.log('cloudConfig_mkey:', cloudConfig_mkey);
+                // console.log('interval:', interval);
 
 
                 inoutFlag = false;
