@@ -235,7 +235,7 @@ var translations = {
 
 var img = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAEs2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNS41LjAiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIgogICAgeG1sbnM6ZXhpZj0iaHR0cDovL25zLmFkb2JlLmNvbS9leGlmLzEuMC8iCiAgICB4bWxuczp0aWZmPSJodHRwOi8vbnMuYWRvYmUuY29tL3RpZmYvMS4wLyIKICAgIHhtbG5zOnBob3Rvc2hvcD0iaHR0cDovL25zLmFkb2JlLmNvbS9waG90b3Nob3AvMS4wLyIKICAgIHhtbG5zOnhtcD0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wLyIKICAgIHhtbG5zOnhtcE1NPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvbW0vIgogICAgeG1sbnM6c3RFdnQ9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZUV2ZW50IyIKICAgZXhpZjpQaXhlbFhEaW1lbnNpb249IjQwIgogICBleGlmOlBpeGVsWURpbWVuc2lvbj0iNDAiCiAgIGV4aWY6Q29sb3JTcGFjZT0iMSIKICAgdGlmZjpJbWFnZVdpZHRoPSI0MCIKICAgdGlmZjpJbWFnZUxlbmd0aD0iNDAiCiAgIHRpZmY6UmVzb2x1dGlvblVuaXQ9IjIiCiAgIHRpZmY6WFJlc29sdXRpb249IjcyLzEiCiAgIHRpZmY6WVJlc29sdXRpb249IjcyLzEiCiAgIHBob3Rvc2hvcDpDb2xvck1vZGU9IjMiCiAgIHBob3Rvc2hvcDpJQ0NQcm9maWxlPSJzUkdCIElFQzYxOTY2LTIuMSIKICAgeG1wOk1vZGlmeURhdGU9IjIwMjItMDUtMDVUMjI6MDA6MTgrMDk6MDAiCiAgIHhtcDpNZXRhZGF0YURhdGU9IjIwMjItMDUtMDVUMjI6MDA6MTgrMDk6MDAiPgogICA8eG1wTU06SGlzdG9yeT4KICAgIDxyZGY6U2VxPgogICAgIDxyZGY6bGkKICAgICAgc3RFdnQ6YWN0aW9uPSJwcm9kdWNlZCIKICAgICAgc3RFdnQ6c29mdHdhcmVBZ2VudD0iQWZmaW5pdHkgRGVzaWduZXIgMS4xMC41IgogICAgICBzdEV2dDp3aGVuPSIyMDIyLTA1LTA1VDIyOjAwOjE4KzA5OjAwIi8+CiAgICA8L3JkZjpTZXE+CiAgIDwveG1wTU06SGlzdG9yeT4KICA8L3JkZjpEZXNjcmlwdGlvbj4KIDwvcmRmOlJERj4KPC94OnhtcG1ldGE+Cjw/eHBhY2tldCBlbmQ9InIiPz6ySOccAAABgWlDQ1BzUkdCIElFQzYxOTY2LTIuMQAAKJF1kc8rRFEUxz8zyK8RxcLC4iWshvwokVJmEkqaxiiDzczzZkbNG6/33qTJVtlOUWLj14K/gK2yVopIyVLWxAY95xk1krm3e8/nfu85p3PPBW8krepWeTfoGdsMjwWU2eicUvlIhUwfQ1THVMsYCYUmKTnebvC49qrTzVXa799Ru6hZKniqhIdVw7SFx4UnV2zD5U3hJjUVWxQ+FvabUqDwtavHC/zkcrLAHy6bkXAQvA3CSvIXx3+xmjJ1YXk5bXo6q/7U477Ep2VmpsW2ymrBIswYARQmGCVIPz0Myt5PJ710yYkS8d3f8VMsS6wqu0EOkyWSpLDxi5qV7JrYhOiazDQ5t/9/+2ol+noL2X0BqHhwnJd2qNyAz7zjvO87zucBlN3DWaYYv7wHA6+i54ta2y7Ur8HJeVGLb8HpOjTfGTEz9i2VyfImEvB8BHVRaLyEmvlCz37uObyFyKp81QVs70CH+NcvfAE9zGfTItwtqQAAAAlwSFlzAAALEwAACxMBAJqcGAAAA4VJREFUWIXtl9FLHFcUxn/3bh1XBltXg2nX7LrEIIIKRoOOEFOJj8WSSvPgU/qQhyQvgZZ9amB9C4RCCYGQQDBFWpoH6V8QaAMhIC7UqqXgw5oou1KIGnDrCmMyfZiNuOvccZ2ZshT8YGHm3HO/882559x7F45xjGP8vyEU9hPAPWAE0IDXQBbIAVtAHdAENAIni88Z4ArwR5GjDvgeuASEgb+L8zeAN8AHxThR4GNAB/4CvgGeHyb8CWB5+P2+76NTHjnWDxMHdsa8kFvYWQf4zQfHHqRC4NtKvkKBGwFw7EEl8IkPzs+BFuAXj/Mz+19CCqenwBp2wf+AXeRnKgwgsRvpO2AZ+LPIcRb4yMH/FXZjpIFfgZvF+UfCRY5WQ1nsLt2P2wrflFtg1RKXI6ew/6OwR7GXej/WFL6u2apUoKmwp4FFxdj1svddhd87t8CVCnTDXYV9BGj3Sx6EwJ+w981yCOCaX/LyQvaCAvAQ+NZh7KtkMrmm63pucnIysbKycmTyIDJIX1/fz1JKy2EosrS0dAf4sbu7O+mF25dAIYRIpVJfj46Ovujq6nK8eKTTaT8h/C1xLBYbFEJcADAMg/n5+QM+2WyWXE61S0E4HA4nk0ldSnlZCPEZ0Iu9TYWA174yKKWsef8cjUaJx+OOfrOzs0qOoaGhW6FQaEUI8Rj4EjiNfXLVAJ8EUoPvYRiGo31xcZGdnR3HsVAopGPfKx0RqMCOjg4aGhoO2E3TZG5uzhNnpQLrnIymWXrASCnp7+93JFhfr+geegCVCuxwMm5ubmJZpbtLb28vtbW1nsQ4QdXFMewjLAa8BByLa3t7m6mpKYQQmKbJ8PAwbW1t9PT0MDMzE4hAVQYfAF8A57A765SKYHl5mUwmw+rqKtPT05imycDAAEKo/o8FI/C8F7JCocDGxgaNjY20t/u+JwBqgXmvhDU19tY4ODhYkb+maa7jBwROTEx82NnZ6XSuHorm5mYikQgAiUSCRCLhHlxKWltbXX2cmuT+2NhYSywWI5vNYlkWuq5TX1+PrutomoZpmhQKBfL5PFtbW+zu7hKJRDAMo6T2xsfHWVhYIJ/PI4RASrnXUJqmEY/HaWpqchVYUsmpVKpfCBFM+wWE8iW+WhUVLigRKIT4tFpCVCjPYKIaItwQ6GXhv0C5wJfVEOGGEoGWZT2rlhAVyjP4qCoqXPAvzS0P0I71Tf8AAAAASUVORK5CYII=";
 
-function _arrayLikeToArray$2(arr, len) {
+function _arrayLikeToArray$4(arr, len) {
   if (len == null || len > arr.length) len = arr.length;
 
   for (var i = 0, arr2 = new Array(len); i < len; i++) {
@@ -246,20 +246,20 @@ function _arrayLikeToArray$2(arr, len) {
 }
 
 function _arrayWithoutHoles(arr) {
-  if (Array.isArray(arr)) return _arrayLikeToArray$2(arr);
+  if (Array.isArray(arr)) return _arrayLikeToArray$4(arr);
 }
 
 function _iterableToArray(iter) {
   if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter);
 }
 
-function _unsupportedIterableToArray$2(o, minLen) {
+function _unsupportedIterableToArray$4(o, minLen) {
   if (!o) return;
-  if (typeof o === "string") return _arrayLikeToArray$2(o, minLen);
+  if (typeof o === "string") return _arrayLikeToArray$4(o, minLen);
   var n = Object.prototype.toString.call(o).slice(8, -1);
   if (n === "Object" && o.constructor) n = o.constructor.name;
   if (n === "Map" || n === "Set") return Array.from(o);
-  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray$2(o, minLen);
+  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray$4(o, minLen);
 }
 
 function _nonIterableSpread() {
@@ -267,7 +267,7 @@ function _nonIterableSpread() {
 }
 
 function _toConsumableArray(arr) {
-  return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray$2(arr) || _nonIterableSpread();
+  return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray$4(arr) || _nonIterableSpread();
 }
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
@@ -1093,7 +1093,7 @@ function _nonIterableRest() {
 }
 
 function _slicedToArray(arr, i) {
-  return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray$2(arr, i) || _nonIterableRest();
+  return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray$4(arr, i) || _nonIterableRest();
 }
 
 function _assertThisInitialized(self) {
@@ -1215,6 +1215,12 @@ function _wrapNativeSuper(Class) {
 
   return _wrapNativeSuper(Class);
 }
+
+function _createForOfIteratorHelper$3(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray$3(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
+
+function _unsupportedIterableToArray$3(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray$3(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray$3(o, minLen); }
+
+function _arrayLikeToArray$3(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 function _createSuper$1(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct$1(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 
@@ -1538,6 +1544,66 @@ var base64urlEncodeWithoutPadding = function base64urlEncodeWithoutPadding(str) 
   return base64Encode(str).replace(/\./g, '');
 };
 /**
+ * Copy properties from source to target (recursively allows extension
+ * of Objects and Arrays).  Scalar values in the target are over-written.
+ * If target is undefined, an object of the appropriate type will be created
+ * (and returned).
+ *
+ * We recursively copy all child properties of plain Objects in the source- so
+ * that namespace- like dictionaries are merged.
+ *
+ * Note that the target can be a function, in which case the properties in
+ * the source Object are copied onto it as static properties of the Function.
+ *
+ * Note: we don't merge __proto__ to prevent prototype pollution
+ */
+
+
+function deepExtend(target, source) {
+  if (!(source instanceof Object)) {
+    return source;
+  }
+
+  switch (source.constructor) {
+    case Date:
+      // Treat Dates like scalars; if the target date object had any child
+      // properties - they will be lost!
+      var dateValue = source;
+      return new Date(dateValue.getTime());
+
+    case Object:
+      if (target === undefined) {
+        target = {};
+      }
+
+      break;
+
+    case Array:
+      // Always copy the array source and overwrite the target.
+      target = [];
+      break;
+
+    default:
+      // Not a plain Object - treat it as a scalar.
+      return source;
+  }
+
+  for (var prop in source) {
+    // use isValidKey to guard against prototype pollution. See https://snyk.io/vuln/SNYK-JS-LODASH-450202
+    if (!source.hasOwnProperty(prop) || !isValidKey(prop)) {
+      continue;
+    }
+
+    target[prop] = deepExtend(target[prop], source[prop]);
+  }
+
+  return target;
+}
+
+function isValidKey(key) {
+  return key !== '__proto__';
+}
+/**
  * @license
  * Copyright 2017 Google LLC
  *
@@ -1608,6 +1674,14 @@ var Deferred = /*#__PURE__*/function () {
 
   return Deferred;
 }();
+/**
+ * Detect Browser Environment
+ */
+
+
+function isBrowser() {
+  return (typeof self === "undefined" ? "undefined" : _typeof(self)) === 'object' && self.self === self;
+}
 /**
  * This method checks if indexedDB is supported by current browser/service worker context
  * @return true if indexedDB is supported by current browser/service worker context
@@ -1789,6 +1863,27 @@ function replaceTemplate(template, data) {
 
 var PATTERN = /\{\$([^}]+)}/g;
 /**
+ * @license
+ * Copyright 2017 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+
+function contains(obj, key) {
+  return Object.prototype.hasOwnProperty.call(obj, key);
+}
+/**
  * Deep equal two objects. Support Arrays and Objects.
  */
 
@@ -1833,6 +1928,254 @@ function deepEqual(a, b) {
 
 function isObject(thing) {
   return thing !== null && _typeof(thing) === 'object';
+}
+/**
+ * Helper to make a Subscribe function (just like Promise helps make a
+ * Thenable).
+ *
+ * @param executor Function which can make calls to a single Observer
+ *     as a proxy.
+ * @param onNoObservers Callback when count of Observers goes to zero.
+ */
+
+
+function createSubscribe(executor, onNoObservers) {
+  var proxy = new ObserverProxy(executor, onNoObservers);
+  return proxy.subscribe.bind(proxy);
+}
+/**
+ * Implement fan-out for any number of Observers attached via a subscribe
+ * function.
+ */
+
+
+var ObserverProxy = /*#__PURE__*/function () {
+  /**
+   * @param executor Function which can make calls to a single Observer
+   *     as a proxy.
+   * @param onNoObservers Callback when count of Observers goes to zero.
+   */
+  function ObserverProxy(executor, onNoObservers) {
+    var _this4 = this;
+
+    _classCallCheck(this, ObserverProxy);
+
+    this.observers = [];
+    this.unsubscribes = [];
+    this.observerCount = 0; // Micro-task scheduling by calling task.then().
+
+    this.task = Promise.resolve();
+    this.finalized = false;
+    this.onNoObservers = onNoObservers; // Call the executor asynchronously so subscribers that are called
+    // synchronously after the creation of the subscribe function
+    // can still receive the very first value generated in the executor.
+
+    this.task.then(function () {
+      executor(_this4);
+    }).catch(function (e) {
+      _this4.error(e);
+    });
+  }
+
+  _createClass(ObserverProxy, [{
+    key: "next",
+    value: function next(value) {
+      this.forEachObserver(function (observer) {
+        observer.next(value);
+      });
+    }
+  }, {
+    key: "error",
+    value: function error(_error) {
+      this.forEachObserver(function (observer) {
+        observer.error(_error);
+      });
+      this.close(_error);
+    }
+  }, {
+    key: "complete",
+    value: function complete() {
+      this.forEachObserver(function (observer) {
+        observer.complete();
+      });
+      this.close();
+    }
+    /**
+     * Subscribe function that can be used to add an Observer to the fan-out list.
+     *
+     * - We require that no event is sent to a subscriber sychronously to their
+     *   call to subscribe().
+     */
+
+  }, {
+    key: "subscribe",
+    value: function subscribe(nextOrObserver, error, complete) {
+      var _this5 = this;
+
+      var observer;
+
+      if (nextOrObserver === undefined && error === undefined && complete === undefined) {
+        throw new Error('Missing Observer.');
+      } // Assemble an Observer object when passed as callback functions.
+
+
+      if (implementsAnyMethods(nextOrObserver, ['next', 'error', 'complete'])) {
+        observer = nextOrObserver;
+      } else {
+        observer = {
+          next: nextOrObserver,
+          error: error,
+          complete: complete
+        };
+      }
+
+      if (observer.next === undefined) {
+        observer.next = noop;
+      }
+
+      if (observer.error === undefined) {
+        observer.error = noop;
+      }
+
+      if (observer.complete === undefined) {
+        observer.complete = noop;
+      }
+
+      var unsub = this.unsubscribeOne.bind(this, this.observers.length); // Attempt to subscribe to a terminated Observable - we
+      // just respond to the Observer with the final error or complete
+      // event.
+
+      if (this.finalized) {
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        this.task.then(function () {
+          try {
+            if (_this5.finalError) {
+              observer.error(_this5.finalError);
+            } else {
+              observer.complete();
+            }
+          } catch (e) {// nothing
+          }
+
+          return;
+        });
+      }
+
+      this.observers.push(observer);
+      return unsub;
+    } // Unsubscribe is synchronous - we guarantee that no events are sent to
+    // any unsubscribed Observer.
+
+  }, {
+    key: "unsubscribeOne",
+    value: function unsubscribeOne(i) {
+      if (this.observers === undefined || this.observers[i] === undefined) {
+        return;
+      }
+
+      delete this.observers[i];
+      this.observerCount -= 1;
+
+      if (this.observerCount === 0 && this.onNoObservers !== undefined) {
+        this.onNoObservers(this);
+      }
+    }
+  }, {
+    key: "forEachObserver",
+    value: function forEachObserver(fn) {
+      if (this.finalized) {
+        // Already closed by previous event....just eat the additional values.
+        return;
+      } // Since sendOne calls asynchronously - there is no chance that
+      // this.observers will become undefined.
+
+
+      for (var i = 0; i < this.observers.length; i++) {
+        this.sendOne(i, fn);
+      }
+    } // Call the Observer via one of it's callback function. We are careful to
+    // confirm that the observe has not been unsubscribed since this asynchronous
+    // function had been queued.
+
+  }, {
+    key: "sendOne",
+    value: function sendOne(i, fn) {
+      var _this6 = this;
+
+      // Execute the callback asynchronously
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      this.task.then(function () {
+        if (_this6.observers !== undefined && _this6.observers[i] !== undefined) {
+          try {
+            fn(_this6.observers[i]);
+          } catch (e) {
+            // Ignore exceptions raised in Observers or missing methods of an
+            // Observer.
+            // Log error to console. b/31404806
+            if (typeof console !== 'undefined' && console.error) {
+              console.error(e);
+            }
+          }
+        }
+      });
+    }
+  }, {
+    key: "close",
+    value: function close(err) {
+      var _this7 = this;
+
+      if (this.finalized) {
+        return;
+      }
+
+      this.finalized = true;
+
+      if (err !== undefined) {
+        this.finalError = err;
+      } // Proxy is no longer needed - garbage collect references
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+
+
+      this.task.then(function () {
+        _this7.observers = undefined;
+        _this7.onNoObservers = undefined;
+      });
+    }
+  }]);
+
+  return ObserverProxy;
+}();
+/**
+ * Return true if the object passed in implements any of the named methods.
+ */
+
+
+function implementsAnyMethods(obj, methods) {
+  if (_typeof(obj) !== 'object' || obj === null) {
+    return false;
+  }
+
+  var _iterator = _createForOfIteratorHelper$3(methods),
+      _step;
+
+  try {
+    for (_iterator.s(); !(_step = _iterator.n()).done;) {
+      var method = _step.value;
+
+      if (method in obj && typeof obj[method] === 'function') {
+        return true;
+      }
+    }
+  } catch (err) {
+    _iterator.e(err);
+  } finally {
+    _iterator.f();
+  }
+
+  return false;
+}
+
+function noop() {// do nothing
 }
 /**
  * @license
@@ -2069,11 +2412,11 @@ function openDB(dbName, dbVersion, upgradeCallback) {
   });
 }
 
-function _createForOfIteratorHelper$1(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray$1(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
+function _createForOfIteratorHelper$2(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray$2(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
 
-function _unsupportedIterableToArray$1(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray$1(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray$1(o, minLen); }
+function _unsupportedIterableToArray$2(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray$2(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray$2(o, minLen); }
 
-function _arrayLikeToArray$1(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+function _arrayLikeToArray$2(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 /**
  * Component for service name T, e.g. `auth`, `auth-internal`
  */
@@ -2286,7 +2629,7 @@ var Provider = /*#__PURE__*/function () {
       // and all promises with resolve with it regardless of the identifier.
 
 
-      var _iterator = _createForOfIteratorHelper$1(this.instancesDeferred.entries()),
+      var _iterator = _createForOfIteratorHelper$2(this.instancesDeferred.entries()),
           _step;
 
       try {
@@ -2400,7 +2743,7 @@ var Provider = /*#__PURE__*/function () {
         options: options
       }); // resolve any pending promise waiting for the service instance
 
-      var _iterator2 = _createForOfIteratorHelper$1(this.instancesDeferred.entries()),
+      var _iterator2 = _createForOfIteratorHelper$2(this.instancesDeferred.entries()),
           _step2;
 
       try {
@@ -2465,7 +2808,7 @@ var Provider = /*#__PURE__*/function () {
         return;
       }
 
-      var _iterator3 = _createForOfIteratorHelper$1(callbacks),
+      var _iterator3 = _createForOfIteratorHelper$2(callbacks),
           _step3;
 
       try {
@@ -2648,6 +2991,34 @@ var ComponentContainer = /*#__PURE__*/function () {
 }();
 
 var _ConsoleMethod;
+
+function _createForOfIteratorHelper$1(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray$1(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
+
+function _unsupportedIterableToArray$1(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray$1(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray$1(o, minLen); }
+
+function _arrayLikeToArray$1(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+/**
+ * @license
+ * Copyright 2017 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * A container for all of the Logger instances
+ */
+var instances = [];
 /**
  * The JS SDK supports 5 log levels and also allows a user the ability to
  * silence the logs altogether.
@@ -2746,6 +3117,11 @@ var Logger = /*#__PURE__*/function () {
      */
 
     this._userLogHandler = null;
+    /**
+     * Capture the current instance for later use
+     */
+
+    instances.push(this);
   }
 
   _createClass(Logger, [{
@@ -2850,7 +3226,76 @@ var Logger = /*#__PURE__*/function () {
   return Logger;
 }();
 
-var _PLATFORM_LOG_STRING, _ERRORS;
+function setLogLevel$1(level) {
+  instances.forEach(function (inst) {
+    inst.setLogLevel(level);
+  });
+}
+
+function setUserLogHandler(logCallback, options) {
+  var _iterator = _createForOfIteratorHelper$1(instances),
+      _step;
+
+  try {
+    var _loop = function _loop() {
+      var instance = _step.value;
+      var customLogLevel = null;
+
+      if (options && options.level) {
+        customLogLevel = levelStringToEnum[options.level];
+      }
+
+      if (logCallback === null) {
+        instance.userLogHandler = null;
+      } else {
+        instance.userLogHandler = function (instance, level) {
+          for (var _len7 = arguments.length, args = new Array(_len7 > 2 ? _len7 - 2 : 0), _key7 = 2; _key7 < _len7; _key7++) {
+            args[_key7 - 2] = arguments[_key7];
+          }
+
+          var message = args.map(function (arg) {
+            if (arg == null) {
+              return null;
+            } else if (typeof arg === 'string') {
+              return arg;
+            } else if (typeof arg === 'number' || typeof arg === 'boolean') {
+              return arg.toString();
+            } else if (arg instanceof Error) {
+              return arg.message;
+            } else {
+              try {
+                return JSON.stringify(arg);
+              } catch (ignored) {
+                return null;
+              }
+            }
+          }).filter(function (arg) {
+            return arg;
+          }).join(' ');
+
+          if (level >= (customLogLevel !== null && customLogLevel !== void 0 ? customLogLevel : instance.logLevel)) {
+            logCallback({
+              level: LogLevel[level].toLowerCase(),
+              message: message,
+              args: args,
+              type: instance.name
+            });
+          }
+        };
+      }
+    };
+
+    for (_iterator.s(); !(_step = _iterator.n()).done;) {
+      _loop();
+    }
+  } catch (err) {
+    _iterator.e(err);
+  } finally {
+    _iterator.f();
+  }
+}
+
+var _PLATFORM_LOG_STRING, _ERRORS$1;
 
 function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
 
@@ -2922,7 +3367,7 @@ function isVersionServiceProvider(provider) {
 }
 
 var name$o = "@firebase/app";
-var version$1 = "0.7.22";
+var version$1$1 = "0.7.22";
 /**
  * @license
  * Copyright 2019 Google LLC
@@ -2940,7 +3385,7 @@ var version$1 = "0.7.22";
  * limitations under the License.
  */
 
-var logger$5 = new Logger('@firebase/app');
+var logger$6 = new Logger('@firebase/app');
 var name$n = "@firebase/app-compat";
 var name$m = "@firebase/analytics-compat";
 var name$l = "@firebase/analytics";
@@ -2962,10 +3407,10 @@ var name$6 = "@firebase/remote-config";
 var name$5 = "@firebase/remote-config-compat";
 var name$4 = "@firebase/storage";
 var name$3 = "@firebase/storage-compat";
-var name$2 = "@firebase/firestore";
-var name$1 = "@firebase/firestore-compat";
+var name$2$1 = "@firebase/firestore";
+var name$1$1 = "@firebase/firestore-compat";
 var name$p = "firebase";
-var version$2 = "9.7.0";
+var version$3 = "9.7.0";
 /**
  * @license
  * Copyright 2019 Google LLC
@@ -2990,7 +3435,7 @@ var version$2 = "9.7.0";
  */
 
 var DEFAULT_ENTRY_NAME = '[DEFAULT]';
-var PLATFORM_LOG_STRING = (_PLATFORM_LOG_STRING = {}, _defineProperty(_PLATFORM_LOG_STRING, name$o, 'fire-core'), _defineProperty(_PLATFORM_LOG_STRING, name$n, 'fire-core-compat'), _defineProperty(_PLATFORM_LOG_STRING, name$l, 'fire-analytics'), _defineProperty(_PLATFORM_LOG_STRING, name$m, 'fire-analytics-compat'), _defineProperty(_PLATFORM_LOG_STRING, name$j, 'fire-app-check'), _defineProperty(_PLATFORM_LOG_STRING, name$k, 'fire-app-check-compat'), _defineProperty(_PLATFORM_LOG_STRING, name$i, 'fire-auth'), _defineProperty(_PLATFORM_LOG_STRING, name$h, 'fire-auth-compat'), _defineProperty(_PLATFORM_LOG_STRING, name$g, 'fire-rtdb'), _defineProperty(_PLATFORM_LOG_STRING, name$f, 'fire-rtdb-compat'), _defineProperty(_PLATFORM_LOG_STRING, name$e, 'fire-fn'), _defineProperty(_PLATFORM_LOG_STRING, name$d, 'fire-fn-compat'), _defineProperty(_PLATFORM_LOG_STRING, name$c, 'fire-iid'), _defineProperty(_PLATFORM_LOG_STRING, name$b, 'fire-iid-compat'), _defineProperty(_PLATFORM_LOG_STRING, name$a, 'fire-fcm'), _defineProperty(_PLATFORM_LOG_STRING, name$9, 'fire-fcm-compat'), _defineProperty(_PLATFORM_LOG_STRING, name$8, 'fire-perf'), _defineProperty(_PLATFORM_LOG_STRING, name$7, 'fire-perf-compat'), _defineProperty(_PLATFORM_LOG_STRING, name$6, 'fire-rc'), _defineProperty(_PLATFORM_LOG_STRING, name$5, 'fire-rc-compat'), _defineProperty(_PLATFORM_LOG_STRING, name$4, 'fire-gcs'), _defineProperty(_PLATFORM_LOG_STRING, name$3, 'fire-gcs-compat'), _defineProperty(_PLATFORM_LOG_STRING, name$2, 'fire-fst'), _defineProperty(_PLATFORM_LOG_STRING, name$1, 'fire-fst-compat'), _defineProperty(_PLATFORM_LOG_STRING, 'fire-js', 'fire-js'), _defineProperty(_PLATFORM_LOG_STRING, name$p, 'fire-js-all'), _PLATFORM_LOG_STRING);
+var PLATFORM_LOG_STRING = (_PLATFORM_LOG_STRING = {}, _defineProperty(_PLATFORM_LOG_STRING, name$o, 'fire-core'), _defineProperty(_PLATFORM_LOG_STRING, name$n, 'fire-core-compat'), _defineProperty(_PLATFORM_LOG_STRING, name$l, 'fire-analytics'), _defineProperty(_PLATFORM_LOG_STRING, name$m, 'fire-analytics-compat'), _defineProperty(_PLATFORM_LOG_STRING, name$j, 'fire-app-check'), _defineProperty(_PLATFORM_LOG_STRING, name$k, 'fire-app-check-compat'), _defineProperty(_PLATFORM_LOG_STRING, name$i, 'fire-auth'), _defineProperty(_PLATFORM_LOG_STRING, name$h, 'fire-auth-compat'), _defineProperty(_PLATFORM_LOG_STRING, name$g, 'fire-rtdb'), _defineProperty(_PLATFORM_LOG_STRING, name$f, 'fire-rtdb-compat'), _defineProperty(_PLATFORM_LOG_STRING, name$e, 'fire-fn'), _defineProperty(_PLATFORM_LOG_STRING, name$d, 'fire-fn-compat'), _defineProperty(_PLATFORM_LOG_STRING, name$c, 'fire-iid'), _defineProperty(_PLATFORM_LOG_STRING, name$b, 'fire-iid-compat'), _defineProperty(_PLATFORM_LOG_STRING, name$a, 'fire-fcm'), _defineProperty(_PLATFORM_LOG_STRING, name$9, 'fire-fcm-compat'), _defineProperty(_PLATFORM_LOG_STRING, name$8, 'fire-perf'), _defineProperty(_PLATFORM_LOG_STRING, name$7, 'fire-perf-compat'), _defineProperty(_PLATFORM_LOG_STRING, name$6, 'fire-rc'), _defineProperty(_PLATFORM_LOG_STRING, name$5, 'fire-rc-compat'), _defineProperty(_PLATFORM_LOG_STRING, name$4, 'fire-gcs'), _defineProperty(_PLATFORM_LOG_STRING, name$3, 'fire-gcs-compat'), _defineProperty(_PLATFORM_LOG_STRING, name$2$1, 'fire-fst'), _defineProperty(_PLATFORM_LOG_STRING, name$1$1, 'fire-fst-compat'), _defineProperty(_PLATFORM_LOG_STRING, 'fire-js', 'fire-js'), _defineProperty(_PLATFORM_LOG_STRING, name$p, 'fire-js-all'), _PLATFORM_LOG_STRING);
 /**
  * @license
  * Copyright 2019 Google LLC
@@ -3033,8 +3478,17 @@ function _addComponent(app, component) {
   try {
     app.container.addComponent(component);
   } catch (e) {
-    logger$5.debug("Component ".concat(component.name, " failed to register with FirebaseApp ").concat(app.name), e);
+    logger$6.debug("Component ".concat(component.name, " failed to register with FirebaseApp ").concat(app.name), e);
   }
+}
+/**
+ *
+ * @internal
+ */
+
+
+function _addOrOverwriteComponent(app, component) {
+  app.container.addOrOverwriteComponent(component);
 }
 /**
  *
@@ -3049,7 +3503,7 @@ function _registerComponent(component) {
   var componentName = component.name;
 
   if (_components.has(componentName)) {
-    logger$5.debug("There were multiple attempts to register component ".concat(componentName, "."));
+    logger$6.debug("There were multiple attempts to register component ".concat(componentName, "."));
     return false;
   }
 
@@ -3096,45 +3550,30 @@ function _getProvider(app, name) {
   return app.container.getProvider(name);
 }
 /**
- * @license
- * Copyright 2019 Google LLC
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * @param app - FirebaseApp instance
+ * @param name - service name
+ * @param instanceIdentifier - service instance identifier in case the service supports multiple instances
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * @internal
  */
 
 
-var ERRORS = (_ERRORS = {}, _defineProperty(_ERRORS, "no-app"
-/* NO_APP */
-, "No Firebase App '{$appName}' has been created - " + 'call Firebase App.initializeApp()'), _defineProperty(_ERRORS, "bad-app-name"
-/* BAD_APP_NAME */
-, "Illegal App name: '{$appName}"), _defineProperty(_ERRORS, "duplicate-app"
-/* DUPLICATE_APP */
-, "Firebase App named '{$appName}' already exists with different options or config"), _defineProperty(_ERRORS, "app-deleted"
-/* APP_DELETED */
-, "Firebase App named '{$appName}' already deleted"), _defineProperty(_ERRORS, "invalid-app-argument"
-/* INVALID_APP_ARGUMENT */
-, 'firebase.{$appName}() takes either no argument or a ' + 'Firebase App instance.'), _defineProperty(_ERRORS, "invalid-log-argument"
-/* INVALID_LOG_ARGUMENT */
-, 'First argument to `onLog` must be null or a function.'), _defineProperty(_ERRORS, "storage-open"
-/* STORAGE_OPEN */
-, 'Error thrown when opening storage. Original error: {$originalErrorMessage}.'), _defineProperty(_ERRORS, "storage-get"
-/* STORAGE_GET */
-, 'Error thrown when reading from storage. Original error: {$originalErrorMessage}.'), _defineProperty(_ERRORS, "storage-set"
-/* STORAGE_WRITE */
-, 'Error thrown when writing to storage. Original error: {$originalErrorMessage}.'), _defineProperty(_ERRORS, "storage-delete"
-/* STORAGE_DELETE */
-, 'Error thrown when deleting from storage. Original error: {$originalErrorMessage}.'), _ERRORS);
-var ERROR_FACTORY = new ErrorFactory('app', 'Firebase', ERRORS);
+function _removeServiceInstance(app, name) {
+  var instanceIdentifier = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : DEFAULT_ENTRY_NAME;
+
+  _getProvider(app, name).clearInstance(instanceIdentifier);
+}
+/**
+ * Test only
+ *
+ * @internal
+ */
+
+
+function _clearComponents() {
+  _components.clear();
+}
 /**
  * @license
  * Copyright 2019 Google LLC
@@ -3152,7 +3591,47 @@ var ERROR_FACTORY = new ErrorFactory('app', 'Firebase', ERRORS);
  * limitations under the License.
  */
 
-var FirebaseAppImpl = /*#__PURE__*/function () {
+
+var ERRORS$1 = (_ERRORS$1 = {}, _defineProperty(_ERRORS$1, "no-app"
+/* NO_APP */
+, "No Firebase App '{$appName}' has been created - " + 'call Firebase App.initializeApp()'), _defineProperty(_ERRORS$1, "bad-app-name"
+/* BAD_APP_NAME */
+, "Illegal App name: '{$appName}"), _defineProperty(_ERRORS$1, "duplicate-app"
+/* DUPLICATE_APP */
+, "Firebase App named '{$appName}' already exists with different options or config"), _defineProperty(_ERRORS$1, "app-deleted"
+/* APP_DELETED */
+, "Firebase App named '{$appName}' already deleted"), _defineProperty(_ERRORS$1, "invalid-app-argument"
+/* INVALID_APP_ARGUMENT */
+, 'firebase.{$appName}() takes either no argument or a ' + 'Firebase App instance.'), _defineProperty(_ERRORS$1, "invalid-log-argument"
+/* INVALID_LOG_ARGUMENT */
+, 'First argument to `onLog` must be null or a function.'), _defineProperty(_ERRORS$1, "storage-open"
+/* STORAGE_OPEN */
+, 'Error thrown when opening storage. Original error: {$originalErrorMessage}.'), _defineProperty(_ERRORS$1, "storage-get"
+/* STORAGE_GET */
+, 'Error thrown when reading from storage. Original error: {$originalErrorMessage}.'), _defineProperty(_ERRORS$1, "storage-set"
+/* STORAGE_WRITE */
+, 'Error thrown when writing to storage. Original error: {$originalErrorMessage}.'), _defineProperty(_ERRORS$1, "storage-delete"
+/* STORAGE_DELETE */
+, 'Error thrown when deleting from storage. Original error: {$originalErrorMessage}.'), _ERRORS$1);
+var ERROR_FACTORY$1 = new ErrorFactory('app', 'Firebase', ERRORS$1);
+/**
+ * @license
+ * Copyright 2019 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+var FirebaseAppImpl$1 = /*#__PURE__*/function () {
   function FirebaseAppImpl(options, config, container) {
     var _this = this;
 
@@ -3221,7 +3700,7 @@ var FirebaseAppImpl = /*#__PURE__*/function () {
     key: "checkDestroyed",
     value: function checkDestroyed() {
       if (this.isDeleted) {
-        throw ERROR_FACTORY.create("app-deleted"
+        throw ERROR_FACTORY$1.create("app-deleted"
         /* APP_DELETED */
         , {
           appName: this._name
@@ -3256,7 +3735,7 @@ var FirebaseAppImpl = /*#__PURE__*/function () {
  */
 
 
-var SDK_VERSION = version$2;
+var SDK_VERSION = version$3;
 
 function initializeApp(options) {
   var rawConfig = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -3275,7 +3754,7 @@ function initializeApp(options) {
   var name = config.name;
 
   if (typeof name !== 'string' || !name) {
-    throw ERROR_FACTORY.create("bad-app-name"
+    throw ERROR_FACTORY$1.create("bad-app-name"
     /* BAD_APP_NAME */
     , {
       appName: String(name)
@@ -3289,7 +3768,7 @@ function initializeApp(options) {
     if (deepEqual(options, existingApp.options) && deepEqual(config, existingApp.config)) {
       return existingApp;
     } else {
-      throw ERROR_FACTORY.create("duplicate-app"
+      throw ERROR_FACTORY$1.create("duplicate-app"
       /* DUPLICATE_APP */
       , {
         appName: name
@@ -3313,7 +3792,7 @@ function initializeApp(options) {
     _iterator2.f();
   }
 
-  var newApp = new FirebaseAppImpl(options, config, container);
+  var newApp = new FirebaseAppImpl$1(options, config, container);
 
   _apps.set(name, newApp);
 
@@ -3356,7 +3835,7 @@ function getApp() {
   var app = _apps.get(name);
 
   if (!app) {
-    throw ERROR_FACTORY.create("no-app"
+    throw ERROR_FACTORY$1.create("no-app"
     /* NO_APP */
     , {
       appName: name
@@ -3364,6 +3843,80 @@ function getApp() {
   }
 
   return app;
+}
+/**
+ * A (read-only) array of all initialized apps.
+ * @public
+ */
+
+
+function getApps() {
+  return Array.from(_apps.values());
+}
+/**
+ * Renders this app unusable and frees the resources of all associated
+ * services.
+ *
+ * @example
+ * ```javascript
+ * deleteApp(app)
+ *   .then(function() {
+ *     console.log("App deleted successfully");
+ *   })
+ *   .catch(function(error) {
+ *     console.log("Error deleting app:", error);
+ *   });
+ * ```
+ *
+ * @public
+ */
+
+
+function deleteApp(_x) {
+  return _deleteApp.apply(this, arguments);
+}
+/**
+ * Registers a library's name and version for platform logging purposes.
+ * @param library - Name of 1p or 3p library (e.g. firestore, angularfire)
+ * @param version - Current version of that library.
+ * @param variant - Bundle variant, e.g., node, rn, etc.
+ *
+ * @public
+ */
+
+
+function _deleteApp() {
+  _deleteApp = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee7(app) {
+    var name;
+    return regenerator.wrap(function _callee7$(_context7) {
+      while (1) {
+        switch (_context7.prev = _context7.next) {
+          case 0:
+            name = app.name;
+
+            if (!_apps.has(name)) {
+              _context7.next = 6;
+              break;
+            }
+
+            _apps.delete(name);
+
+            _context7.next = 5;
+            return Promise.all(app.container.getProviders().map(function (provider) {
+              return provider.delete();
+            }));
+
+          case 5:
+            app.isDeleted = true;
+
+          case 6:
+          case "end":
+            return _context7.stop();
+        }
+      }
+    }, _callee7);
+  }));
+  return _deleteApp.apply(this, arguments);
 }
 
 function registerVersion(libraryKeyOrName, version, variant) {
@@ -3395,7 +3948,7 @@ function registerVersion(libraryKeyOrName, version, variant) {
       warning.push("version name \"".concat(version, "\" contains illegal characters (whitespace or \"/\")"));
     }
 
-    logger$5.warn(warning.join(' '));
+    logger$6.warn(warning.join(' '));
     return;
   }
 
@@ -3407,6 +3960,38 @@ function registerVersion(libraryKeyOrName, version, variant) {
   }, "VERSION"
   /* VERSION */
   ));
+}
+/**
+ * Sets log handler for all Firebase SDKs.
+ * @param logCallback - An optional custom log handler that executes user code whenever
+ * the Firebase SDK makes a logging call.
+ *
+ * @public
+ */
+
+
+function onLog(logCallback, options) {
+  if (logCallback !== null && typeof logCallback !== 'function') {
+    throw ERROR_FACTORY$1.create("invalid-log-argument"
+    /* INVALID_LOG_ARGUMENT */
+    );
+  }
+
+  setUserLogHandler(logCallback, options);
+}
+/**
+ * Sets log level for all Firebase SDKs.
+ *
+ * All of the log types above the current log level are captured (i.e. if
+ * you set the log level to `info`, errors are logged, but `debug` and
+ * `verbose` logs are not).
+ *
+ * @public
+ */
+
+
+function setLogLevel(logLevel) {
+  setLogLevel$1(logLevel);
 }
 /**
  * @license
@@ -3444,7 +4029,7 @@ function getDbPromise() {
           db.createObjectStore(STORE_NAME);
       }
     }).catch(function (e) {
-      throw ERROR_FACTORY.create("storage-open"
+      throw ERROR_FACTORY$1.create("storage-open"
       /* STORAGE_OPEN */
       , {
         originalErrorMessage: e.message
@@ -3477,7 +4062,7 @@ function _readHeartbeatsFromIndexedDB() {
           case 7:
             _context8.prev = 7;
             _context8.t0 = _context8["catch"](0);
-            throw ERROR_FACTORY.create("storage-get"
+            throw ERROR_FACTORY$1.create("storage-get"
             /* STORAGE_GET */
             , {
               originalErrorMessage: _context8.t0.message
@@ -3521,7 +4106,7 @@ function _writeHeartbeatsToIndexedDB() {
           case 11:
             _context9.prev = 11;
             _context9.t0 = _context9["catch"](0);
-            throw ERROR_FACTORY.create("storage-set"
+            throw ERROR_FACTORY$1.create("storage-set"
             /* STORAGE_WRITE */
             , {
               originalErrorMessage: _context9.t0.message
@@ -4052,7 +4637,7 @@ function countBytes(heartbeatsCache) {
  */
 
 
-function registerCoreComponents(variant) {
+function registerCoreComponents$1(variant) {
   _registerComponent(new Component('platform-logger', function (container) {
     return new PlatformLoggerServiceImpl(container);
   }, "PRIVATE"
@@ -4066,9 +4651,9 @@ function registerCoreComponents(variant) {
   )); // Register `app` package.
 
 
-  registerVersion(name$o, version$1, variant); // BUILD_TARGET will be replaced by values like esm5, esm2017, cjs5, etc during the compilation
+  registerVersion(name$o, version$1$1, variant); // BUILD_TARGET will be replaced by values like esm5, esm2017, cjs5, etc during the compilation
 
-  registerVersion(name$o, version$1, 'esm2017'); // Register platform SDK identifier (no version).
+  registerVersion(name$o, version$1$1, 'esm2017'); // Register platform SDK identifier (no version).
 
   registerVersion('fire-js', '');
 }
@@ -4080,10 +4665,32 @@ function registerCoreComponents(variant) {
  */
 
 
-registerCoreComponents('');
+registerCoreComponents$1('');
 
-var name = "firebase";
-var version = "9.7.0";
+var modularAPIs = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  SDK_VERSION: SDK_VERSION,
+  _DEFAULT_ENTRY_NAME: DEFAULT_ENTRY_NAME,
+  _addComponent: _addComponent,
+  _addOrOverwriteComponent: _addOrOverwriteComponent,
+  _apps: _apps,
+  _clearComponents: _clearComponents,
+  _components: _components,
+  _getProvider: _getProvider,
+  _registerComponent: _registerComponent,
+  _removeServiceInstance: _removeServiceInstance,
+  deleteApp: deleteApp,
+  getApp: getApp,
+  getApps: getApps,
+  initializeApp: initializeApp,
+  onLog: onLog,
+  registerVersion: registerVersion,
+  setLogLevel: setLogLevel,
+  FirebaseError: FirebaseError
+});
+
+var name$2 = "firebase";
+var version$2 = "9.7.0";
 /**
  * @license
  * Copyright 2020 Google LLC
@@ -4101,7 +4708,7 @@ var version = "9.7.0";
  * limitations under the License.
  */
 
-registerVersion(name, version, 'app');
+registerVersion(name$2, version$2, 'app');
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 
@@ -5628,6 +6235,538 @@ function fn(t, e) {
   return e && r._setSettings(e), r;
 }, "PUBLIC")), // RUNTIME_ENV and BUILD_TARGET are replaced by real values during the compilation
 registerVersion("firestore-lite", "3.4.8", ""), registerVersion("firestore-lite", "3.4.8", "esm2017");
+
+var _ERRORS;
+/**
+ * @license
+ * Copyright 2020 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * Global context object for a collection of services using
+ * a shared authentication state.
+ *
+ * marked as internal because it references internal types exported from @firebase/app
+ * @internal
+ */
+
+var FirebaseAppImpl = /*#__PURE__*/function () {
+  function FirebaseAppImpl(_delegate, firebase) {
+    var _this = this;
+
+    _classCallCheck(this, FirebaseAppImpl);
+
+    this._delegate = _delegate;
+    this.firebase = firebase; // add itself to container
+
+    _addComponent(_delegate, new Component('app-compat', function () {
+      return _this;
+    }, "PUBLIC"
+    /* PUBLIC */
+    ));
+
+    this.container = _delegate.container;
+  }
+
+  _createClass(FirebaseAppImpl, [{
+    key: "automaticDataCollectionEnabled",
+    get: function get() {
+      return this._delegate.automaticDataCollectionEnabled;
+    },
+    set: function set(val) {
+      this._delegate.automaticDataCollectionEnabled = val;
+    }
+  }, {
+    key: "name",
+    get: function get() {
+      return this._delegate.name;
+    }
+  }, {
+    key: "options",
+    get: function get() {
+      return this._delegate.options;
+    }
+  }, {
+    key: "delete",
+    value: function _delete() {
+      var _this2 = this;
+
+      return new Promise(function (resolve) {
+        _this2._delegate.checkDestroyed();
+
+        resolve();
+      }).then(function () {
+        _this2.firebase.INTERNAL.removeApp(_this2.name);
+
+        return deleteApp(_this2._delegate);
+      });
+    }
+    /**
+     * Return a service instance associated with this app (creating it
+     * on demand), identified by the passed instanceIdentifier.
+     *
+     * NOTE: Currently storage and functions are the only ones that are leveraging this
+     * functionality. They invoke it by calling:
+     *
+     * ```javascript
+     * firebase.app().storage('STORAGE BUCKET ID')
+     * ```
+     *
+     * The service name is passed to this already
+     * @internal
+     */
+
+  }, {
+    key: "_getService",
+    value: function _getService(name) {
+      var instanceIdentifier = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : DEFAULT_ENTRY_NAME;
+
+      var _a;
+
+      this._delegate.checkDestroyed(); // Initialize instance if InstatiationMode is `EXPLICIT`.
+
+
+      var provider = this._delegate.container.getProvider(name);
+
+      if (!provider.isInitialized() && ((_a = provider.getComponent()) === null || _a === void 0 ? void 0 : _a.instantiationMode) === "EXPLICIT"
+      /* EXPLICIT */
+      ) {
+        provider.initialize();
+      } // getImmediate will always succeed because _getService is only called for registered components.
+
+
+      return provider.getImmediate({
+        identifier: instanceIdentifier
+      });
+    }
+    /**
+     * Remove a service instance from the cache, so we will create a new instance for this service
+     * when people try to get it again.
+     *
+     * NOTE: currently only firestore uses this functionality to support firestore shutdown.
+     *
+     * @param name The service name
+     * @param instanceIdentifier instance identifier in case multiple instances are allowed
+     * @internal
+     */
+
+  }, {
+    key: "_removeServiceInstance",
+    value: function _removeServiceInstance(name) {
+      var instanceIdentifier = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : DEFAULT_ENTRY_NAME;
+
+      this._delegate.container // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      .getProvider(name).clearInstance(instanceIdentifier);
+    }
+    /**
+     * @param component the component being added to this app's container
+     * @internal
+     */
+
+  }, {
+    key: "_addComponent",
+    value: function _addComponent$1(component) {
+      _addComponent(this._delegate, component);
+    }
+  }, {
+    key: "_addOrOverwriteComponent",
+    value: function _addOrOverwriteComponent$1(component) {
+      _addOrOverwriteComponent(this._delegate, component);
+    }
+  }, {
+    key: "toJSON",
+    value: function toJSON() {
+      return {
+        name: this.name,
+        automaticDataCollectionEnabled: this.automaticDataCollectionEnabled,
+        options: this.options
+      };
+    }
+  }]);
+
+  return FirebaseAppImpl;
+}(); // TODO: investigate why the following needs to be commented out
+// Prevent dead-code elimination of these methods w/o invalid property
+// copying.
+// (FirebaseAppImpl.prototype.name && FirebaseAppImpl.prototype.options) ||
+//   FirebaseAppImpl.prototype.delete ||
+//   console.log('dc');
+
+/**
+ * @license
+ * Copyright 2019 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+
+var ERRORS = (_ERRORS = {}, _defineProperty(_ERRORS, "no-app"
+/* NO_APP */
+, "No Firebase App '{$appName}' has been created - " + 'call Firebase App.initializeApp()'), _defineProperty(_ERRORS, "invalid-app-argument"
+/* INVALID_APP_ARGUMENT */
+, 'firebase.{$appName}() takes either no argument or a ' + 'Firebase App instance.'), _ERRORS);
+var ERROR_FACTORY = new ErrorFactory('app-compat', 'Firebase', ERRORS);
+/**
+ * @license
+ * Copyright 2019 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * Because auth can't share code with other components, we attach the utility functions
+ * in an internal namespace to share code.
+ * This function return a firebase namespace object without
+ * any utility functions, so it can be shared between the regular firebaseNamespace and
+ * the lite version.
+ */
+
+function createFirebaseNamespaceCore(firebaseAppImpl) {
+  var apps = {}; // // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // const components = new Map<string, Component<any>>();
+  // A namespace is a plain JavaScript Object.
+
+  var namespace = {
+    // Hack to prevent Babel from modifying the object returned
+    // as the firebase namespace.
+    // @ts-ignore
+    __esModule: true,
+    initializeApp: initializeAppCompat,
+    // @ts-ignore
+    app: app,
+    registerVersion: registerVersion,
+    setLogLevel: setLogLevel,
+    onLog: onLog,
+    // @ts-ignore
+    apps: null,
+    SDK_VERSION: SDK_VERSION,
+    INTERNAL: {
+      registerComponent: registerComponentCompat,
+      removeApp: removeApp,
+      useAsService: useAsService,
+      modularAPIs: modularAPIs
+    }
+  }; // Inject a circular default export to allow Babel users who were previously
+  // using:
+  //
+  //   import firebase from 'firebase';
+  //   which becomes: var firebase = require('firebase').default;
+  //
+  // instead of
+  //
+  //   import * as firebase from 'firebase';
+  //   which becomes: var firebase = require('firebase');
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
+  namespace['default'] = namespace; // firebase.apps is a read-only getter.
+
+  Object.defineProperty(namespace, 'apps', {
+    get: getApps
+  });
+  /**
+   * Called by App.delete() - but before any services associated with the App
+   * are deleted.
+   */
+
+  function removeApp(name) {
+    delete apps[name];
+  }
+  /**
+   * Get the App object for a given name (or DEFAULT).
+   */
+
+
+  function app(name) {
+    name = name || DEFAULT_ENTRY_NAME;
+
+    if (!contains(apps, name)) {
+      throw ERROR_FACTORY.create("no-app"
+      /* NO_APP */
+      , {
+        appName: name
+      });
+    }
+
+    return apps[name];
+  } // @ts-ignore
+
+
+  app['App'] = firebaseAppImpl;
+  /**
+   * Create a new App instance (name must be unique).
+   *
+   * This function is idempotent. It can be called more than once and return the same instance using the same options and config.
+   */
+
+  function initializeAppCompat(options) {
+    var rawConfig = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    var app = initializeApp(options, rawConfig);
+
+    if (contains(apps, app.name)) {
+      return apps[app.name];
+    }
+
+    var appCompat = new firebaseAppImpl(app, namespace);
+    apps[app.name] = appCompat;
+    return appCompat;
+  }
+  /*
+   * Return an array of all the non-deleted FirebaseApps.
+   */
+
+
+  function getApps() {
+    // Make a copy so caller cannot mutate the apps list.
+    return Object.keys(apps).map(function (name) {
+      return apps[name];
+    });
+  }
+
+  function registerComponentCompat(component) {
+    var componentName = component.name;
+    var componentNameWithoutCompat = componentName.replace('-compat', '');
+
+    if (_registerComponent(component) && component.type === "PUBLIC"
+    /* PUBLIC */
+    ) {
+      // create service namespace for public components
+      // The Service namespace is an accessor function ...
+      var serviceNamespace = function serviceNamespace() {
+        var appArg = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : app();
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        if (typeof appArg[componentNameWithoutCompat] !== 'function') {
+          // Invalid argument.
+          // This happens in the following case: firebase.storage('gs:/')
+          throw ERROR_FACTORY.create("invalid-app-argument"
+          /* INVALID_APP_ARGUMENT */
+          , {
+            appName: componentName
+          });
+        } // Forward service instance lookup to the FirebaseApp.
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
+
+        return appArg[componentNameWithoutCompat]();
+      }; // ... and a container for service-level properties.
+
+
+      if (component.serviceProps !== undefined) {
+        deepExtend(serviceNamespace, component.serviceProps);
+      } // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
+
+      namespace[componentNameWithoutCompat] = serviceNamespace; // Patch the FirebaseAppImpl prototype
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
+      firebaseAppImpl.prototype[componentNameWithoutCompat] = // TODO: The eslint disable can be removed and the 'ignoreRestArgs'
+      // option added to the no-explicit-any rule when ESlint releases it.
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      function () {
+        var serviceFxn = this._getService.bind(this, componentName);
+
+        for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+          args[_key] = arguments[_key];
+        }
+
+        return serviceFxn.apply(this, component.multipleInstances ? args : []);
+      };
+    }
+
+    return component.type === "PUBLIC"
+    /* PUBLIC */
+    ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    namespace[componentNameWithoutCompat] : null;
+  } // Map the requested service to a registered service name
+  // (used to map auth to serverAuth service when needed).
+
+
+  function useAsService(app, name) {
+    if (name === 'serverAuth') {
+      return null;
+    }
+
+    var useService = name;
+    return useService;
+  }
+
+  return namespace;
+}
+/**
+ * @license
+ * Copyright 2019 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * Return a firebase namespace object.
+ *
+ * In production, this will be called exactly once and the result
+ * assigned to the 'firebase' global.  It may be called multiple times
+ * in unit tests.
+ */
+
+
+function createFirebaseNamespace() {
+  var namespace = createFirebaseNamespaceCore(FirebaseAppImpl);
+  namespace.INTERNAL = Object.assign(Object.assign({}, namespace.INTERNAL), {
+    createFirebaseNamespace: createFirebaseNamespace,
+    extendNamespace: extendNamespace,
+    createSubscribe: createSubscribe,
+    ErrorFactory: ErrorFactory,
+    deepExtend: deepExtend
+  });
+  /**
+   * Patch the top-level firebase namespace with additional properties.
+   *
+   * firebase.INTERNAL.extendNamespace()
+   */
+
+  function extendNamespace(props) {
+    deepExtend(namespace, props);
+  }
+
+  return namespace;
+}
+
+var firebase$1 = createFirebaseNamespace();
+/**
+ * @license
+ * Copyright 2019 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+var logger$5 = new Logger('@firebase/app-compat');
+var name$1 = "@firebase/app-compat";
+var version$1 = "0.1.23";
+/**
+ * @license
+ * Copyright 2019 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+function registerCoreComponents(variant) {
+  // Register `app` package.
+  registerVersion(name$1, version$1, variant);
+}
+/**
+ * @license
+ * Copyright 2020 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+// Firebase Lite detection
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+
+
+if (isBrowser() && self.firebase !== undefined) {
+  logger$5.warn("\n    Warning: Firebase is already defined in the global scope. Please make sure\n    Firebase library is only loaded once.\n  "); // eslint-disable-next-line
+
+  var sdkVersion = self.firebase.SDK_VERSION;
+
+  if (sdkVersion && sdkVersion.indexOf('LITE') >= 0) {
+    logger$5.warn("\n    Warning: You are trying to load Firebase while using Firebase Performance standalone script.\n    You should load Firebase Performance with this instance of Firebase to avoid loading duplicate code.\n    ");
+  }
+}
+
+var firebase = firebase$1;
+registerCoreComponents();
+
+var name = "firebase";
+var version = "9.7.0";
+/**
+ * @license
+ * Copyright 2020 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+firebase.registerVersion(name, version, 'app-compat');
 
 var sha256 = {exports: {}};
 

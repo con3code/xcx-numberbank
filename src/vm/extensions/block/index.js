@@ -4,6 +4,7 @@ import translations from './translations.json';
 import blockIcon from './numberbank_icon.png';
 import { initializeApp } from 'firebase/app';
 import { getFirestore, collection } from 'firebase/firestore/lite';
+import firebase from "firebase/compat/app";
 import SHA256 from "crypto-js/sha256";
 import Variable from '../../engine/variable';
 
@@ -125,7 +126,7 @@ class ExtensionBlocks {
         }
 
         if (bankKey != '' && bankKey != undefined) {
-            
+
             ioWaiter(1)
                 .then(() => {
                     bankSha256 = encryptSha256(new TextEncoder().encode(bankKey));
