@@ -3,7 +3,7 @@ import ArgumentType from '../../extension-support/argument-type';
 import translations from './translations.json';
 import blockIcon from './numberbank_icon.png';
 import { initializeApp } from 'firebase/app';
-import { getFirestore } from 'firebase/firestore/lite';
+import { getFirestore,doc, getDoc, setDoc, } from 'firebase/firestore/lite';
 // import firebase from "firebase/compat/app";
 // import 'firebase/compat/firestore';
 import SHA256 from "crypto-js/sha256";
