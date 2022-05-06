@@ -3,7 +3,7 @@ import ArgumentType from '../../extension-support/argument-type';
 import translations from './translations.json';
 import blockIcon from './numberbank_icon.png';
 import { initializeApp } from 'firebase/app';
-import { getFirestore,doc, getDoc, setDoc, } from 'firebase/firestore/lite';
+import { getFirestore,doc, getDoc, setDoc } from 'firebase/firestore/lite';
 // import firebase from "firebase/compat/app";
 // import 'firebase/compat/firestore';
 import SHA256 from "crypto-js/sha256";
@@ -144,7 +144,10 @@ class ExtensionBlocks {
                 .then(() => {
                     //console.log("masterSha256: " + masterSha256);
 
+                    console.log('cloudConfig_mkey:', firebaseConfig);
+
                     if (masterSha256 != '' && masterSha256 != undefined) {
+                        console.log("NumberBank put 00");
 
                         const now = Date.now();
                         setDoc(doc(db, 'card', uniSha256), {
@@ -155,12 +158,14 @@ class ExtensionBlocks {
                             time_stamp: now
                         })
                             .then(() => {
+                                console.log("NumberBank put 01");
                                 setDoc(doc(db, 'bank', bankSha256), {
                                     bank_name: bankName,
                                     time_stamp: now
                                 })
                             })
                             .then(() => {
+                                console.log("NumberBank put 02");
                                 inoutFlag = false;
                             })
                             .catch(function (error) {
@@ -173,11 +178,13 @@ class ExtensionBlocks {
                         inoutFlag = false;
                     }
 
-
+                    console.log("NumberBank put 03");
 
                 });
 
         }
+
+        console.log("NumberBank put ioWaiter");
 
         return ioWaiter(interval.MsPut);
 
@@ -227,15 +234,20 @@ class ExtensionBlocks {
 
                     if (masterSha256 != '' && masterSha256 != undefined) {
 
+                        console.log('cloudConfig_mkey:', firebaseConfig);
+
                         //v8
                         // cardDb.doc(uniSha256).get().then(function (ckey) {
                         getDoc(doc(db, 'card', uniSha256)).then(function (ckey) {
+                            console.log("NumberBank set 00");
 
                             if (ckey.exists()) {
+                                console.log("NumberBank set 01");
 
                                 // cardDb.doc(uniSha256).get()
                                 getDoc(doc(db, 'card', uniSha256))
                                     .then((doc) => {
+                                        console.log("NumberBank set 02");
                                         let data = doc.data();
                                         variable.value = data.number;
                                     })
@@ -263,14 +275,13 @@ class ExtensionBlocks {
                         inoutFlag = false;
                     }
 
-
-
-
-
+                    console.log("NumberBank set 03");
 
                 });
 
         }
+
+        console.log("NumberBank set ioWaiter");
 
         return ioWaiter(interval.MsSet);
 
@@ -323,16 +334,19 @@ class ExtensionBlocks {
                 .then(() => {
                     // console.log("masterSha256: " + masterSha256);
 
+                    console.log('cloudConfig_mkey:', firebaseConfig);
 
                     if (masterSha256 != '' && masterSha256 != undefined) {
 
                         getDoc(doc(db, 'card', uniSha256)).then(function (ckey) {
-                            console.log("Firebase getDoc");
+                            console.log("NumberBank get 00");
 
                             if (ckey.exists()) {
+                                console.log("NumberBank get 01");
 
                                 getDoc(doc(db, 'card', uniSha256))
                                     .then((doc) => {
+                                        console.log("NumberBank get 02");
                                         let data = doc.data();
                                         cloudNum = data.number;
                                     })
@@ -360,10 +374,13 @@ class ExtensionBlocks {
                         inoutFlag = false;
                     }
 
+                    console.log("NumberBank get 03");
 
                 });
 
         }
+
+        console.log("NumberBank get ioWaiter");
 
         return ioWaiter(interval.MsGet);
 
@@ -414,15 +431,19 @@ class ExtensionBlocks {
                 .then(() => {
                     //console.log("masterSha256: " + masterSha256);
 
+                    console.log('cloudConfig_mkey:', firebaseConfig);
 
                     if (masterSha256 != '' && masterSha256 != undefined) {
 
                         getDoc(doc(db, 'card', uniSha256)).then(function (ckey) {
+                            console.log("NumberBank rep 00");
 
                             if (ckey.exists()) {
+                                console.log("NumberBank rep 01");
 
                                 getDoc(doc(db, 'card', uniSha256))
                                     .then((doc) => {
+                                        console.log("NumberBank rep 02");
                                         let data = doc.data();
                                         cloudNum = data.number;
                                     })
@@ -450,10 +471,13 @@ class ExtensionBlocks {
                         inoutFlag = false;
                     }
 
+                    console.log("NumberBank rep 03");
 
                 });
 
         }
+
+        console.log("NumberBank rep ioWaiter");
 
         return reportNumWaiter(interval.MsRep);
 
@@ -491,17 +515,19 @@ class ExtensionBlocks {
                 .then(() => {
                     //console.log("masterSha256: " + masterSha256);
 
-
+                    console.log('cloudConfig_mkey:', firebaseConfig);
 
                     if (masterSha256 != '' && masterSha256 != undefined) {
 
                         getDoc(doc(db, 'card', uniSha256)).then(function (ckey) {
+                            console.log("NumberBank avl 00");
 
                             if (ckey.exists()) {
-                                //console.log("Available!");
+                                console.log("NumberBank avl YES");
                                 inoutFlag = false;
                                 availableFlag = true;
                             } else {
+                                console.log("NumberBank avl NO");
                                 //console.log("No Available!");
                                 inoutFlag = false;
                                 availableFlag = false;
@@ -520,10 +546,13 @@ class ExtensionBlocks {
                         availableFlag = false;
                     }
 
+                    console.log("NumberBank avl 03");
 
                 })
 
         }
+
+        console.log("NumberBank avl ioWaiter");
 
         return availableWaiter(interval.MsAvl);
 
@@ -552,14 +581,16 @@ class ExtensionBlocks {
 
             }).then((resBody) => {
 
+                
                 cloudConfig_mkey.masterKey = resBody.masterKey;
-                cloudConfig_mkey.apiKey = resBody.apiKey;
-                cloudConfig_mkey.authDomain = resBody.authDomain;
-                cloudConfig_mkey.projectId = resBody.projectId;
-                cloudConfig_mkey.storageBucket = resBody.storageBucket;
-                cloudConfig_mkey.messagingSenderId = resBody.messagingSenderId;
-                cloudConfig_mkey.appId = resBody.appId;
-                cloudConfig_mkey.measurementId = resBody.measurementId;
+                cloudConfig_mkey.apiKey = firebaseConfig.apiKey = resBody.apiKey;
+                cloudConfig_mkey.authDomain = firebaseConfig.authDomain = resBody.authDomain;
+                cloudConfig_mkey.databaseURL = firebaseConfig.databaseURL = resBody.databaseURL;
+                cloudConfig_mkey.projectId = firebaseConfig.projectId = resBody.projectId;
+                cloudConfig_mkey.storageBucket = firebaseConfig.storageBucket = resBody.storageBucket;
+                cloudConfig_mkey.messagingSenderId = firebaseConfig.messagingSenderId = resBody.messagingSenderId;
+                cloudConfig_mkey.appId = firebaseConfig.appId = resBody.appId;
+                cloudConfig_mkey.measurementId = firebaseConfig.measurementId = resBody.measurementId;
                 interval.MsPut = resBody.intervalMsPut;
                 interval.MsSet = resBody.intervalMsSet;
                 interval.MsGet = resBody.intervalMsGet;
@@ -568,6 +599,7 @@ class ExtensionBlocks {
 
                 console.log('cloudConfig_mkey:', cloudConfig_mkey);
                 console.log('interval:', interval);
+                console.log('cloudConfig_mkey:', firebaseConfig);
 
 
                 inoutFlag = false;
@@ -577,7 +609,7 @@ class ExtensionBlocks {
                 inoutFlag = true;
                 // Initialize Firebase
 
-                fbApp = initializeApp(cloudConfig_mkey);
+                fbApp = initializeApp(firebaseConfig);
                 db = getFirestore(fbApp);
 
                 /*
@@ -925,11 +957,23 @@ const interval = {
     MsAvl: 100,
 }
 
+let firebaseConfig = {
+    apiKey: "",
+    authDomain: "",
+    databaseURL: "",
+    projectId: "",
+    storageBucket: "",
+    messagingSenderId: "",
+    appId: "",
+    measurementId: ""
+};
+
 // 格納用予備
 const cloudConfig_mkb = {
     cloudType: '',
     apiKey: '',
     authDomain: '',
+    databaseURL: "",
     projectId: '',
     storageBucket: '',
     messagingSenderId: '',
@@ -948,6 +992,7 @@ const cloudConfig_mkey = {
     cloudType: '',
     apiKey: '',
     authDomain: '',
+    databaseURL: "",
     projectId: '',
     storageBucket: '',
     messagingSenderId: '',

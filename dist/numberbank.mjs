@@ -11178,7 +11178,10 @@ var ExtensionBlocks = /*#__PURE__*/function () {
           uniSha256 = encryptSha256(new TextEncoder().encode(uniKey)); //console.log("uniSha256: " + uniSha256);
         }).then(function () {
           //console.log("masterSha256: " + masterSha256);
+          console.log('cloudConfig_mkey:', firebaseConfig);
+
           if (masterSha256 != '' && masterSha256 != undefined) {
+            console.log("NumberBank put 00");
             var now = Date.now();
             Er(wn(db, 'card', uniSha256), {
               number: settingNum,
@@ -11187,11 +11190,13 @@ var ExtensionBlocks = /*#__PURE__*/function () {
               master_key: masterSha256,
               time_stamp: now
             }).then(function () {
+              console.log("NumberBank put 01");
               Er(wn(db, 'bank', bankSha256), {
                 bank_name: bankName,
                 time_stamp: now
               });
             }).then(function () {
+              console.log("NumberBank put 02");
               inoutFlag = false;
             }).catch(function (error) {
               console.error("Error writing document: ", error);
@@ -11201,9 +11206,12 @@ var ExtensionBlocks = /*#__PURE__*/function () {
             console.log("No MasterKey!");
             inoutFlag = false;
           }
+
+          console.log("NumberBank put 03");
         });
       }
 
+      console.log("NumberBank put ioWaiter");
       return ioWaiter(interval.MsPut);
     }
   }, {
@@ -11242,12 +11250,17 @@ var ExtensionBlocks = /*#__PURE__*/function () {
         }).then(function () {
           //console.log("masterSha256: " + masterSha256);
           if (masterSha256 != '' && masterSha256 != undefined) {
-            //v8
+            console.log('cloudConfig_mkey:', firebaseConfig); //v8
             // cardDb.doc(uniSha256).get().then(function (ckey) {
+
             vr(wn(db, 'card', uniSha256)).then(function (ckey) {
+              console.log("NumberBank set 00");
+
               if (ckey.exists()) {
-                // cardDb.doc(uniSha256).get()
+                console.log("NumberBank set 01"); // cardDb.doc(uniSha256).get()
+
                 vr(wn(db, 'card', uniSha256)).then(function (doc) {
+                  console.log("NumberBank set 02");
                   var data = doc.data();
                   variable.value = data.number;
                 }).then(function () {
@@ -11269,9 +11282,12 @@ var ExtensionBlocks = /*#__PURE__*/function () {
             console.log("No MasterKey!");
             inoutFlag = false;
           }
+
+          console.log("NumberBank set 03");
         });
       }
 
+      console.log("NumberBank set ioWaiter");
       return ioWaiter(interval.MsSet);
     }
   }, {
@@ -11315,12 +11331,16 @@ var ExtensionBlocks = /*#__PURE__*/function () {
           uniSha256 = encryptSha256(new TextEncoder().encode(uniKey)); // console.log("uniSha256: " + uniSha256);
         }).then(function () {
           // console.log("masterSha256: " + masterSha256);
+          console.log('cloudConfig_mkey:', firebaseConfig);
+
           if (masterSha256 != '' && masterSha256 != undefined) {
             vr(wn(db, 'card', uniSha256)).then(function (ckey) {
-              console.log("Firebase getDoc");
+              console.log("NumberBank get 00");
 
               if (ckey.exists()) {
+                console.log("NumberBank get 01");
                 vr(wn(db, 'card', uniSha256)).then(function (doc) {
+                  console.log("NumberBank get 02");
                   var data = doc.data();
                   cloudNum = data.number;
                 }).then(function () {
@@ -11342,9 +11362,12 @@ var ExtensionBlocks = /*#__PURE__*/function () {
             console.log("No MasterKey!");
             inoutFlag = false;
           }
+
+          console.log("NumberBank get 03");
         });
       }
 
+      console.log("NumberBank get ioWaiter");
       return ioWaiter(interval.MsGet);
     }
   }, {
@@ -11386,10 +11409,16 @@ var ExtensionBlocks = /*#__PURE__*/function () {
           uniSha256 = encryptSha256(new TextEncoder().encode(uniKey)); //console.log("uniSha256: " + uniSha256);
         }).then(function () {
           //console.log("masterSha256: " + masterSha256);
+          console.log('cloudConfig_mkey:', firebaseConfig);
+
           if (masterSha256 != '' && masterSha256 != undefined) {
             vr(wn(db, 'card', uniSha256)).then(function (ckey) {
+              console.log("NumberBank rep 00");
+
               if (ckey.exists()) {
+                console.log("NumberBank rep 01");
                 vr(wn(db, 'card', uniSha256)).then(function (doc) {
+                  console.log("NumberBank rep 02");
                   var data = doc.data();
                   cloudNum = data.number;
                 }).then(function () {
@@ -11411,9 +11440,12 @@ var ExtensionBlocks = /*#__PURE__*/function () {
             console.log("No MasterKey!");
             inoutFlag = false;
           }
+
+          console.log("NumberBank rep 03");
         });
       }
 
+      console.log("NumberBank rep ioWaiter");
       return reportNumWaiter(interval.MsRep);
     }
   }, {
@@ -11446,14 +11478,19 @@ var ExtensionBlocks = /*#__PURE__*/function () {
           uniSha256 = encryptSha256(new TextEncoder().encode(uniKey)); //console.log("uniSha256: " + uniSha256);
         }).then(function () {
           //console.log("masterSha256: " + masterSha256);
+          console.log('cloudConfig_mkey:', firebaseConfig);
+
           if (masterSha256 != '' && masterSha256 != undefined) {
             vr(wn(db, 'card', uniSha256)).then(function (ckey) {
+              console.log("NumberBank avl 00");
+
               if (ckey.exists()) {
-                //console.log("Available!");
+                console.log("NumberBank avl YES");
                 inoutFlag = false;
                 availableFlag = true;
               } else {
-                //console.log("No Available!");
+                console.log("NumberBank avl NO"); //console.log("No Available!");
+
                 inoutFlag = false;
                 availableFlag = false;
               }
@@ -11468,9 +11505,12 @@ var ExtensionBlocks = /*#__PURE__*/function () {
             inoutFlag = false;
             availableFlag = false;
           }
+
+          console.log("NumberBank avl 03");
         });
       }
 
+      console.log("NumberBank avl ioWaiter");
       return availableWaiter(interval.MsAvl);
     }
   }, {
@@ -11496,13 +11536,14 @@ var ExtensionBlocks = /*#__PURE__*/function () {
         }
       }).then(function (resBody) {
         cloudConfig_mkey.masterKey = resBody.masterKey;
-        cloudConfig_mkey.apiKey = resBody.apiKey;
-        cloudConfig_mkey.authDomain = resBody.authDomain;
-        cloudConfig_mkey.projectId = resBody.projectId;
-        cloudConfig_mkey.storageBucket = resBody.storageBucket;
-        cloudConfig_mkey.messagingSenderId = resBody.messagingSenderId;
-        cloudConfig_mkey.appId = resBody.appId;
-        cloudConfig_mkey.measurementId = resBody.measurementId;
+        cloudConfig_mkey.apiKey = firebaseConfig.apiKey = resBody.apiKey;
+        cloudConfig_mkey.authDomain = firebaseConfig.authDomain = resBody.authDomain;
+        cloudConfig_mkey.databaseURL = firebaseConfig.databaseURL = resBody.databaseURL;
+        cloudConfig_mkey.projectId = firebaseConfig.projectId = resBody.projectId;
+        cloudConfig_mkey.storageBucket = firebaseConfig.storageBucket = resBody.storageBucket;
+        cloudConfig_mkey.messagingSenderId = firebaseConfig.messagingSenderId = resBody.messagingSenderId;
+        cloudConfig_mkey.appId = firebaseConfig.appId = resBody.appId;
+        cloudConfig_mkey.measurementId = firebaseConfig.measurementId = resBody.measurementId;
         interval.MsPut = resBody.intervalMsPut;
         interval.MsSet = resBody.intervalMsSet;
         interval.MsGet = resBody.intervalMsGet;
@@ -11510,12 +11551,13 @@ var ExtensionBlocks = /*#__PURE__*/function () {
         interval.MsAvl = resBody.intervalMsAvl;
         console.log('cloudConfig_mkey:', cloudConfig_mkey);
         console.log('interval:', interval);
+        console.log('cloudConfig_mkey:', firebaseConfig);
         inoutFlag = false;
         return ioWaiter(1);
       }).then(function () {
         inoutFlag = true; // Initialize Firebase
 
-        fbApp = initializeApp(cloudConfig_mkey);
+        fbApp = initializeApp(firebaseConfig);
         db = on(fbApp);
         /*
         try {
@@ -11861,12 +11903,23 @@ var interval = {
   MsGet: 1000,
   MsRep: 1000,
   MsAvl: 100
+};
+var firebaseConfig = {
+  apiKey: "",
+  authDomain: "",
+  databaseURL: "",
+  projectId: "",
+  storageBucket: "",
+  messagingSenderId: "",
+  appId: "",
+  measurementId: ""
 }; // 格納用予備
 
 var cloudConfig_mkey = {
   cloudType: '',
   apiKey: '',
   authDomain: '',
+  databaseURL: "",
   projectId: '',
   storageBucket: '',
   messagingSenderId: '',
