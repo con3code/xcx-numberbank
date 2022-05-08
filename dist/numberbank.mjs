@@ -10267,7 +10267,7 @@ var ExtensionBlocks = /*#__PURE__*/function () {
           //console.log("masterSha256: " + masterSha256);
           // console.log('cloudConfig_mkey:', firebaseConfig);
           if (masterSha256 != '' && masterSha256 != undefined) {
-            console.log("NumberBank put 00");
+            // console.log("NumberBank put 00");
             var now = Date.now();
             Er(wn(db, 'card', uniSha256), {
               number: settingNum,
@@ -10276,28 +10276,27 @@ var ExtensionBlocks = /*#__PURE__*/function () {
               master_key: masterSha256,
               time_stamp: now
             }).then(function () {
-              console.log("NumberBank put 01");
+              // console.log("NumberBank put 01");
               return Er(wn(db, 'bank', bankSha256), {
                 bank_name: bankName,
                 time_stamp: now
               });
             }).then(function () {
-              console.log("NumberBank put 02");
+              // console.log("NumberBank put 02");
               inoutFlag = false;
             }).catch(function (error) {
               console.error("Error writing document: ", error);
               inoutFlag = false;
             });
           } else {
-            console.log("No MasterKey!");
+            // console.log("No MasterKey!");
             inoutFlag = false;
-          }
+          } // console.log("NumberBank put 03");
 
-          console.log("NumberBank put 03");
         });
-      }
+      } // console.log("NumberBank put ioWaiter");
 
-      console.log("NumberBank put ioWaiter");
+
       return ioWaiter(interval.MsPut);
     }
   }, {
@@ -10349,13 +10348,12 @@ var ExtensionBlocks = /*#__PURE__*/function () {
             //v8
             // cardDb.doc(uniSha256).get().then(function (ckey) {
             vr(wn(db, 'card', uniSha256)).then(function (ckey) {
-              console.log("NumberBank set 00");
-
+              // console.log("NumberBank set 00");
               if (ckey.exists()) {
-                console.log("NumberBank set 01"); // cardDb.doc(uniSha256).get()
-
+                // console.log("NumberBank set 01");
+                // cardDb.doc(uniSha256).get()
                 vr(wn(db, 'card', uniSha256)).then(function (doc) {
-                  console.log("NumberBank set 02");
+                  // console.log("NumberBank set 02");
                   var data = doc.data();
                   variable.value = data.number;
                 }).then(function () {
@@ -10364,7 +10362,7 @@ var ExtensionBlocks = /*#__PURE__*/function () {
                   console.error("Error getting document: ", error);
                 });
               } else {
-                //console.log("No Card!");
+                // console.log("No Card!");
                 variable.value = '';
                 inoutFlag = false;
               }
@@ -10376,13 +10374,12 @@ var ExtensionBlocks = /*#__PURE__*/function () {
             // doc.data() will be undefined in this case
             console.log("No MasterKey!");
             inoutFlag = false;
-          }
+          } // console.log("NumberBank set 03");
 
-          console.log("NumberBank set 03");
         });
-      }
+      } // console.log("NumberBank set ioWaiter");
 
-      console.log("NumberBank set ioWaiter");
+
       return ioWaiter(interval.MsSet);
     }
   }, {
@@ -10409,8 +10406,8 @@ var ExtensionBlocks = /*#__PURE__*/function () {
         return;
       }
 
-      inoutFlag = true;
-      console.log("getNum...");
+      inoutFlag = true; // console.log("getNum...");
+
       bankKey = bankName = args.BANK;
       cardKey = args.CARD;
       uniKey = bankKey.trim().concat(cardKey.trim()); // console.log('uniKey:' + uniKey);
@@ -10437,30 +10434,29 @@ var ExtensionBlocks = /*#__PURE__*/function () {
           return sleep(1);
         }).then(function () {
           // console.log("masterSha256: " + masterSha256);
-          // // console.log('cloudConfig_mkey:', firebaseConfig);
+          // console.log('cloudConfig_mkey:', firebaseConfig);
           // console.log('db:', db);
           // console.log('uniSha256:', uniSha256);
           if (masterSha256 != '' && masterSha256 != undefined) {
             vr(wn(db, 'card', uniSha256)).then(function (ckey) {
-              console.log("NumberBank get 00"); // console.log('ckey:', ckey);
+              // console.log("NumberBank get 00");
+              // console.log('ckey:', ckey);
               // console.log('ckey.exists:', ckey.exists());
-
               if (ckey.exists()) {
-                console.log("NumberBank get 01");
+                // console.log("NumberBank get 01");
                 vr(wn(db, 'card', uniSha256)).then(function (doc) {
-                  console.log("NumberBank get 02");
+                  // console.log("NumberBank get 02");
                   var data = doc.data();
-                  cloudNum = data.number;
-                  console.log('cloudNum:', cloudNum);
+                  cloudNum = data.number; // console.log('cloudNum:', cloudNum);
                 }).then(function () {
-                  console.log("NumberBank get 03");
+                  // console.log("NumberBank get 03");
                   inoutFlag = false;
                 }).catch(function (error) {
                   console.error("Error getting document: ", error);
                 });
               } else {
-                console.log("NumberBank get 04");
-                console.log("No Card!");
+                // console.log("NumberBank get 04");
+                // console.log("No Card!");
                 cloudNum = '';
                 inoutFlag = false;
               }
@@ -10472,13 +10468,12 @@ var ExtensionBlocks = /*#__PURE__*/function () {
             // doc.data() will be undefined in this case
             console.log("No MasterKey!");
             inoutFlag = false;
-          }
+          } // console.log("NumberBank get 05");
 
-          console.log("NumberBank get 05");
         });
-      }
+      } // console.log("NumberBank get ioWaiter");
 
-      console.log("NumberBank get ioWaiter");
+
       return ioWaiter(interval.MsGet);
     }
   }, {
@@ -10532,12 +10527,11 @@ var ExtensionBlocks = /*#__PURE__*/function () {
           // console.log('cloudConfig_mkey:', firebaseConfig);
           if (masterSha256 != '' && masterSha256 != undefined) {
             vr(wn(db, 'card', uniSha256)).then(function (ckey) {
-              console.log("NumberBank rep 00");
-
+              // console.log("NumberBank rep 00");
               if (ckey.exists()) {
-                console.log("NumberBank rep 01");
+                // console.log("NumberBank rep 01");
                 vr(wn(db, 'card', uniSha256)).then(function (doc) {
-                  console.log("NumberBank rep 02");
+                  // console.log("NumberBank rep 02");
                   var data = doc.data();
                   cloudNum = data.number;
                 }).then(function () {
@@ -10546,7 +10540,7 @@ var ExtensionBlocks = /*#__PURE__*/function () {
                   console.error("Error getting document: ", error);
                 });
               } else {
-                //console.log("No Card!");
+                // console.log("No Card!");
                 cloudNum = '';
                 inoutFlag = false;
               }
@@ -10558,13 +10552,12 @@ var ExtensionBlocks = /*#__PURE__*/function () {
             // doc.data() will be undefined in this case
             console.log("No MasterKey!");
             inoutFlag = false;
-          }
+          } // console.log("NumberBank rep 03");
 
-          console.log("NumberBank rep 03");
         });
-      }
+      } // console.log("NumberBank rep ioWaiter");
 
-      console.log("NumberBank rep ioWaiter");
+
       return reportNumWaiter(interval.MsRep);
     }
   }, {
@@ -10603,15 +10596,14 @@ var ExtensionBlocks = /*#__PURE__*/function () {
           // console.log('cloudConfig_mkey:', firebaseConfig);
           if (masterSha256 != '' && masterSha256 != undefined) {
             vr(wn(db, 'card', uniSha256)).then(function (ckey) {
-              console.log("NumberBank avl 00");
-
+              // console.log("NumberBank avl 00");
               if (ckey.exists()) {
-                console.log("NumberBank avl YES");
+                // console.log("NumberBank avl YES");
                 inoutFlag = false;
                 availableFlag = true;
               } else {
-                console.log("NumberBank avl NO"); //console.log("No Available!");
-
+                // console.log("NumberBank avl NO");
+                // console.log("No Available!");
                 inoutFlag = false;
                 availableFlag = false;
               }
@@ -10625,13 +10617,12 @@ var ExtensionBlocks = /*#__PURE__*/function () {
             console.log("No MasterKey!");
             inoutFlag = false;
             availableFlag = false;
-          }
+          } // console.log("NumberBank avl 03");
 
-          console.log("NumberBank avl 03");
         });
-      }
+      } // console.log("NumberBank avl ioWaiter");
 
-      console.log("NumberBank avl ioWaiter");
+
       return availableWaiter(interval.MsAvl);
     }
   }, {
@@ -10683,18 +10674,18 @@ var ExtensionBlocks = /*#__PURE__*/function () {
         interval.MsSet = resBody.intervalMsSet;
         interval.MsGet = resBody.intervalMsGet;
         interval.MsRep = resBody.intervalMsRep;
-        interval.MsAvl = resBody.intervalMsAvl;
-        console.log('cloudConfig_mkey:', cloudConfig_mkey);
-        console.log('interval:', interval);
-        console.log('firebaseConfig（復号前）:', firebaseConfig);
+        interval.MsAvl = resBody.intervalMsAvl; // console.log('cloudConfig_mkey:', cloudConfig_mkey);
+        // console.log('interval:', interval);
+        // console.log('firebaseConfig（復号前）:', firebaseConfig);
+
         inoutFlag = false;
         crypt_decode(cloudConfig_mkey, firebaseConfig); // crypt_decode(JSON.parse(cloudConfig_mkey), firebaseConfig);
         // console.log('複号化から戻り');
 
         return ioWaiter(1);
       }).then(function () {
-        inoutFlag = true;
-        console.log('firebaseConfig（復号後）:', firebaseConfig); // Initialize Firebase
+        inoutFlag = true; // console.log('firebaseConfig（復号後）:', firebaseConfig);
+        // Initialize Firebase
 
         if (cloudFlag) {
           cn(db).then(function () {
@@ -11139,16 +11130,16 @@ function crypt_decode(cryptedConfigData, decodedConfigData) {
     return;
   }
 
-  inoutFlag = true;
-  console.log('inoutFlag(decode start):', inoutFlag);
+  inoutFlag = true; // console.log('inoutFlag(decode start):', inoutFlag);
+
   decodedConfigData.cccCheck = cryptedConfigData.cccCheck;
   var cccCheck = de_crt(cryptedConfigData.cccCheck);
   var ckey;
 
   switch (cryptedConfigData.cloudType) {
     case 'firestore':
-      console.log('switch to Firebase!'); // masterKeyをハッシュ化
-
+      // console.log('switch to Firebase!');
+      // masterKeyをハッシュ化
       crypto.subtle.digest('SHA-256', encoder.encode(masterKey)).then(function (masterStr) {
         // masterKeyからckey生成
         return crypto.subtle.importKey('raw', masterStr, 'AES-CTR', false, ['encrypt', 'decrypt']);
@@ -11190,8 +11181,8 @@ function crypt_decode(cryptedConfigData, decodedConfigData) {
           length: 64
         }, ckey, de_get(cryptedConfigData.projectId));
       }).then(function (decodedData) {
-        console.log('decodedConfigData.projectId(de_disp):', de_disp(decodedData));
-        console.log('decodedConfigData.projectId(non_de_disp):', decodedData);
+        // console.log('decodedConfigData.projectId(de_disp):', de_disp(decodedData));
+        // console.log('decodedConfigData.projectId(non_de_disp):', decodedData);
         decodedConfigData.projectId = de_disp(decodedData); // storageBucket
 
         return crypto.subtle.decrypt({
@@ -11240,12 +11231,12 @@ function crypt_decode(cryptedConfigData, decodedConfigData) {
       break;
 
     case 'dynamo':
-      console.log('switch to Dynamo!');
+      // console.log('switch to Dynamo!');
       inoutFlag = false;
       break;
 
     default:
-      console.log('switch doesnt work!');
+      // console.log('switch doesnt work!');
       inoutFlag = false;
       break;
   }
