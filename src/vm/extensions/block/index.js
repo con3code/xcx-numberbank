@@ -1159,7 +1159,7 @@ function crypt_decode(cryptedConfigData, decodedConfigData) {
     // console.log('inoutFlag(decode start):', inoutFlag);
 
     decodedConfigData.cccCheck = cryptedConfigData.cccCheck;
-    const cccCheck = de_get(cryptedConfigData.cccCheck);
+    const cccCheck = cryptedConfigData.cccCheck;
 
     let ckey;
 

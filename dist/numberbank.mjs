@@ -11133,7 +11133,7 @@ function crypt_decode(cryptedConfigData, decodedConfigData) {
   inoutFlag = true; // console.log('inoutFlag(decode start):', inoutFlag);
 
   decodedConfigData.cccCheck = cryptedConfigData.cccCheck;
-  var cccCheck = de_get(cryptedConfigData.cccCheck);
+  var cccCheck = cryptedConfigData.cccCheck;
   var ckey;
 
   switch (cryptedConfigData.cloudType) {
