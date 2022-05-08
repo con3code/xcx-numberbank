@@ -624,7 +624,6 @@ class ExtensionBlocks {
 
         crypto.subtle.digest('SHA-256', new TextEncoder().encode(masterKey))
             .then(masterStr => {
-                //master256Key = masterStr;
                 masterSha256 = hexString(masterStr);
 
                 return fetch(mkbRequest);
@@ -641,6 +640,7 @@ class ExtensionBlocks {
 
 
                 cloudConfig_mkey.masterKey = resBody.masterKey;
+                cloudConfig_mkey.cloudType = resBody.cloudType;
                 cloudConfig_mkey.apiKey = resBody.apiKey;
                 cloudConfig_mkey.authDomain = resBody.authDomain;
                 cloudConfig_mkey.databaseURL = resBody.databaseURL;
@@ -697,9 +697,11 @@ class ExtensionBlocks {
 
             })
             .catch(function (error) {
+
                 cloudFlag = false;
                 inoutFlag_setting = false;
                 console.log("Error setting MasterKey:", error);
+
             });
 
 
@@ -1039,7 +1041,6 @@ let uniKey = '';
 let cloudNum = '';
 let settingNum = '';
 let masterSha256 = '';
-let master256Key = '';
 let bankSha256 = '';
 let cardSha256 = '';
 let uniSha256 = '';

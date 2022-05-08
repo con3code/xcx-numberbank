@@ -10658,7 +10658,6 @@ var ExtensionBlocks = /*#__PURE__*/function () {
       }
 
       crypto.subtle.digest('SHA-256', new TextEncoder().encode(masterKey)).then(function (masterStr) {
-        //master256Key = masterStr;
         masterSha256 = hexString(masterStr);
         return fetch(mkbRequest);
       }).then(function (response) {
@@ -10669,6 +10668,7 @@ var ExtensionBlocks = /*#__PURE__*/function () {
         }
       }).then(function (resBody) {
         cloudConfig_mkey.masterKey = resBody.masterKey;
+        cloudConfig_mkey.cloudType = resBody.cloudType;
         cloudConfig_mkey.apiKey = resBody.apiKey;
         cloudConfig_mkey.authDomain = resBody.authDomain;
         cloudConfig_mkey.databaseURL = resBody.databaseURL;
