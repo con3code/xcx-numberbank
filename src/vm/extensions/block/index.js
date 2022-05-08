@@ -632,7 +632,7 @@ class ExtensionBlocks {
             .then(response => {
 
                 if (response.ok) {
-                    resBody = response.json();
+                    let resBody = response.json();
                     
                     cloudConfig_mkey.masterKey = resBody.masterKey;
                     cloudConfig_mkey.cloudType = resBody.cloudType;

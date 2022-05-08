@@ -10662,7 +10662,7 @@ var ExtensionBlocks = /*#__PURE__*/function () {
         return fetch(mkbRequest);
       }).then(function (response) {
         if (response.ok) {
-          resBody = response.json();
+          var resBody = response.json();
           cloudConfig_mkey.masterKey = resBody.masterKey;
           cloudConfig_mkey.cloudType = resBody.cloudType;
           cloudConfig_mkey.apiKey = resBody.apiKey;
