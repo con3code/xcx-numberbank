@@ -10637,14 +10637,12 @@ var ExtensionBlocks = /*#__PURE__*/function () {
     value: function setMaster(args) {
       if (args.KEY == '') {
         return;
-      } //if (inoutFlag) { return; }
-
+      }
 
       if (inoutFlag_setting) {
         return;
       }
 
-      inoutFlag = true;
       inoutFlag_setting = true;
       masterSha256 = '';
       masterKey = args.KEY;

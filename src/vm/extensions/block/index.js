@@ -605,10 +605,7 @@ class ExtensionBlocks {
 
         if (args.KEY == '') { return; }
 
-
-        //if (inoutFlag) { return; }
         if (inoutFlag_setting) { return; }
-        inoutFlag = true;
         inoutFlag_setting = true;
 
         masterSha256 = '';
@@ -637,7 +634,6 @@ class ExtensionBlocks {
                 }
 
             }).then((resBody) => {
-
 
                 cloudConfig_mkey.masterKey = resBody.masterKey;
                 cloudConfig_mkey.cloudType = resBody.cloudType;
