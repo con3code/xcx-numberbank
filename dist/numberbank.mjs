@@ -11111,6 +11111,12 @@ var cloudConfig_mkey = {
   Expiration: '',
   cccCheck: ''
 }; // データ暗号化の下処理
+/////////////////////////////////
+/////////////////////////////////
+
+function en_org(data) {
+  return encoder.encode(data);
+}
 
 function de_get(data) {
   return gn.fromBase64String(data).toUint8Array();
@@ -11140,7 +11146,7 @@ function crypt_decode(cryptedConfigData, decodedConfigData) {
     case 'firestore':
       console.log('switch to Firebase!'); // masterKeyをハッシュ化
 
-      crypto.subtle.digest('SHA-256', de_get(masterKey)).then(function (masterStr) {
+      crypto.subtle.digest('SHA-256', en_org(masterKey)).then(function (masterStr) {
         // masterKeyからckey生成
         return crypto.subtle.importKey('raw', masterStr, 'AES-CTR', false, ['encrypt', 'decrypt']);
       }).then(function (encodedKey) {
