@@ -3,7 +3,7 @@ import ArgumentType from '../../extension-support/argument-type';
 import translations from './translations.json';
 import blockIcon from './numberbank_icon.png';
 import { initializeApp } from 'firebase/app';
-import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore/lite';
+import { getFirestore, doc, getDoc, setDoc, terminate } from 'firebase/firestore/lite';
 import Variable from '../../engine/variable';
 
 
@@ -605,6 +605,12 @@ class ExtensionBlocks {
 
         if (args.KEY == '') { return; }
 
+
+        if (inoutFlag) { return; }
+        if (inoutFlag_setting) { return; }
+        inoutFlag = true;
+        inoutFlag_setting = true;
+
         masterSha256 = '';
         masterKey = args.KEY;
 
@@ -613,7 +619,6 @@ class ExtensionBlocks {
         mkbRequest = new Request(mkbUrl, { mode: 'cors' });
         fetch(mkbRequest)
             .then(response => {
-                inoutFlag = true;
 
                 if (response.ok) {
                     return response.json();
@@ -625,82 +630,81 @@ class ExtensionBlocks {
 
 
                 cloudConfig_mkey.masterKey = resBody.masterKey;
-                cloudConfig_mkey.apiKey = firebaseConfig.apiKey = resBody.apiKey;
-                cloudConfig_mkey.authDomain = firebaseConfig.authDomain = resBody.authDomain;
-                cloudConfig_mkey.databaseURL = firebaseConfig.databaseURL = resBody.databaseURL;
-                cloudConfig_mkey.projectId = firebaseConfig.projectId = resBody.projectId;
-                cloudConfig_mkey.storageBucket = firebaseConfig.storageBucket = resBody.storageBucket;
-                cloudConfig_mkey.messagingSenderId = firebaseConfig.messagingSenderId = resBody.messagingSenderId;
-                cloudConfig_mkey.appId = firebaseConfig.appId = resBody.appId;
-                cloudConfig_mkey.measurementId = firebaseConfig.measurementId = resBody.measurementId;
+                cloudConfig_mkey.apiKey = resBody.apiKey;
+                cloudConfig_mkey.authDomain = resBody.authDomain;
+                cloudConfig_mkey.databaseURL = resBody.databaseURL;
+                cloudConfig_mkey.projectId = resBody.projectId;
+                cloudConfig_mkey.storageBucket = resBody.storageBucket;
+                cloudConfig_mkey.messagingSenderId = resBody.messagingSenderId;
+                cloudConfig_mkey.appId = resBody.appId;
+                cloudConfig_mkey.measurementId = resBody.measurementId;
                 interval.MsPut = resBody.intervalMsPut;
                 interval.MsSet = resBody.intervalMsSet;
                 interval.MsGet = resBody.intervalMsGet;
                 interval.MsRep = resBody.intervalMsRep;
                 interval.MsAvl = resBody.intervalMsAvl;
 
-                // console.log('cloudConfig_mkey:', cloudConfig_mkey);
+                console.log('cloudConfig_mkey:', cloudConfig_mkey);
                 console.log('interval:', interval);
-                // console.log('cloudConfig_mkey:', firebaseConfig);
+                console.log('firebaseConfig（復号前）:', firebaseConfig);
 
-
-                inoutFlag = false;
-
+                crypt_decode(cloudConfig_mkey, firebaseConfig);
+                // console.log('複号化から戻り');
                 return ioWaiter(1);
+
             }).then(() => {
                 inoutFlag = true;
+
+                console.log('firebaseConfig（複合後）:', firebaseConfig);
+
                 // Initialize Firebase
 
-                fbApp = initializeApp(firebaseConfig);
-                db = getFirestore(fbApp);
-                // console.log('db:', db);
+                if(cloudFlag){
+                    terminate(db).then(() => {
+                        cloudFlag = false;
+                        fbApp = initializeApp(firebaseConfig);
+                        db = getFirestore(fbApp);
+        
+                    });
+                } else {
 
-                /*
-                try {
-                    fbApp = initializeApp(cloudConfig_mkey);
+                    fbApp = initializeApp(firebaseConfig);
                     db = getFirestore(fbApp);
-                } catch (e) {
-                    // v8
-                    firebase.default.initializeApp(cloudConfig_mkey);
-                    db = firebase.default.firestore();
-                    // firebase.initializeApp(cloudConfig_mkey);
-                    // db = firebase.firestore();
+                    // console.log('db:', db);
+    
                 }
-                */
 
-                // bankDb = collection(db, 'bank');
-                // cardDb = collection(db, 'card');
+            }).then(() => {
 
-                // console.log('fb_db_cpmplete');
-
-                inoutFlag = false;
-                return ioWaiter(1);
+                if (!crypto || !crypto.subtle) {
+                    throw Error("crypto.subtle is not supported.");
+                }
+        
+                crypto.subtle.digest('SHA-256', new TextEncoder().encode(masterKey))
+                    .then(masterStr => {
+                        masterSha256 = hexString(masterStr);
+        
+                        return sleep(1);
+                    })
+                    .then(() => {
+                        cloudFlag = true;
+                        inoutFlag_setting = false;
+                        // console.log("MasterKey:", masterKey);
+                        // console.log("masterSha256:", masterSha256);
+                        console.log("MasterKey setted!");
+        
+                    })
+                    .catch(function (error) {
+                        cloudFlag = false;
+                        inoutFlag_setting = false;
+                        console.log("Error setting MasterKey:", error);
+                    });
+                
 
             });
 
 
-
-        if (!crypto || !crypto.subtle) {
-            throw Error("crypto.subtle is not supported.");
-        }
-
-        crypto.subtle.digest('SHA-256', new TextEncoder().encode(masterKey))
-            .then(masterStr => {
-                masterSha256 = hexString(masterStr);
-
-                return sleep(1);
-            })
-            .then(() => {
-                // console.log("MasterKey:", masterKey);
-                // console.log("masterSha256:", masterSha256);
-                console.log("MasterKey setted!");
-
-            })
-            .catch(function (error) {
-                console.log("Error setting MasterKey:", error);
-            });
-
-
+        return cloudWaiter(1);
 
     }
 
@@ -962,6 +966,20 @@ function availableWaiter(msec) {
         });
 }
 
+function cloudWaiter(msec) {
+    return new Promise((resolve, reject) =>
+        setTimeout(() => {
+            if (inoutFlag_setting) {
+                reject();
+            } else {
+                resolve(cloudFlag);
+            }
+        }, msec)
+    )
+        .catch(() => {
+            return cloudWaiter(msec);
+        });
+}
 
 
 
@@ -1026,7 +1044,9 @@ let bankSha256 = '';
 let cardSha256 = '';
 let uniSha256 = '';
 let inoutFlag = false;
+let inoutFlag_setting = false;
 let availableFlag = false;
+let cloudFlag = false;
 let mkbRequest;
 let mkbUrl;
 const mkbBaseUrl = 'https://us-central1-masterkey-bank.cloudfunctions.net/mkeybank/';
@@ -1040,7 +1060,7 @@ const interval = {
     MsAvl: 100,
 }
 
-let firebaseConfig = {
+const firebaseConfig = {
     apiKey: "",
     authDomain: "",
     databaseURL: "",
@@ -1053,6 +1073,7 @@ let firebaseConfig = {
 
 // 格納用予備
 const cloudConfig_mkb = {
+    masterKey: '',
     cloudType: '',
     apiKey: '',
     authDomain: '',
@@ -1066,12 +1087,14 @@ const cloudConfig_mkb = {
     AccessKeyId: '',
     SecretAccessKey: '',
     SessionToken: '',
-    Expiration: ''
+    Expiration: '',
+    cccCheck: '',
 };
 
 
 // mKey格納用
 const cloudConfig_mkey = {
+    masterKey: '',
     cloudType: '',
     apiKey: '',
     authDomain: '',
@@ -1085,8 +1108,157 @@ const cloudConfig_mkey = {
     AccessKeyId: '',
     SecretAccessKey: '',
     SessionToken: '',
-    Expiration: ''
+    Expiration: '',
+    cccCheck: '',
 };
+
+
+
+function de_get(data) {
+    return firestore.Bytes.fromBase64String(data).toUint8Array();
+}
+
+function de_disp(data) {
+    return deoder_utf8.decode(data);
+}
+
+
+function de_crt(data) {
+    return firestore.Bytes.fromBase64String(data).toUint8Array();
+}
+
+
+
+function crypt_decode(cryptedConfigData, decodedConfigData) {
+    if (inoutFlag) { return; }
+    inoutFlag = true;
+    // console.log('inoutFlag(decode start):', inoutFlag);
+
+    const cccCheck = decodedConfigData.cccCheck = de_crt(cryptedConfigData.cccCheck);
+
+    let ckey;
+
+    switch (cryptedConfigData.cloudType) {
+        case 'firestore':
+            console.log('switch to Firebase!');
+
+            //
+            // Uidのハッシュ化
+            crypto.subtle.digest('SHA-256', encoder.encode(uId))
+                .then((masterStr) => {
+
+                    // uIdからckey生成
+                    return crypto.subtle.importKey('raw', masterStr, 'AES-CTR', false, ['encrypt', 'decrypt']);
+                })
+                .then((encodedKey) => {
+                    ckey = encodedKey;
+                    // console.log('ckey:', ckey);
+
+                    // uId-ckeyでmasterKeyを復号
+                    return crypto.subtle.decrypt({ name: 'AES-CTR', counter: cccCheck, length: 64 }, ckey, de_get(cryptedConfigData.masterKey));
+                })
+                .then((decodedData) => {
+                    console.log('decodedConfigData.masterKey:', de_disp(decodedData));
+                    decodedConfigData.masterKey = de_disp(decodedData);
+
+                    //
+                    // masterKeyのハッシュ化
+                    return crypto.subtle.digest('SHA-256', encoder.encode(decodedConfigData.masterKey));
+                })
+                .then((masterStr) => {
+
+                    // masterKeyからckey生成
+                    return crypto.subtle.importKey('raw', masterStr, 'AES-CTR', false, ['encrypt', 'decrypt']);
+                }).then((encodedKey) => {
+                    ckey = encodedKey;
+                    // console.log('ckey:', ckey);
+
+                    // 復号化開始
+                    // apiKey
+                    return crypto.subtle.decrypt({ name: 'AES-CTR', counter: cccCheck, length: 64 }, ckey, de_get(cryptedConfigData.apiKey));
+                })
+                .then((decodedData) => {
+                    // console.log('decodedConfigData.apiKey:', de_disp(decodedData));
+                    decodedConfigData.apiKey = de_disp(decodedData);
+
+                    // authDomain
+                    return crypto.subtle.decrypt({ name: 'AES-CTR', counter: cccCheck, length: 64 }, ckey, de_get(cryptedConfigData.authDomain));
+                })
+                .then((decodedData) => {
+                    // console.log('decodedConfigData.authDomain:', de_disp(decodedData));
+                    decodedConfigData.authDomain = de_disp(decodedData);
+
+                    // databaseURL
+                    return crypto.subtle.decrypt({ name: 'AES-CTR', counter: cccCheck, length: 64 }, ckey, de_get(cryptedConfigData.databaseURL));
+                })
+                .then((decodedData) => {
+                    // console.log('decodedConfigData.databaseURL:', de_disp(decodedData));
+                    decodedConfigData.databaseURL = de_disp(decodedData);
+
+                    // projectId
+                    return crypto.subtle.decrypt({ name: 'AES-CTR', counter: cccCheck, length: 64 }, ckey, de_get(cryptedConfigData.projectId));
+                })
+                .then((decodedData) => {
+                    console.log('decodedConfigData.projectId:', de_disp(decodedData));
+                    decodedConfigData.projectId = de_disp(decodedData);
+
+                    // storageBucket
+                    return crypto.subtle.decrypt({ name: 'AES-CTR', counter: cccCheck, length: 64 }, ckey, de_get(cryptedConfigData.storageBucket));
+                })
+                .then((decodedData) => {
+                    // console.log('decodedConfigData.storageBucket:', de_disp(decodedData));
+                    decodedConfigData.storageBucket = de_disp(decodedData);
+
+                    // messagingSenderId
+                    return crypto.subtle.decrypt({ name: 'AES-CTR', counter: cccCheck, length: 64 }, ckey, de_get(cryptedConfigData.messagingSenderId));
+                })
+                .then((decodedData) => {
+                    // console.log('decodedConfigData.messagingSenderId:', de_disp(decodedData));
+                    decodedConfigData.messagingSenderId = de_disp(decodedData);
+
+                    // appId
+                    return crypto.subtle.decrypt({ name: 'AES-CTR', counter: cccCheck, length: 64 }, ckey, de_get(cryptedConfigData.appId));
+                })
+                .then((decodedData) => {
+                    // console.log('decodedConfigData.appId:', de_disp(decodedData));
+                    decodedConfigData.appId = de_disp(decodedData);
+
+                    // measurementId
+                    return crypto.subtle.decrypt({ name: 'AES-CTR', counter: cccCheck, length: 64 }, ckey, de_get(cryptedConfigData.measurementId));
+                })
+                .then((decodedData) => {
+                    // console.log('decodedConfigData.measurementId:', de_disp(decodedData));
+                    decodedConfigData.measurementId = de_disp(decodedData);
+
+                })
+                .then(() => {
+                    // console.log('key_org_result_textContent:', JSON.stringify(decodedConfigData));
+                    // console.log('key_org_result_textContent:', JSON.stringify(decodedConfigData, null, '\t'));
+
+                    inoutFlag = false;
+                    // console.log('inoutFlag(decode end):', inoutFlag);
+                    return decodedConfigData;
+
+                })
+                .catch((err) => {
+                    console.log('decoding error:', err);
+                });
+
+            break;
+
+        case 'dynamo':
+            console.log('switch to Dynamo!');
+
+            break;
+
+        default:
+            console.log('switch doesnt work!');
+
+            break;
+    }
+
+
+}
 
 
 
