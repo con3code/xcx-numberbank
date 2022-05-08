@@ -11130,14 +11130,17 @@ function crypt_decode(cryptedConfigData, decodedConfigData) {
 
   inoutFlag = true; // console.log('inoutFlag(decode start):', inoutFlag);
 
-  var cccCheck = decodedConfigData.cccCheck = de_crt(cryptedConfigData.cccCheck);
+  var cccCheck = de_crt(cryptedConfigData.cccCheck);
   var ckey;
 
   switch (cryptedConfigData.cloudType) {
     case 'firestore':
-      console.log('switch to Firebase!'); // masterKeyからckey生成
+      console.log('switch to Firebase!'); // masterKeyをハッシュ化
 
-      crypto.subtle.importKey('raw', masterKey, 'AES-CTR', false, ['encrypt', 'decrypt']).then(function (encodedKey) {
+      crypto.subtle.digest('SHA-256', encoder.encode(masterKey)).then(function (masterStr) {
+        // masterKeyからckey生成
+        return crypto.subtle.importKey('raw', masterStr, 'AES-CTR', false, ['encrypt', 'decrypt']);
+      }).then(function (encodedKey) {
         ckey = encodedKey; // console.log('ckey:', ckey);
         // 復号化開始
         // apiKey
