@@ -1146,7 +1146,7 @@ function crypt_decode(cryptedConfigData, decodedConfigData) {
             console.log('switch to Firebase!');
 
             // masterKeyをハッシュ化
-            crypto.subtle.digest('SHA-256', encoder.encode(masterKey))
+            crypto.subtle.digest('SHA-256', new TextEncoder().encode(masterKey))
                 .then((masterStr) => {
 
                     // masterKeyからckey生成
