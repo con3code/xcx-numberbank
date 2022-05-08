@@ -587,7 +587,7 @@ class ExtensionBlocks {
         masterSha256 = '';
         masterKey = args.KEY;
 
-        mkbUrl = mkbBaseUrl + '?mkey=' + masterKey;
+        mkbUrl = FBaseUrl + 'mkeybank/?mkey=' + masterKey;
         mkbRequest = new Request(mkbUrl, { mode: 'cors' });
 
 
@@ -639,12 +639,19 @@ class ExtensionBlocks {
                 // Initialize Firebase
 
                 if (cloudFlag) {
-                    terminate(db).then(() => {
+
+                    deleteApp(fbApp)
+                    .then(() => {
                         cloudFlag = false;
                         fbApp = initializeApp(firebaseConfig);
                         db = getFirestore(fbApp);
                         inoutFlag = false;
-                    });
+                    })
+                    .catch((err) => {
+                        console.log('Err deleting app:', err);
+                        inoutFlag = false;
+                    })
+
                 } else {
 
                     fbApp = initializeApp(firebaseConfig);
@@ -878,9 +885,7 @@ class ExtensionBlocks {
     }
 
 
-
 }
-
 
 
 
@@ -991,7 +996,7 @@ let availableFlag = false;
 let cloudFlag = false;
 let mkbRequest;
 let mkbUrl;
-const mkbBaseUrl = 'https://us-central1-masterkey-bank.cloudfunctions.net/mkeybank/';
+const FBaseUrl = 'https://us-central1-masterkey-bank.cloudfunctions.net/';
 
 
 const interval = {

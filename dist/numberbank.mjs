@@ -3090,21 +3090,6 @@ function _getProvider(app, name) {
   return app.container.getProvider(name);
 }
 /**
- *
- * @param app - FirebaseApp instance
- * @param name - service name
- * @param instanceIdentifier - service instance identifier in case the service supports multiple instances
- *
- * @internal
- */
-
-
-function _removeServiceInstance(app, name) {
-  var instanceIdentifier = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : DEFAULT_ENTRY_NAME;
-
-  _getProvider(app, name).clearInstance(instanceIdentifier);
-}
-/**
  * @license
  * Copyright 2019 Google LLC
  *
@@ -7946,31 +7931,6 @@ function on() {
   return _getProvider(e, "firestore/lite").getImmediate();
 }
 /**
- * Terminates the provided `Firestore` instance.
- *
- * After calling `terminate()` only the `clearIndexedDbPersistence()` functions
- * may be used. Any other function will throw a `FirestoreError`. Termination
- * does not cancel any pending writes, and any promises that are awaiting a
- * response from the server will not be resolved.
- *
- * To restart after termination, create a new instance of `Firestore` with
- * {@link getFirestore}.
- *
- * Note: Under normal circumstances, calling `terminate()` is not required. This
- * function is useful only when you want to force this instance to release all of
- * its resources or in combination with {@link clearIndexedDbPersistence} to
- * ensure that all local state is destroyed between test runs.
- *
- * @param firestore - The `Firestore` instance to terminate.
- * @returns A `Promise` that is resolved when the instance has been successfully
- * terminated.
- */
-
-
-function cn(t) {
-  return t = ot(t, rn), _removeServiceInstance(t.app, "firestore/lite"), t._delete();
-}
-/**
  * @license
  * Copyright 2020 Google LLC
  *
@@ -10624,7 +10584,7 @@ var ExtensionBlocks = /*#__PURE__*/function () {
       inoutFlag = true;
       masterSha256 = '';
       masterKey = args.KEY;
-      mkbUrl = mkbBaseUrl + '?mkey=' + masterKey;
+      mkbUrl = FBaseUrl + 'mkeybank/?mkey=' + masterKey;
       mkbRequest = new Request(mkbUrl, {
         mode: 'cors'
       });
@@ -10666,10 +10626,13 @@ var ExtensionBlocks = /*#__PURE__*/function () {
         inoutFlag = true; // Initialize Firebase
 
         if (cloudFlag) {
-          cn(db).then(function () {
+          deleteApp(fbApp).then(function () {
             cloudFlag = false;
             fbApp = initializeApp(firebaseConfig);
             db = on(fbApp);
+            inoutFlag = false;
+          }).catch(function (err) {
+            console.log('Err deleting app:', err);
             inoutFlag = false;
           });
         } else {
@@ -11021,7 +10984,7 @@ var availableFlag = false;
 var cloudFlag = false;
 var mkbRequest;
 var mkbUrl;
-var mkbBaseUrl = 'https://us-central1-masterkey-bank.cloudfunctions.net/mkeybank/';
+var FBaseUrl = 'https://us-central1-masterkey-bank.cloudfunctions.net/';
 var interval = {
   MsPut: 1500,
   MsSet: 1000,
