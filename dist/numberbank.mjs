@@ -10686,7 +10686,8 @@ var ExtensionBlocks = /*#__PURE__*/function () {
         console.log('cloudConfig_mkey:', cloudConfig_mkey);
         console.log('interval:', interval);
         console.log('firebaseConfig（復号前）:', firebaseConfig);
-        crypt_decode(cloudConfig_mkey, firebaseConfig); // console.log('複号化から戻り');
+        crypt_decode(cloudConfig_mkey, firebaseConfig); // crypt_decode(JSON.parse(cloudConfig_mkey), firebaseConfig);
+        // console.log('複号化から戻り');
 
         return ioWaiter(1);
       }).then(function () {
@@ -10707,13 +10708,15 @@ var ExtensionBlocks = /*#__PURE__*/function () {
         return sleep(1);
       }).then(function () {
         cloudFlag = true;
-        inoutFlag_setting = false; // console.log("MasterKey:", masterKey);
+        inoutFlag_setting = false;
+        inoutFlag = false; // console.log("MasterKey:", masterKey);
         // console.log("masterSha256:", masterSha256);
 
         console.log("MasterKey setted!");
       }).catch(function (error) {
         cloudFlag = false;
         inoutFlag_setting = false;
+        inoutFlag = false;
         console.log("Error setting MasterKey:", error);
       });
       return cloudWaiter(1);

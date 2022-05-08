@@ -661,6 +661,7 @@ class ExtensionBlocks {
                 console.log('firebaseConfig（復号前）:', firebaseConfig);
 
                 crypt_decode(cloudConfig_mkey, firebaseConfig);
+                // crypt_decode(JSON.parse(cloudConfig_mkey), firebaseConfig);
                 // console.log('複号化から戻り');
                 return ioWaiter(1);
 
@@ -692,6 +693,7 @@ class ExtensionBlocks {
 
                 cloudFlag = true;
                 inoutFlag_setting = false;
+                inoutFlag = false;
                 // console.log("MasterKey:", masterKey);
                 // console.log("masterSha256:", masterSha256);
                 console.log("MasterKey setted!");
@@ -701,6 +703,7 @@ class ExtensionBlocks {
 
                 cloudFlag = false;
                 inoutFlag_setting = false;
+                inoutFlag = false;
                 console.log("Error setting MasterKey:", error);
 
             });
