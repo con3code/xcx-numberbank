@@ -3359,6 +3359,71 @@ function getApp() {
 
   return app;
 }
+/**
+ * Renders this app unusable and frees the resources of all associated
+ * services.
+ *
+ * @example
+ * ```javascript
+ * deleteApp(app)
+ *   .then(function() {
+ *     console.log("App deleted successfully");
+ *   })
+ *   .catch(function(error) {
+ *     console.log("Error deleting app:", error);
+ *   });
+ * ```
+ *
+ * @public
+ */
+
+
+function deleteApp(_x) {
+  return _deleteApp.apply(this, arguments);
+}
+/**
+ * Registers a library's name and version for platform logging purposes.
+ * @param library - Name of 1p or 3p library (e.g. firestore, angularfire)
+ * @param version - Current version of that library.
+ * @param variant - Bundle variant, e.g., node, rn, etc.
+ *
+ * @public
+ */
+
+
+function _deleteApp() {
+  _deleteApp = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee7(app) {
+    var name;
+    return regenerator.wrap(function _callee7$(_context7) {
+      while (1) {
+        switch (_context7.prev = _context7.next) {
+          case 0:
+            name = app.name;
+
+            if (!_apps.has(name)) {
+              _context7.next = 6;
+              break;
+            }
+
+            _apps.delete(name);
+
+            _context7.next = 5;
+            return Promise.all(app.container.getProviders().map(function (provider) {
+              return provider.delete();
+            }));
+
+          case 5:
+            app.isDeleted = true;
+
+          case 6:
+          case "end":
+            return _context7.stop();
+        }
+      }
+    }, _callee7);
+  }));
+  return _deleteApp.apply(this, arguments);
+}
 
 function registerVersion(libraryKeyOrName, version, variant) {
   var _a; // TODO: We can use this check to whitelist strings when/if we set up
