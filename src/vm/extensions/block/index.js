@@ -649,6 +649,7 @@ class ExtensionBlocks {
                 cloudConfig_mkey.messagingSenderId = resBody.messagingSenderId;
                 cloudConfig_mkey.appId = resBody.appId;
                 cloudConfig_mkey.measurementId = resBody.measurementId;
+                cloudConfig_mkey.cccCheck = resBody.cccCheck;
                 interval.MsPut = resBody.intervalMsPut;
                 interval.MsSet = resBody.intervalMsSet;
                 interval.MsGet = resBody.intervalMsGet;
