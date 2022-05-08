@@ -7,6 +7,9 @@ import * as firestore from 'firebase/firestore/lite';
 import { getFirestore, doc, getDoc, setDoc, terminate } from 'firebase/firestore/lite';
 import Variable from '../../engine/variable';
 
+const encoder = new TextEncoder();
+const deoder_utf8 = new TextDecoder('utf-8');
+
 
 /**
  * Formatter which is used for translation.
@@ -127,20 +130,20 @@ class ExtensionBlocks {
 
         if (bankKey != '' && bankKey != undefined) {
             //bankKey
-            crypto.subtle.digest('SHA-256', new TextEncoder().encode(bankKey))
+            crypto.subtle.digest('SHA-256', encoder.encode(bankKey))
                 .then(bankStr => {
                     bankSha256 = hexString(bankStr);
                     //console.log("bankSha256: " + bankSha256);
 
                     //cardKey
-                    return crypto.subtle.digest('SHA-256', new TextEncoder().encode(cardKey));
+                    return crypto.subtle.digest('SHA-256', encoder.encode(cardKey));
                 })
                 .then(cardStr => {
                     cardSha256 = hexString(cardStr);
                     //console.log("cardSha256: " + cardSha256);
 
                     //uniKey
-                    return crypto.subtle.digest('SHA-256', new TextEncoder().encode(uniKey));
+                    return crypto.subtle.digest('SHA-256', encoder.encode(uniKey));
                 })
                 .then(uniStr => {
                     uniSha256 = hexString(uniStr);
@@ -223,20 +226,20 @@ class ExtensionBlocks {
 
         if (bankKey != '' && bankKey != undefined) {
             //bankKey
-            crypto.subtle.digest('SHA-256', new TextEncoder().encode(bankKey))
+            crypto.subtle.digest('SHA-256', encoder.encode(bankKey))
                 .then(bankStr => {
                     bankSha256 = hexString(bankStr);
                     //console.log("bankSha256: " + bankSha256);    
 
                     //cardKey
-                    return crypto.subtle.digest('SHA-256', new TextEncoder().encode(cardKey));
+                    return crypto.subtle.digest('SHA-256', encoder.encode(cardKey));
                 })
                 .then(cardStr => {
                     cardSha256 = hexString(cardStr);
                     //console.log("cardSha256: " + cardSha256);
 
                     //uniKey
-                    return crypto.subtle.digest('SHA-256', new TextEncoder().encode(uniKey));
+                    return crypto.subtle.digest('SHA-256', encoder.encode(uniKey));
                 })
                 .then(uniStr => {
                     uniSha256 = hexString(uniStr);
@@ -336,20 +339,20 @@ class ExtensionBlocks {
 
         if (bankKey != '' && bankKey != undefined) {
             //bankKey
-            crypto.subtle.digest('SHA-256', new TextEncoder().encode(bankKey))
+            crypto.subtle.digest('SHA-256', encoder.encode(bankKey))
                 .then(bankStr => {
                     bankSha256 = hexString(bankStr);
                     //console.log("bankSha256: " + bankSha256);
 
                     //cardKey
-                    return crypto.subtle.digest('SHA-256', new TextEncoder().encode(cardKey));
+                    return crypto.subtle.digest('SHA-256', encoder.encode(cardKey));
                 })
                 .then(cardStr => {
                     cardSha256 = hexString(cardStr);
                     //console.log("cardSha256: " + cardSha256);
 
                     //uniKey
-                    return crypto.subtle.digest('SHA-256', new TextEncoder().encode(uniKey));
+                    return crypto.subtle.digest('SHA-256', encoder.encode(uniKey));
                 })
                 .then(uniStr => {
                     uniSha256 = hexString(uniStr);
@@ -448,20 +451,20 @@ class ExtensionBlocks {
 
         if (bankKey != '' && bankKey != undefined) {
             //bankKey
-            crypto.subtle.digest('SHA-256', new TextEncoder().encode(bankKey))
+            crypto.subtle.digest('SHA-256', encoder.encode(bankKey))
                 .then(bankStr => {
                     bankSha256 = hexString(bankStr);
                     //console.log("bankSha256: " + bankSha256);
 
                     //cardKey
-                    return crypto.subtle.digest('SHA-256', new TextEncoder().encode(cardKey));
+                    return crypto.subtle.digest('SHA-256', encoder.encode(cardKey));
                 })
                 .then(cardStr => {
                     cardSha256 = hexString(cardStr);
                     //console.log("cardSha256: " + cardSha256);
 
                     //uniKey
-                    return crypto.subtle.digest('SHA-256', new TextEncoder().encode(uniKey));
+                    return crypto.subtle.digest('SHA-256', encoder.encode(uniKey));
                 })
                 .then(uniStr => {
                     uniSha256 = hexString(uniStr);
@@ -548,7 +551,7 @@ class ExtensionBlocks {
 
         if (bankKey != '' && bankKey != undefined) {
             //
-            crypto.subtle.digest('SHA-256', new TextEncoder().encode(uniKey))
+            crypto.subtle.digest('SHA-256', encoder.encode(uniKey))
                 .then(uniStr => {
                     uniSha256 = hexString(uniStr);
                     // console.log("uniSha256: " + uniSha256);
@@ -620,7 +623,7 @@ class ExtensionBlocks {
             throw Error("crypto.subtle is not supported.");
         }
 
-        crypto.subtle.digest('SHA-256', new TextEncoder().encode(masterKey))
+        crypto.subtle.digest('SHA-256', encoder.encode(masterKey))
             .then(masterStr => {
                 masterSha256 = hexString(masterStr);
 
@@ -1144,7 +1147,7 @@ function crypt_decode(cryptedConfigData, decodedConfigData) {
             console.log('switch to Firebase!');
 
             // masterKeyをハッシュ化
-            crypto.subtle.digest('SHA-256', new TextEncoder().encode(masterKey))
+            crypto.subtle.digest('SHA-256', encoder.encode(masterKey))
                 .then((masterStr) => {
 
                     // masterKeyからckey生成
