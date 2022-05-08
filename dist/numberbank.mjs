@@ -11111,7 +11111,7 @@ var cloudConfig_mkey = {
 };
 
 function de_get(data) {
-  return firestore.Bytes.fromBase64String(data).toUint8Array();
+  return gn.fromBase64String(data).toUint8Array();
 }
 
 function de_disp(data) {
@@ -11119,7 +11119,7 @@ function de_disp(data) {
 }
 
 function de_crt(data) {
-  return firestore.Bytes.fromBase64String(data).toUint8Array();
+  return gn.fromBase64String(data).toUint8Array();
 }
 
 function crypt_decode(cryptedConfigData, decodedConfigData) {
