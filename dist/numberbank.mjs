@@ -10646,6 +10646,7 @@ var ExtensionBlocks = /*#__PURE__*/function () {
       }
 
       inoutFlag_setting = true;
+      inoutFlag = true;
       masterSha256 = '';
       masterKey = args.KEY;
       mkbUrl = mkbBaseUrl + '?mkey=' + masterKey;
@@ -10662,33 +10663,34 @@ var ExtensionBlocks = /*#__PURE__*/function () {
         return fetch(mkbRequest);
       }).then(function (response) {
         if (response.ok) {
-          var resBody = response.json();
-          cloudConfig_mkey.masterKey = resBody.masterKey;
-          cloudConfig_mkey.cloudType = resBody.cloudType;
-          cloudConfig_mkey.apiKey = resBody.apiKey;
-          cloudConfig_mkey.authDomain = resBody.authDomain;
-          cloudConfig_mkey.databaseURL = resBody.databaseURL;
-          cloudConfig_mkey.projectId = resBody.projectId;
-          cloudConfig_mkey.storageBucket = resBody.storageBucket;
-          cloudConfig_mkey.messagingSenderId = resBody.messagingSenderId;
-          cloudConfig_mkey.appId = resBody.appId;
-          cloudConfig_mkey.measurementId = resBody.measurementId;
-          cloudConfig_mkey.cccCheck = resBody.cccCheck;
-          interval.MsPut = resBody.intervalMsPut;
-          interval.MsSet = resBody.intervalMsSet;
-          interval.MsGet = resBody.intervalMsGet;
-          interval.MsRep = resBody.intervalMsRep;
-          interval.MsAvl = resBody.intervalMsAvl;
-          console.log('cloudConfig_mkey:', cloudConfig_mkey);
-          console.log('interval:', interval);
-          console.log('firebaseConfig（復号前）:', firebaseConfig);
-          crypt_decode(cloudConfig_mkey, firebaseConfig); // crypt_decode(JSON.parse(cloudConfig_mkey), firebaseConfig);
-          // console.log('複号化から戻り');
-
-          return ioWaiter(1);
+          return response.json();
         } else {
           throw new Error('Unexpected responce status ${response.status} or content type');
         }
+      }).then(function (resBody) {
+        cloudConfig_mkey.masterKey = resBody.masterKey;
+        cloudConfig_mkey.cloudType = resBody.cloudType;
+        cloudConfig_mkey.apiKey = resBody.apiKey;
+        cloudConfig_mkey.authDomain = resBody.authDomain;
+        cloudConfig_mkey.databaseURL = resBody.databaseURL;
+        cloudConfig_mkey.projectId = resBody.projectId;
+        cloudConfig_mkey.storageBucket = resBody.storageBucket;
+        cloudConfig_mkey.messagingSenderId = resBody.messagingSenderId;
+        cloudConfig_mkey.appId = resBody.appId;
+        cloudConfig_mkey.measurementId = resBody.measurementId;
+        cloudConfig_mkey.cccCheck = resBody.cccCheck;
+        interval.MsPut = resBody.intervalMsPut;
+        interval.MsSet = resBody.intervalMsSet;
+        interval.MsGet = resBody.intervalMsGet;
+        interval.MsRep = resBody.intervalMsRep;
+        interval.MsAvl = resBody.intervalMsAvl;
+        console.log('cloudConfig_mkey:', cloudConfig_mkey);
+        console.log('interval:', interval);
+        console.log('firebaseConfig（復号前）:', firebaseConfig);
+        crypt_decode(cloudConfig_mkey, firebaseConfig); // crypt_decode(JSON.parse(cloudConfig_mkey), firebaseConfig);
+        // console.log('複号化から戻り');
+
+        return ioWaiter(1);
       }).then(function () {
         inoutFlag = true;
         console.log('firebaseConfig（復号後）:', firebaseConfig); // Initialize Firebase
@@ -10698,13 +10700,16 @@ var ExtensionBlocks = /*#__PURE__*/function () {
             cloudFlag = false;
             fbApp = initializeApp(firebaseConfig);
             db = on(fbApp);
+            inoutFlag = false;
           });
         } else {
           fbApp = initializeApp(firebaseConfig);
           db = on(fbApp); // console.log('db:', db);
+
+          inoutFlag = false;
         }
 
-        return sleep(1);
+        return ioWaiter(1);
       }).then(function () {
         cloudFlag = true;
         inoutFlag_setting = false;
