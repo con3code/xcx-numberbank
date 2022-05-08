@@ -1159,7 +1159,7 @@ function crypt_decode(cryptedConfigData, decodedConfigData) {
     // console.log('inoutFlag(decode start):', inoutFlag);
 
     decodedConfigData.cccCheck = cryptedConfigData.cccCheck;
-    const cccCheck = de_crt(cryptedConfigData.cccCheck);
+    const cccCheck = de_get(cryptedConfigData.cccCheck);
 
     let ckey;
 
@@ -1204,7 +1204,8 @@ function crypt_decode(cryptedConfigData, decodedConfigData) {
                     return crypto.subtle.decrypt({ name: 'AES-CTR', counter: cccCheck, length: 64 }, ckey, de_get(cryptedConfigData.projectId));
                 })
                 .then((decodedData) => {
-                    console.log('decodedConfigData.projectId:', de_disp(decodedData));
+                    console.log('decodedConfigData.projectId(de_disp):', de_disp(decodedData));
+                    console.log('decodedConfigData.projectId(non_de_disp):', decodedData);
                     decodedConfigData.projectId = de_disp(decodedData);
 
                     // storageBucket
@@ -1261,6 +1262,8 @@ function crypt_decode(cryptedConfigData, decodedConfigData) {
 
             break;
     }
+
+    inoutFlag = false;
 
 
 }

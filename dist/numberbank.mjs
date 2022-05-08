@@ -11122,10 +11122,6 @@ function de_get(data) {
 function de_disp(data) {
   return deoder_utf8.decode(data);
 }
-
-function de_crt(data) {
-  return gn.fromBase64String(data).toUint8Array();
-} ////////////////////////////////
 ///////////////////////////////
 
 
@@ -11137,7 +11133,7 @@ function crypt_decode(cryptedConfigData, decodedConfigData) {
   inoutFlag = true; // console.log('inoutFlag(decode start):', inoutFlag);
 
   decodedConfigData.cccCheck = cryptedConfigData.cccCheck;
-  var cccCheck = de_crt(cryptedConfigData.cccCheck);
+  var cccCheck = de_get(cryptedConfigData.cccCheck);
   var ckey;
 
   switch (cryptedConfigData.cloudType) {
@@ -11185,7 +11181,8 @@ function crypt_decode(cryptedConfigData, decodedConfigData) {
           length: 64
         }, ckey, de_get(cryptedConfigData.projectId));
       }).then(function (decodedData) {
-        console.log('decodedConfigData.projectId:', de_disp(decodedData));
+        console.log('decodedConfigData.projectId(de_disp):', de_disp(decodedData));
+        console.log('decodedConfigData.projectId(non_de_disp):', decodedData);
         decodedConfigData.projectId = de_disp(decodedData); // storageBucket
 
         return crypto.subtle.decrypt({
@@ -11242,6 +11239,8 @@ function crypt_decode(cryptedConfigData, decodedConfigData) {
       console.log('switch doesnt work!');
       break;
   }
+
+  inoutFlag = false;
 }
 
 export { ExtensionBlocks as blockClass, entry };
