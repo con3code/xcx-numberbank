@@ -661,6 +661,7 @@ class ExtensionBlocks {
                 console.log('interval:', interval);
                 console.log('firebaseConfig（復号前）:', firebaseConfig);
 
+                inoutFlag = false;
                 crypt_decode(cloudConfig_mkey, firebaseConfig);
                 // crypt_decode(JSON.parse(cloudConfig_mkey), firebaseConfig);
                 // console.log('複号化から戻り');
@@ -1158,7 +1159,7 @@ function de_crt(data) {
 function crypt_decode(cryptedConfigData, decodedConfigData) {
     if (inoutFlag) { return; }
     inoutFlag = true;
-    // console.log('inoutFlag(decode start):', inoutFlag);
+    console.log('inoutFlag(decode start):', inoutFlag);
 
     decodedConfigData.cccCheck = cryptedConfigData.cccCheck;
     const cccCheck = de_crt(cryptedConfigData.cccCheck);
@@ -1238,8 +1239,6 @@ function crypt_decode(cryptedConfigData, decodedConfigData) {
                     // console.log('decodedConfigData.measurementId:', de_disp(decodedData));
                     decodedConfigData.measurementId = de_disp(decodedData);
 
-                })
-                .then(() => {
                     // console.log('key_org_result_textContent:', JSON.stringify(decodedConfigData));
                     // console.log('key_org_result_textContent:', JSON.stringify(decodedConfigData, null, '\t'));
 
@@ -1256,16 +1255,16 @@ function crypt_decode(cryptedConfigData, decodedConfigData) {
 
         case 'dynamo':
             console.log('switch to Dynamo!');
+            inoutFlag = false;
 
             break;
 
         default:
             console.log('switch doesnt work!');
+            inoutFlag = false;
 
             break;
     }
-
-    inoutFlag = false;
 
 
 }

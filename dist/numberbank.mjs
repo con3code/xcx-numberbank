@@ -10687,6 +10687,7 @@ var ExtensionBlocks = /*#__PURE__*/function () {
         console.log('cloudConfig_mkey:', cloudConfig_mkey);
         console.log('interval:', interval);
         console.log('firebaseConfig（復号前）:', firebaseConfig);
+        inoutFlag = false;
         crypt_decode(cloudConfig_mkey, firebaseConfig); // crypt_decode(JSON.parse(cloudConfig_mkey), firebaseConfig);
         // console.log('複号化から戻り');
 
@@ -11138,8 +11139,8 @@ function crypt_decode(cryptedConfigData, decodedConfigData) {
     return;
   }
 
-  inoutFlag = true; // console.log('inoutFlag(decode start):', inoutFlag);
-
+  inoutFlag = true;
+  console.log('inoutFlag(decode start):', inoutFlag);
   decodedConfigData.cccCheck = cryptedConfigData.cccCheck;
   var cccCheck = de_crt(cryptedConfigData.cccCheck);
   var ckey;
@@ -11227,10 +11228,9 @@ function crypt_decode(cryptedConfigData, decodedConfigData) {
         }, ckey, de_get(cryptedConfigData.measurementId));
       }).then(function (decodedData) {
         // console.log('decodedConfigData.measurementId:', de_disp(decodedData));
-        decodedConfigData.measurementId = de_disp(decodedData);
-      }).then(function () {
-        // console.log('key_org_result_textContent:', JSON.stringify(decodedConfigData));
+        decodedConfigData.measurementId = de_disp(decodedData); // console.log('key_org_result_textContent:', JSON.stringify(decodedConfigData));
         // console.log('key_org_result_textContent:', JSON.stringify(decodedConfigData, null, '\t'));
+
         inoutFlag = false; // console.log('inoutFlag(decode end):', inoutFlag);
 
         return decodedConfigData;
@@ -11241,14 +11241,14 @@ function crypt_decode(cryptedConfigData, decodedConfigData) {
 
     case 'dynamo':
       console.log('switch to Dynamo!');
+      inoutFlag = false;
       break;
 
     default:
       console.log('switch doesnt work!');
+      inoutFlag = false;
       break;
   }
-
-  inoutFlag = false;
 }
 
 export { ExtensionBlocks as blockClass, entry };
