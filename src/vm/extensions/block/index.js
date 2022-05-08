@@ -1118,6 +1118,18 @@ const cloudConfig_mkey = {
 
 
 
+// データ暗号化の下処理
+/////////////////////////////////
+/////////////////////////////////
+
+function en_org(data) {
+    return encoder.encode(data);
+}
+
+function en_store(data) {
+    return firestore.Bytes.fromUint8Array(new Uint8Array(data)).toBase64();
+}
+
 function de_get(data) {
     return firestore.Bytes.fromBase64String(data).toUint8Array();
 }
@@ -1126,11 +1138,16 @@ function de_disp(data) {
     return deoder_utf8.decode(data);
 }
 
+function en_crt(data) {
+    return firestore.Bytes.fromUint8Array(data).toBase64();
+}
 
 function de_crt(data) {
     return firestore.Bytes.fromBase64String(data).toUint8Array();
 }
 
+////////////////////////////////
+///////////////////////////////
 
 
 function crypt_decode(cryptedConfigData, decodedConfigData) {
@@ -1147,7 +1164,7 @@ function crypt_decode(cryptedConfigData, decodedConfigData) {
             console.log('switch to Firebase!');
 
             // masterKeyをハッシュ化
-            crypto.subtle.digest('SHA-256', en_org(masterKey))
+            crypto.subtle.digest('SHA-256', de_get(masterKey))
                 .then((masterStr) => {
 
                     // masterKeyからckey生成
