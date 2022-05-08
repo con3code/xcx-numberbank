@@ -667,7 +667,7 @@ class ExtensionBlocks {
             }).then(() => {
                 inoutFlag = true;
 
-                console.log('firebaseConfig（複合後）:', firebaseConfig);
+                console.log('firebaseConfig（復号後）:', firebaseConfig);
 
                 // Initialize Firebase
 
@@ -1147,7 +1147,7 @@ function crypt_decode(cryptedConfigData, decodedConfigData) {
             console.log('switch to Firebase!');
 
             // masterKeyをハッシュ化
-            crypto.subtle.digest('SHA-256', encoder.encode(masterKey))
+            crypto.subtle.digest('SHA-256', en_org(masterKey))
                 .then((masterStr) => {
 
                     // masterKeyからckey生成

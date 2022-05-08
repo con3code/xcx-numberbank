@@ -10691,7 +10691,7 @@ var ExtensionBlocks = /*#__PURE__*/function () {
         return ioWaiter(1);
       }).then(function () {
         inoutFlag = true;
-        console.log('firebaseConfig（複合後）:', firebaseConfig); // Initialize Firebase
+        console.log('firebaseConfig（復号後）:', firebaseConfig); // Initialize Firebase
 
         if (cloudFlag) {
           cn(db).then(function () {
@@ -11138,7 +11138,7 @@ function crypt_decode(cryptedConfigData, decodedConfigData) {
     case 'firestore':
       console.log('switch to Firebase!'); // masterKeyをハッシュ化
 
-      crypto.subtle.digest('SHA-256', encoder.encode(masterKey)).then(function (masterStr) {
+      crypto.subtle.digest('SHA-256', en_org(masterKey)).then(function (masterStr) {
         // masterKeyからckey生成
         return crypto.subtle.importKey('raw', masterStr, 'AES-CTR', false, ['encrypt', 'decrypt']);
       }).then(function (encodedKey) {
