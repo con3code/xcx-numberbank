@@ -1158,6 +1158,7 @@ function crypt_decode(cryptedConfigData, decodedConfigData) {
     inoutFlag = true;
     // console.log('inoutFlag(decode start):', inoutFlag);
 
+    decodedConfigData.cccCheck = cryptedConfigData.cccCheck;
     const cccCheck = de_crt(cryptedConfigData.cccCheck);
 
     let ckey;
@@ -1167,7 +1168,7 @@ function crypt_decode(cryptedConfigData, decodedConfigData) {
             console.log('switch to Firebase!');
 
             // masterKeyをハッシュ化
-            crypto.subtle.digest('SHA-256', en_org(masterKey))
+            crypto.subtle.digest('SHA-256', encoder.encode(masterKey))
                 .then((masterStr) => {
 
                     // masterKeyからckey生成
