@@ -10637,11 +10637,8 @@ var ExtensionBlocks = /*#__PURE__*/function () {
     value: function setMaster(args) {
       if (args.KEY == '') {
         return;
-      }
+      } //if (inoutFlag) { return; }
 
-      if (inoutFlag) {
-        return;
-      }
 
       if (inoutFlag_setting) {
         return;
@@ -10655,7 +10652,16 @@ var ExtensionBlocks = /*#__PURE__*/function () {
       mkbRequest = new Request(mkbUrl, {
         mode: 'cors'
       });
-      fetch(mkbRequest).then(function (response) {
+
+      if (!crypto || !crypto.subtle) {
+        throw Error("crypto.subtle is not supported.");
+      }
+
+      crypto.subtle.digest('SHA-256', new TextEncoder().encode(masterKey)).then(function (masterStr) {
+        //master256Key = masterStr;
+        masterSha256 = hexString(masterStr);
+        return fetch(mkbRequest);
+      }).then(function (response) {
         if (response.ok) {
           return response.json();
         } else {
@@ -10696,25 +10702,18 @@ var ExtensionBlocks = /*#__PURE__*/function () {
           fbApp = initializeApp(firebaseConfig);
           db = on(fbApp); // console.log('db:', db);
         }
+
+        return sleep(1);
       }).then(function () {
-        if (!crypto || !crypto.subtle) {
-          throw Error("crypto.subtle is not supported.");
-        }
+        cloudFlag = true;
+        inoutFlag_setting = false; // console.log("MasterKey:", masterKey);
+        // console.log("masterSha256:", masterSha256);
 
-        crypto.subtle.digest('SHA-256', new TextEncoder().encode(masterKey)).then(function (masterStr) {
-          masterSha256 = hexString(masterStr);
-          return sleep(1);
-        }).then(function () {
-          cloudFlag = true;
-          inoutFlag_setting = false; // console.log("MasterKey:", masterKey);
-          // console.log("masterSha256:", masterSha256);
-
-          console.log("MasterKey setted!");
-        }).catch(function (error) {
-          cloudFlag = false;
-          inoutFlag_setting = false;
-          console.log("Error setting MasterKey:", error);
-        });
+        console.log("MasterKey setted!");
+      }).catch(function (error) {
+        cloudFlag = false;
+        inoutFlag_setting = false;
+        console.log("Error setting MasterKey:", error);
       });
       return cloudWaiter(1);
     }
@@ -11081,6 +11080,8 @@ var interval = {
   MsAvl: 100
 };
 var firebaseConfig = {
+  masterKey: '',
+  cloudType: '',
   apiKey: "",
   authDomain: "",
   databaseURL: "",
@@ -11092,6 +11093,7 @@ var firebaseConfig = {
 }; // 格納用予備
 
 var cloudConfig_mkey = {
+  masterKey: '',
   cloudType: '',
   apiKey: '',
   authDomain: '',
@@ -11105,8 +11107,21 @@ var cloudConfig_mkey = {
   AccessKeyId: '',
   SecretAccessKey: '',
   SessionToken: '',
-  Expiration: ''
+  Expiration: '',
+  cccCheck: ''
 };
+
+function de_get(data) {
+  return firestore.Bytes.fromBase64String(data).toUint8Array();
+}
+
+function de_disp(data) {
+  return deoder_utf8.decode(data);
+}
+
+function de_crt(data) {
+  return firestore.Bytes.fromBase64String(data).toUint8Array();
+}
 
 function crypt_decode(cryptedConfigData, decodedConfigData) {
   if (inoutFlag) {
@@ -11116,37 +11131,13 @@ function crypt_decode(cryptedConfigData, decodedConfigData) {
   inoutFlag = true; // console.log('inoutFlag(decode start):', inoutFlag);
 
   var cccCheck = decodedConfigData.cccCheck = de_crt(cryptedConfigData.cccCheck);
-  var ckey; // Md8yWG1jq0YDW5TAN70SlyetYef1
-  // console.log('uId:', uId);
-  // crypto.subtle.digest('SHA-256', encoder.encode('Md8yWG1jq0YDW5TAN70SlyetYef1'))
+  var ckey;
 
   switch (cryptedConfigData.cloudType) {
     case 'firestore':
-      console.log('switch to Firebase!'); //
-      // Uidのハッシュ化
+      console.log('switch to Firebase!'); // masterKeyからckey生成
 
-      crypto.subtle.digest('SHA-256', encoder.encode(uId)).then(function (masterStr) {
-        // uIdからckey生成
-        return crypto.subtle.importKey('raw', masterStr, 'AES-CTR', false, ['encrypt', 'decrypt']);
-      }).then(function (encodedKey) {
-        ckey = encodedKey; // console.log('ckey:', ckey);
-        // uId-ckeyでmasterKeyを復号
-
-        return crypto.subtle.decrypt({
-          name: 'AES-CTR',
-          counter: cccCheck,
-          length: 64
-        }, ckey, de_get(cryptedConfigData.masterKey));
-      }).then(function (decodedData) {
-        console.log('decodedConfigData.masterKey:', de_disp(decodedData));
-        decodedConfigData.masterKey = de_disp(decodedData); //
-        // masterKeyのハッシュ化
-
-        return crypto.subtle.digest('SHA-256', encoder.encode(decodedConfigData.masterKey));
-      }).then(function (masterStr) {
-        // masterKeyからckey生成
-        return crypto.subtle.importKey('raw', masterStr, 'AES-CTR', false, ['encrypt', 'decrypt']);
-      }).then(function (encodedKey) {
+      crypto.subtle.importKey('raw', masterKey, 'AES-CTR', false, ['encrypt', 'decrypt']).then(function (encodedKey) {
         ckey = encodedKey; // console.log('ckey:', ckey);
         // 復号化開始
         // apiKey
@@ -11225,10 +11216,6 @@ function crypt_decode(cryptedConfigData, decodedConfigData) {
       }).then(function () {
         // console.log('key_org_result_textContent:', JSON.stringify(decodedConfigData));
         // console.log('key_org_result_textContent:', JSON.stringify(decodedConfigData, null, '\t'));
-        if (document.querySelector('#key_org_result') != null) {
-          document.querySelector('#key_org_result').textContent = JSON.stringify(decodedConfigData);
-        }
-
         inoutFlag = false; // console.log('inoutFlag(decode end):', inoutFlag);
 
         return decodedConfigData;

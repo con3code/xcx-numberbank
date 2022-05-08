@@ -606,7 +606,7 @@ class ExtensionBlocks {
         if (args.KEY == '') { return; }
 
 
-        if (inoutFlag) { return; }
+        //if (inoutFlag) { return; }
         if (inoutFlag_setting) { return; }
         inoutFlag = true;
         inoutFlag_setting = true;
@@ -615,9 +615,20 @@ class ExtensionBlocks {
         masterKey = args.KEY;
 
         mkbUrl = mkbBaseUrl + '?mkey=' + masterKey;
-
         mkbRequest = new Request(mkbUrl, { mode: 'cors' });
-        fetch(mkbRequest)
+
+
+        if (!crypto || !crypto.subtle) {
+            throw Error("crypto.subtle is not supported.");
+        }
+
+        crypto.subtle.digest('SHA-256', new TextEncoder().encode(masterKey))
+            .then(masterStr => {
+                //master256Key = masterStr;
+                masterSha256 = hexString(masterStr);
+
+                return fetch(mkbRequest);
+            })
             .then(response => {
 
                 if (response.ok) {
@@ -659,48 +670,36 @@ class ExtensionBlocks {
 
                 // Initialize Firebase
 
-                if(cloudFlag){
+                if (cloudFlag) {
                     terminate(db).then(() => {
                         cloudFlag = false;
                         fbApp = initializeApp(firebaseConfig);
                         db = getFirestore(fbApp);
-        
+
                     });
                 } else {
 
                     fbApp = initializeApp(firebaseConfig);
                     db = getFirestore(fbApp);
                     // console.log('db:', db);
-    
+
                 }
+
+                return sleep(1);
 
             }).then(() => {
 
-                if (!crypto || !crypto.subtle) {
-                    throw Error("crypto.subtle is not supported.");
-                }
-        
-                crypto.subtle.digest('SHA-256', new TextEncoder().encode(masterKey))
-                    .then(masterStr => {
-                        masterSha256 = hexString(masterStr);
-        
-                        return sleep(1);
-                    })
-                    .then(() => {
-                        cloudFlag = true;
-                        inoutFlag_setting = false;
-                        // console.log("MasterKey:", masterKey);
-                        // console.log("masterSha256:", masterSha256);
-                        console.log("MasterKey setted!");
-        
-                    })
-                    .catch(function (error) {
-                        cloudFlag = false;
-                        inoutFlag_setting = false;
-                        console.log("Error setting MasterKey:", error);
-                    });
-                
+                cloudFlag = true;
+                inoutFlag_setting = false;
+                // console.log("MasterKey:", masterKey);
+                // console.log("masterSha256:", masterSha256);
+                console.log("MasterKey setted!");
 
+            })
+            .catch(function (error) {
+                cloudFlag = false;
+                inoutFlag_setting = false;
+                console.log("Error setting MasterKey:", error);
             });
 
 
@@ -1040,6 +1039,7 @@ let uniKey = '';
 let cloudNum = '';
 let settingNum = '';
 let masterSha256 = '';
+let master256Key = '';
 let bankSha256 = '';
 let cardSha256 = '';
 let uniSha256 = '';
@@ -1061,6 +1061,8 @@ const interval = {
 }
 
 const firebaseConfig = {
+    masterKey: '',
+    cloudType: '',
     apiKey: "",
     authDomain: "",
     databaseURL: "",
@@ -1142,34 +1144,10 @@ function crypt_decode(cryptedConfigData, decodedConfigData) {
         case 'firestore':
             console.log('switch to Firebase!');
 
-            //
-            // Uidのハッシュ化
-            crypto.subtle.digest('SHA-256', encoder.encode(uId))
-                .then((masterStr) => {
 
-                    // uIdからckey生成
-                    return crypto.subtle.importKey('raw', masterStr, 'AES-CTR', false, ['encrypt', 'decrypt']);
-                })
+            // masterKeyからckey生成
+            crypto.subtle.importKey('raw', masterKey, 'AES-CTR', false, ['encrypt', 'decrypt'])
                 .then((encodedKey) => {
-                    ckey = encodedKey;
-                    // console.log('ckey:', ckey);
-
-                    // uId-ckeyでmasterKeyを復号
-                    return crypto.subtle.decrypt({ name: 'AES-CTR', counter: cccCheck, length: 64 }, ckey, de_get(cryptedConfigData.masterKey));
-                })
-                .then((decodedData) => {
-                    console.log('decodedConfigData.masterKey:', de_disp(decodedData));
-                    decodedConfigData.masterKey = de_disp(decodedData);
-
-                    //
-                    // masterKeyのハッシュ化
-                    return crypto.subtle.digest('SHA-256', encoder.encode(decodedConfigData.masterKey));
-                })
-                .then((masterStr) => {
-
-                    // masterKeyからckey生成
-                    return crypto.subtle.importKey('raw', masterStr, 'AES-CTR', false, ['encrypt', 'decrypt']);
-                }).then((encodedKey) => {
                     ckey = encodedKey;
                     // console.log('ckey:', ckey);
 
