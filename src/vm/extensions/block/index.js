@@ -154,8 +154,6 @@ class ExtensionBlocks {
                 .then(() => {
                     //console.log("masterSha256: " + masterSha256);
 
-                    // console.log('cloudConfig_mkey:', firebaseConfig);
-
                     if (masterSha256 != '' && masterSha256 != undefined) {
                         // console.log("NumberBank put 00");
 
@@ -210,15 +208,12 @@ class ExtensionBlocks {
         if (inoutFlag) { return; }
         inoutFlag = true;
 
-        //console.log("setNum...");
-
         const variable = util.target.lookupOrCreateVariable(null, args.VAL);
 
         bankKey = bankName = args.BANK;
         cardKey = args.CARD;
 
         uniKey = bankKey.trim().concat(cardKey.trim());
-        //console.log("uniKey: " + uniKey);    
 
         if (!crypto || !crypto.subtle) {
             throw Error("crypto.subtle is not supported.");
@@ -252,10 +247,6 @@ class ExtensionBlocks {
 
                     if (masterSha256 != '' && masterSha256 != undefined) {
 
-                        // console.log('cloudConfig_mkey:', firebaseConfig);
-
-                        //v8
-                        // cardDb.doc(uniSha256).get().then(function (ckey) {
                         getDoc(doc(db, 'card', uniSha256)).then(function (ckey) {
                             // console.log("NumberBank set 00");
 
@@ -325,13 +316,10 @@ class ExtensionBlocks {
         if (inoutFlag) { return; }
         inoutFlag = true;
 
-        // console.log("getNum...");
-
         bankKey = bankName = args.BANK;
         cardKey = args.CARD;
 
         uniKey = bankKey.trim().concat(cardKey.trim());
-        // console.log('uniKey:' + uniKey);
 
         if (!crypto || !crypto.subtle) {
             throw Error("crypto.subtle is not supported.");
@@ -363,16 +351,10 @@ class ExtensionBlocks {
                 .then(() => {
                     // console.log("masterSha256: " + masterSha256);
 
-                    // console.log('cloudConfig_mkey:', firebaseConfig);
-                    // console.log('db:', db);
-                    // console.log('uniSha256:', uniSha256);
-
                     if (masterSha256 != '' && masterSha256 != undefined) {
 
                         getDoc(doc(db, 'card', uniSha256)).then(function (ckey) {
                             // console.log("NumberBank get 00");
-                            // console.log('ckey:', ckey);
-                            // console.log('ckey.exists:', ckey.exists());
 
                             if (ckey.exists()) {
                                 // console.log("NumberBank get 01");
@@ -437,13 +419,10 @@ class ExtensionBlocks {
         if (inoutFlag) { return; }
         inoutFlag = true;
 
-        //console.log("repCloudNum...");
-
         bankKey = bankName = args.BANK;
         cardKey = args.CARD;
 
         uniKey = bankKey.trim().concat(cardKey.trim());
-        //console.log("uniKey: " + uniKey);
 
         if (!crypto || !crypto.subtle) {
             throw Error("crypto.subtle is not supported.");
@@ -474,8 +453,6 @@ class ExtensionBlocks {
                 })
                 .then(() => {
                     //console.log("masterSha256: " + masterSha256);
-
-                    // console.log('cloudConfig_mkey:', firebaseConfig);
 
                     if (masterSha256 != '' && masterSha256 != undefined) {
 
@@ -537,13 +514,10 @@ class ExtensionBlocks {
         if (inoutFlag) { return; }
         inoutFlag = true;
 
-        //console.log("boolAvl...");
-
         bankKey = bankName = args.BANK;
         cardKey = args.CARD;
 
         uniKey = bankKey.trim().concat(cardKey.trim());
-        //console.log("uniKey: " + uniKey);    
 
         if (!crypto || !crypto.subtle) {
             throw Error("crypto.subtle is not supported.");
@@ -561,8 +535,6 @@ class ExtensionBlocks {
                 .then(() => {
                     // console.log("masterSha256: " + masterSha256);
 
-                    // console.log('cloudConfig_mkey:', firebaseConfig);
-
                     if (masterSha256 != '' && masterSha256 != undefined) {
 
                         getDoc(doc(db, 'card', uniSha256)).then(function (ckey) {
@@ -574,7 +546,6 @@ class ExtensionBlocks {
                                 availableFlag = true;
                             } else {
                                 // console.log("NumberBank avl NO");
-                                // console.log("No Available!");
                                 inoutFlag = false;
                                 availableFlag = false;
                             }
@@ -657,20 +628,13 @@ class ExtensionBlocks {
                 interval.MsRep = resBody.intervalMsRep;
                 interval.MsAvl = resBody.intervalMsAvl;
 
-                // console.log('cloudConfig_mkey:', cloudConfig_mkey);
-                // console.log('interval:', interval);
-                // console.log('firebaseConfig（復号前）:', firebaseConfig);
 
                 inoutFlag = false;
                 crypt_decode(cloudConfig_mkey, firebaseConfig);
-                // crypt_decode(JSON.parse(cloudConfig_mkey), firebaseConfig);
-                // console.log('複号化から戻り');
                 return ioWaiter(1);
 
             }).then(() => {
                 inoutFlag = true;
-
-                // console.log('firebaseConfig（復号後）:', firebaseConfig);
 
                 // Initialize Firebase
 
@@ -685,7 +649,6 @@ class ExtensionBlocks {
 
                     fbApp = initializeApp(firebaseConfig);
                     db = getFirestore(fbApp);
-                    // console.log('db:', db);
                     inoutFlag = false;
 
                 }
@@ -697,9 +660,9 @@ class ExtensionBlocks {
                 cloudFlag = true;
                 inoutFlag_setting = false;
                 inoutFlag = false;
-                // console.log("MasterKey:", masterKey);
-                // console.log("masterSha256:", masterSha256);
-                console.log("MasterKey setted!");
+                console.log("= MasterKey:", masterKey);
+                console.log('= Interval:', interval);
+                console.log("= MasterKey Accepted! =");
 
             })
             .catch(function (error) {
@@ -1004,35 +967,6 @@ function hexString(textStr) {
 
 
 
-/*
-// createHashはNodeの関数
-// 機能拡張上では動作せず（025_）
-const encryptSha256 = (str) => {
-    const hash = crypto.createHash('sha256');
-    hash.update(str);
-    return hash.digest('hex')
-}
-*/
-
-
-/*
-// hexStringとの組合せ
-// 拡張機能上では動作せず（026_）
-const encryptSha256 = (str) => {
-    const hash = SHA256(str);
-    return hexString(hash)
-}
-*/
-
-
-/*
-// もともと
-const encryptSha256 = (str) => {
-    const hash = SHA256(str);
-    return hash.toString()
-}
-*/
-
 
 // Firebase関連
 var fbApp;
@@ -1159,7 +1093,6 @@ function de_crt(data) {
 function crypt_decode(cryptedConfigData, decodedConfigData) {
     if (inoutFlag) { return; }
     inoutFlag = true;
-    // console.log('inoutFlag(decode start):', inoutFlag);
 
     decodedConfigData.cccCheck = cryptedConfigData.cccCheck;
     const cccCheck = de_crt(cryptedConfigData.cccCheck);
@@ -1170,16 +1103,13 @@ function crypt_decode(cryptedConfigData, decodedConfigData) {
         case 'firestore':
             // console.log('switch to Firebase!');
 
-            // masterKeyをハッシュ化
             crypto.subtle.digest('SHA-256', encoder.encode(masterKey))
                 .then((masterStr) => {
 
-                    // masterKeyからckey生成
                     return crypto.subtle.importKey('raw', masterStr, 'AES-CTR', false, ['encrypt', 'decrypt']);
                 })
                 .then((encodedKey) => {
                     ckey = encodedKey;
-                    // console.log('ckey:', ckey);
 
                     // 復号化開始
                     // apiKey
@@ -1207,8 +1137,7 @@ function crypt_decode(cryptedConfigData, decodedConfigData) {
                     return crypto.subtle.decrypt({ name: 'AES-CTR', counter: cccCheck, length: 64 }, ckey, de_get(cryptedConfigData.projectId));
                 })
                 .then((decodedData) => {
-                    // console.log('decodedConfigData.projectId(de_disp):', de_disp(decodedData));
-                    // console.log('decodedConfigData.projectId(non_de_disp):', decodedData);
+                    // console.log('decodedConfigData.projectId:', de_disp(decodedData));
                     decodedConfigData.projectId = de_disp(decodedData);
 
                     // storageBucket
@@ -1238,9 +1167,6 @@ function crypt_decode(cryptedConfigData, decodedConfigData) {
                 .then((decodedData) => {
                     // console.log('decodedConfigData.measurementId:', de_disp(decodedData));
                     decodedConfigData.measurementId = de_disp(decodedData);
-
-                    // console.log('key_org_result_textContent:', JSON.stringify(decodedConfigData));
-                    // console.log('key_org_result_textContent:', JSON.stringify(decodedConfigData, null, '\t'));
 
                     inoutFlag = false;
                     // console.log('inoutFlag(decode end):', inoutFlag);
