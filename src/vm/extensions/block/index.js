@@ -632,38 +632,37 @@ class ExtensionBlocks {
             .then(response => {
 
                 if (response.ok) {
-                    return response.json();
+                    resBody = response.json();
+                    
+                    cloudConfig_mkey.masterKey = resBody.masterKey;
+                    cloudConfig_mkey.cloudType = resBody.cloudType;
+                    cloudConfig_mkey.apiKey = resBody.apiKey;
+                    cloudConfig_mkey.authDomain = resBody.authDomain;
+                    cloudConfig_mkey.databaseURL = resBody.databaseURL;
+                    cloudConfig_mkey.projectId = resBody.projectId;
+                    cloudConfig_mkey.storageBucket = resBody.storageBucket;
+                    cloudConfig_mkey.messagingSenderId = resBody.messagingSenderId;
+                    cloudConfig_mkey.appId = resBody.appId;
+                    cloudConfig_mkey.measurementId = resBody.measurementId;
+                    cloudConfig_mkey.cccCheck = resBody.cccCheck;
+                    interval.MsPut = resBody.intervalMsPut;
+                    interval.MsSet = resBody.intervalMsSet;
+                    interval.MsGet = resBody.intervalMsGet;
+                    interval.MsRep = resBody.intervalMsRep;
+                    interval.MsAvl = resBody.intervalMsAvl;
+    
+                    console.log('cloudConfig_mkey:', cloudConfig_mkey);
+                    console.log('interval:', interval);
+                    console.log('firebaseConfig（復号前）:', firebaseConfig);
+    
+                    crypt_decode(cloudConfig_mkey, firebaseConfig);
+                    // crypt_decode(JSON.parse(cloudConfig_mkey), firebaseConfig);
+                    // console.log('複号化から戻り');
+                    return ioWaiter(1);
+
                 } else {
                     throw new Error('Unexpected responce status ${response.status} or content type');
                 }
-
-            }).then((resBody) => {
-
-                cloudConfig_mkey.masterKey = resBody.masterKey;
-                cloudConfig_mkey.cloudType = resBody.cloudType;
-                cloudConfig_mkey.apiKey = resBody.apiKey;
-                cloudConfig_mkey.authDomain = resBody.authDomain;
-                cloudConfig_mkey.databaseURL = resBody.databaseURL;
-                cloudConfig_mkey.projectId = resBody.projectId;
-                cloudConfig_mkey.storageBucket = resBody.storageBucket;
-                cloudConfig_mkey.messagingSenderId = resBody.messagingSenderId;
-                cloudConfig_mkey.appId = resBody.appId;
-                cloudConfig_mkey.measurementId = resBody.measurementId;
-                cloudConfig_mkey.cccCheck = resBody.cccCheck;
-                interval.MsPut = resBody.intervalMsPut;
-                interval.MsSet = resBody.intervalMsSet;
-                interval.MsGet = resBody.intervalMsGet;
-                interval.MsRep = resBody.intervalMsRep;
-                interval.MsAvl = resBody.intervalMsAvl;
-
-                console.log('cloudConfig_mkey:', cloudConfig_mkey);
-                console.log('interval:', interval);
-                console.log('firebaseConfig（復号前）:', firebaseConfig);
-
-                crypt_decode(cloudConfig_mkey, firebaseConfig);
-                // crypt_decode(JSON.parse(cloudConfig_mkey), firebaseConfig);
-                // console.log('複号化から戻り');
-                return ioWaiter(1);
 
             }).then(() => {
                 inoutFlag = true;
@@ -1159,7 +1158,7 @@ function crypt_decode(cryptedConfigData, decodedConfigData) {
     // console.log('inoutFlag(decode start):', inoutFlag);
 
     decodedConfigData.cccCheck = cryptedConfigData.cccCheck;
-    const cccCheck = cryptedConfigData.cccCheck;
+    const cccCheck = de_crt(cryptedConfigData.cccCheck);
 
     let ckey;
 
