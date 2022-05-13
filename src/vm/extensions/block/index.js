@@ -674,7 +674,6 @@ class ExtensionBlocks {
             })
             .catch(function (error) {
 
-                cloudFlag = false;
                 inoutFlag_setting = false;
                 inoutFlag = false;
                 console.log("Error setting MasterKey:", error);

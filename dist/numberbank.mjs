@@ -10715,7 +10715,6 @@ var ExtensionBlocks = /*#__PURE__*/function () {
         console.log('= Interval:', interval);
         console.log("= MasterKey Accepted! =");
       }).catch(function (error) {
-        cloudFlag = false;
         inoutFlag_setting = false;
         inoutFlag = false;
         console.log("Error setting MasterKey:", error);
