@@ -228,7 +228,7 @@ var en$1 = {
 	"numberbank.NumberBank": "NumberBank"
 };
 var ja = {
-	"numberbank.name": "NumberBank1.0",
+	"numberbank.name": "NumberBank",
 	"numberbank.NumberBank": "ナンバーバンク",
 	"numberbank.argments.bank": "バンク",
 	"numberbank.argments.card": "カード",
@@ -246,7 +246,7 @@ var translations = {
 	en: en$1,
 	ja: ja,
 	"ja-Hira": {
-	"numberbank.name": "なんばーばんく1.0",
+	"numberbank.name": "なんばーばんく",
 	"numberbank.NumberBank": "なんばーばんく",
 	"numberbank.argments.bank": "ばんく",
 	"numberbank.argments.card": "かーど",
