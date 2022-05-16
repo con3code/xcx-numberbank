@@ -10637,19 +10637,21 @@ var ExtensionBlocks = /*#__PURE__*/function () {
   }, {
     key: "setMaster",
     value: function setMaster(args) {
+      masterSetted = '';
+
       if (args.KEY == '') {
-        return;
+        return masterSetted;
       }
 
       if (inoutFlag_setting) {
-        return;
+        return masterSetted;
       }
 
       inoutFlag_setting = true;
       inoutFlag = true;
       masterSha256 = '';
-      masterKey = args.KEY;
-      mkbUrl = FBaseUrl + 'mkeybank/?mkey=' + masterKey;
+      masterSetted = args.KEY;
+      mkbUrl = FBaseUrl + 'mkeybank/?mkey=' + masterSetted;
       mkbRequest = new Request(mkbUrl, {
         mode: 'cors'
       });
@@ -10658,7 +10660,7 @@ var ExtensionBlocks = /*#__PURE__*/function () {
         throw Error("crypto.subtle is not supported.");
       }
 
-      crypto.subtle.digest('SHA-256', encoder.encode(masterKey)).then(function (masterStr) {
+      crypto.subtle.digest('SHA-256', encoder.encode(masterSetted)).then(function (masterStr) {
         masterSha256 = hexString(masterStr);
         return fetch(mkbRequest);
       }).then(function (response) {
@@ -10708,10 +10710,11 @@ var ExtensionBlocks = /*#__PURE__*/function () {
 
         return ioWaiter(1);
       }).then(function () {
+        masterKey = masterSetted;
         cloudFlag = true;
         inoutFlag_setting = false;
         inoutFlag = false;
-        console.log("= MasterKey:", masterKey);
+        console.log("= MasterKey:", masterSetted);
         console.log('= Interval:', interval);
         console.log("= MasterKey Accepted! =");
       }).catch(function (error) {
@@ -10719,7 +10722,9 @@ var ExtensionBlocks = /*#__PURE__*/function () {
         inoutFlag = false;
         console.log("Error setting MasterKey:", error);
       });
-      return cloudWaiter(1);
+      return cloudWaiter(1).then(function () {
+        return masterKey;
+      });
     }
     /**
      * @returns {object} metadata for this extension and its blocks.
@@ -10913,7 +10918,7 @@ var ExtensionBlocks = /*#__PURE__*/function () {
     function get() {
       return formatMessage({
         id: 'numberbank.name',
-        default: 'NumberBank1.0',
+        default: 'NumberBank',
         description: 'name of the extension'
       });
     }
@@ -11032,6 +11037,7 @@ var fbApp;
 var db; // Variables
 
 var masterKey = '';
+var masterSetted = '';
 var bankName = '';
 var bankKey = '';
 var cardKey = '';
@@ -11115,7 +11121,7 @@ function crypt_decode(cryptedConfigData, decodedConfigData) {
   switch (cryptedConfigData.cloudType) {
     case 'firestore':
       // console.log('switch to Firebase!');
-      crypto.subtle.digest('SHA-256', encoder.encode(masterKey)).then(function (masterStr) {
+      crypto.subtle.digest('SHA-256', encoder.encode(masterSetted)).then(function (masterStr) {
         return crypto.subtle.importKey('raw', masterStr, 'AES-CTR', false, ['encrypt', 'decrypt']);
       }).then(function (encodedKey) {
         ckey = encodedKey; // 復号化開始

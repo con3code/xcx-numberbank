@@ -4,7 +4,7 @@ import translations from './translations.json';
 import blockIcon from './numberbank_icon.png';
 import { initializeApp, deleteApp } from 'firebase/app';
 import * as firestore from 'firebase/firestore/lite';
-import { getFirestore, doc, getDoc, setDoc, terminate } from 'firebase/firestore/lite';
+import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore/lite';
 import Variable from '../../engine/variable';
 
 const encoder = new TextEncoder();
@@ -54,7 +54,7 @@ class ExtensionBlocks {
     static get EXTENSION_NAME() {
         return formatMessage({
             id: 'numberbank.name',
-            default: 'NumberBank1.0',
+            default: 'NumberBank',
             description: 'name of the extension'
         });
     }
@@ -577,17 +577,18 @@ class ExtensionBlocks {
 
 
     setMaster(args) {
+        masterSetted = '';
 
-        if (args.KEY == '') { return; }
+        if (args.KEY == '') { return masterSetted; }
 
-        if (inoutFlag_setting) { return; }
+        if (inoutFlag_setting) { return masterSetted; }
         inoutFlag_setting = true;
         inoutFlag = true;
 
         masterSha256 = '';
-        masterKey = args.KEY;
+        masterSetted = args.KEY;
 
-        mkbUrl = FBaseUrl + 'mkeybank/?mkey=' + masterKey;
+        mkbUrl = FBaseUrl + 'mkeybank/?mkey=' + masterSetted;
         mkbRequest = new Request(mkbUrl, { mode: 'cors' });
 
 
@@ -595,7 +596,7 @@ class ExtensionBlocks {
             throw Error("crypto.subtle is not supported.");
         }
 
-        crypto.subtle.digest('SHA-256', encoder.encode(masterKey))
+        crypto.subtle.digest('SHA-256', encoder.encode(masterSetted))
             .then(masterStr => {
                 masterSha256 = hexString(masterStr);
 
@@ -664,10 +665,11 @@ class ExtensionBlocks {
 
             }).then(() => {
 
+                masterKey = masterSetted;
                 cloudFlag = true;
                 inoutFlag_setting = false;
                 inoutFlag = false;
-                console.log("= MasterKey:", masterKey);
+                console.log("= MasterKey:", masterSetted);
                 console.log('= Interval:', interval);
                 console.log("= MasterKey Accepted! =");
 
@@ -681,7 +683,7 @@ class ExtensionBlocks {
             });
 
 
-        return cloudWaiter(1);
+        return cloudWaiter(1).then(() => { return masterKey; });
 
     }
 
@@ -979,6 +981,7 @@ var db;
 
 // Variables
 let masterKey = '';
+let masterSetted = '';
 let bankName = '';
 let bankKey = '';
 let cardKey = '';
@@ -1107,7 +1110,7 @@ function crypt_decode(cryptedConfigData, decodedConfigData) {
         case 'firestore':
             // console.log('switch to Firebase!');
 
-            crypto.subtle.digest('SHA-256', encoder.encode(masterKey))
+            crypto.subtle.digest('SHA-256', encoder.encode(masterSetted))
                 .then((masterStr) => {
 
                     return crypto.subtle.importKey('raw', masterStr, 'AES-CTR', false, ['encrypt', 'decrypt']);
