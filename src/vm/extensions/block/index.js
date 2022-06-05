@@ -1,3 +1,7 @@
+// NumberBank for Xcratch
+// 20220606 - ver1.0(067)
+//
+
 import BlockType from '../../extension-support/block-type';
 import ArgumentType from '../../extension-support/argument-type';
 import translations from './translations.json';
@@ -421,9 +425,7 @@ class ExtensionBlocks {
 
         if (args.BANK == '' || args.CARD == '') { return; }
 
-        if (inoutFlag) { 
-            return; 
-        }
+        if (inoutFlag) { return; }
         inoutFlag = true;
 
         let rep_cloudNum = '';
