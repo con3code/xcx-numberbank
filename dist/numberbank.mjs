@@ -10260,7 +10260,8 @@ var ExtensionBlocks = /*#__PURE__*/function () {
 
       inoutFlag = true; //console.log("putNum...");
 
-      bankKey = bankName = new String(args.BANK);
+      bankKey = new String(args.BANK);
+      bankName = new String(args.BANK);
       cardKey = new String(args.CARD);
       console.log("bankKey: " + bankKey);
       console.log("bankName: " + bankName);
