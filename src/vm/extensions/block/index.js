@@ -115,6 +115,8 @@ class ExtensionBlocks {
 
         bankKey = bankName = new String(args.BANK);
         cardKey = new String(args.CARD);
+        console.log("bankKey: " + bankKey);
+        console.log("bankName: " + bankName);
 
         uniKey = bankKey.trim().concat(cardKey.trim());
         //console.log("uniKey: " + uniKey);    
