@@ -10992,7 +10992,7 @@ function reportNumWaiter(msec) {
       if (inoutFlag) {
         reject();
       } else {
-        resolve(rep_cloudNum);
+        resolve();
       }
     }, msec);
   }).catch(function () {
