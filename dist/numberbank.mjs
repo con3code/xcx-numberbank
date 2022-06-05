@@ -10262,9 +10262,9 @@ var ExtensionBlocks = /*#__PURE__*/function () {
 
       bankKey = new String(args.BANK);
       bankName = args.BANK;
-      cardKey = new String(args.CARD);
-      console.log("bankKey: " + bankKey);
-      console.log("bankName: " + bankName);
+      cardKey = new String(args.CARD); // console.log("bankKey: " + bankKey);
+      // console.log("bankName: " + bankName);
+
       uniKey = bankKey.trim().concat(cardKey.trim()); //console.log("uniKey: " + uniKey);    
 
       if (args.NUM != '' && args.NUM != undefined) {
@@ -10278,8 +10278,8 @@ var ExtensionBlocks = /*#__PURE__*/function () {
       if (bankKey != '' && bankKey != undefined) {
         //bankKey
         crypto.subtle.digest('SHA-256', encoder.encode(bankKey)).then(function (bankStr) {
-          bankSha256 = hexString(bankStr);
-          console.log("bankSha256: " + bankSha256); //cardKey
+          bankSha256 = hexString(bankStr); // console.log("bankSha256: " + bankSha256);
+          //cardKey
 
           return crypto.subtle.digest('SHA-256', encoder.encode(cardKey));
         }).then(function (cardStr) {
@@ -10288,13 +10288,13 @@ var ExtensionBlocks = /*#__PURE__*/function () {
 
           return crypto.subtle.digest('SHA-256', encoder.encode(uniKey));
         }).then(function (uniStr) {
-          uniSha256 = hexString(uniStr);
-          console.log("uniSha256: " + uniSha256);
+          uniSha256 = hexString(uniStr); // console.log("uniSha256: " + uniSha256);
+
           return sleep(1);
         }).then(function () {
           //console.log("masterSha256: " + masterSha256);
           if (masterSha256 != '' && masterSha256 != undefined) {
-            console.log("NumberBank put 00");
+            // console.log("NumberBank put 00");
             var now = Date.now();
             Er(wn(db, 'card', uniSha256), {
               number: settingNum,
@@ -10303,13 +10303,13 @@ var ExtensionBlocks = /*#__PURE__*/function () {
               master_key: masterSha256,
               time_stamp: now
             }).then(function () {
-              console.log("NumberBank put 01:" + bankName);
+              // console.log("NumberBank put 01:" + bankName);
               return Er(wn(db, 'bank', bankSha256), {
                 bank_name: bankName,
                 time_stamp: now
               });
             }).then(function () {
-              console.log("NumberBank put 02");
+              // console.log("NumberBank put 02");
               inoutFlag = false;
             }).catch(function (error) {
               console.error("Error writing document: ", error);
@@ -10318,13 +10318,12 @@ var ExtensionBlocks = /*#__PURE__*/function () {
           } else {
             // console.log("No MasterKey!");
             inoutFlag = false;
-          }
+          } // console.log("NumberBank put 03");
 
-          console.log("NumberBank put 03");
         });
-      }
+      } // console.log("NumberBank put ioWaiter");
 
-      console.log("NumberBank put ioWaiter");
+
       return ioWaiter(interval.MsPut);
     }
   }, {
@@ -10431,7 +10430,8 @@ var ExtensionBlocks = /*#__PURE__*/function () {
       }
 
       inoutFlag = true;
-      bankKey = bankName = new String(args.BANK);
+      bankKey = new String(args.BANK);
+      bankName = args.BANK;
       cardKey = new String(args.CARD);
       uniKey = bankKey.trim().concat(cardKey.trim());
 
@@ -10511,11 +10511,13 @@ var ExtensionBlocks = /*#__PURE__*/function () {
       }
 
       if (inoutFlag) {
+        console.log("rep recursive");
         return;
       }
 
       inoutFlag = true;
-      bankKey = bankName = new String(args.BANK);
+      bankKey = new String(args.BANK);
+      bankName = args.BANK;
       cardKey = new String(args.CARD);
       uniKey = bankKey.trim().concat(cardKey.trim());
 
@@ -10592,7 +10594,8 @@ var ExtensionBlocks = /*#__PURE__*/function () {
       }
 
       inoutFlag = true;
-      bankKey = bankName = new String(args.BANK);
+      bankKey = new String(args.BANK);
+      bankName = args.BANK;
       cardKey = new String(args.CARD);
       uniKey = bankKey.trim().concat(cardKey.trim());
 
