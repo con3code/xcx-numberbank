@@ -10261,7 +10261,7 @@ var ExtensionBlocks = /*#__PURE__*/function () {
       inoutFlag = true; //console.log("putNum...");
 
       bankKey = new String(args.BANK);
-      bankName = new String(args.BANK);
+      bankName = args.BANK;
       cardKey = new String(args.CARD);
       console.log("bankKey: " + bankKey);
       console.log("bankName: " + bankName);
@@ -10278,8 +10278,8 @@ var ExtensionBlocks = /*#__PURE__*/function () {
       if (bankKey != '' && bankKey != undefined) {
         //bankKey
         crypto.subtle.digest('SHA-256', encoder.encode(bankKey)).then(function (bankStr) {
-          bankSha256 = hexString(bankStr); //console.log("bankSha256: " + bankSha256);
-          //cardKey
+          bankSha256 = hexString(bankStr);
+          console.log("bankSha256: " + bankSha256); //cardKey
 
           return crypto.subtle.digest('SHA-256', encoder.encode(cardKey));
         }).then(function (cardStr) {
@@ -10303,7 +10303,7 @@ var ExtensionBlocks = /*#__PURE__*/function () {
               master_key: masterSha256,
               time_stamp: now
             }).then(function () {
-              console.log("NumberBank put 01");
+              console.log("NumberBank put 01:" + bankName);
               return Er(wn(db, 'bank', bankSha256), {
                 bank_name: bankName,
                 time_stamp: now

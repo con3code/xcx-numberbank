@@ -114,7 +114,7 @@ class ExtensionBlocks {
         //console.log("putNum...");
 
         bankKey = new String(args.BANK);
-        bankName = new String(args.BANK);
+        bankName = args.BANK;
         cardKey = new String(args.CARD);
         console.log("bankKey: " + bankKey);
         console.log("bankName: " + bankName);
@@ -136,7 +136,7 @@ class ExtensionBlocks {
             crypto.subtle.digest('SHA-256', encoder.encode(bankKey))
                 .then(bankStr => {
                     bankSha256 = hexString(bankStr);
-                    //console.log("bankSha256: " + bankSha256);
+                    console.log("bankSha256: " + bankSha256);
 
                     //cardKey
                     return crypto.subtle.digest('SHA-256', encoder.encode(cardKey));
@@ -169,7 +169,8 @@ class ExtensionBlocks {
                             time_stamp: now
                         })
                             .then(() => {
-                                console.log("NumberBank put 01");
+                                console.log("NumberBank put 01:" + bankName);
+
                                 return setDoc(doc(db, 'bank', bankSha256), {
                                     bank_name: bankName,
                                     time_stamp: now
