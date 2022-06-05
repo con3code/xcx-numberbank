@@ -10285,13 +10285,13 @@ var ExtensionBlocks = /*#__PURE__*/function () {
 
           return crypto.subtle.digest('SHA-256', encoder.encode(uniKey));
         }).then(function (uniStr) {
-          uniSha256 = hexString(uniStr); //console.log("uniSha256: " + uniSha256);
-
+          uniSha256 = hexString(uniStr);
+          console.log("uniSha256: " + uniSha256);
           return sleep(1);
         }).then(function () {
           //console.log("masterSha256: " + masterSha256);
           if (masterSha256 != '' && masterSha256 != undefined) {
-            // console.log("NumberBank put 00");
+            console.log("NumberBank put 00");
             var now = Date.now();
             Er(wn(db, 'card', uniSha256), {
               number: settingNum,
@@ -10300,13 +10300,13 @@ var ExtensionBlocks = /*#__PURE__*/function () {
               master_key: masterSha256,
               time_stamp: now
             }).then(function () {
-              // console.log("NumberBank put 01");
+              console.log("NumberBank put 01");
               return Er(wn(db, 'bank', bankSha256), {
                 bank_name: bankName,
                 time_stamp: now
               });
             }).then(function () {
-              // console.log("NumberBank put 02");
+              console.log("NumberBank put 02");
               inoutFlag = false;
             }).catch(function (error) {
               console.error("Error writing document: ", error);
@@ -10315,12 +10315,13 @@ var ExtensionBlocks = /*#__PURE__*/function () {
           } else {
             // console.log("No MasterKey!");
             inoutFlag = false;
-          } // console.log("NumberBank put 03");
+          }
 
+          console.log("NumberBank put 03");
         });
-      } // console.log("NumberBank put ioWaiter");
+      }
 
-
+      console.log("NumberBank put ioWaiter");
       return ioWaiter(interval.MsPut);
     }
   }, {

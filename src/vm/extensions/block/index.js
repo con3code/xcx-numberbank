@@ -147,7 +147,7 @@ class ExtensionBlocks {
                 })
                 .then(uniStr => {
                     uniSha256 = hexString(uniStr);
-                    //console.log("uniSha256: " + uniSha256);
+                    console.log("uniSha256: " + uniSha256);
 
                     return sleep(1);
                 })
@@ -155,7 +155,7 @@ class ExtensionBlocks {
                     //console.log("masterSha256: " + masterSha256);
 
                     if (masterSha256 != '' && masterSha256 != undefined) {
-                        // console.log("NumberBank put 00");
+                        console.log("NumberBank put 00");
 
                         const now = Date.now();
                         setDoc(doc(db, 'card', uniSha256), {
@@ -166,14 +166,14 @@ class ExtensionBlocks {
                             time_stamp: now
                         })
                             .then(() => {
-                                // console.log("NumberBank put 01");
+                                console.log("NumberBank put 01");
                                 return setDoc(doc(db, 'bank', bankSha256), {
                                     bank_name: bankName,
                                     time_stamp: now
                                 });
                             })
                             .then(() => {
-                                // console.log("NumberBank put 02");
+                                console.log("NumberBank put 02");
                                 inoutFlag = false;
                             })
                             .catch(function (error) {
@@ -186,13 +186,13 @@ class ExtensionBlocks {
                         inoutFlag = false;
                     }
 
-                    // console.log("NumberBank put 03");
+                    console.log("NumberBank put 03");
 
                 });
 
         }
 
-        // console.log("NumberBank put ioWaiter");
+        console.log("NumberBank put ioWaiter");
 
         return ioWaiter(interval.MsPut);
 
