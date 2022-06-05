@@ -10260,8 +10260,8 @@ var ExtensionBlocks = /*#__PURE__*/function () {
 
       inoutFlag = true; //console.log("putNum...");
 
-      bankKey = bankName = args.BANK;
-      cardKey = args.CARD;
+      bankKey = bankName = new String(args.BANK);
+      cardKey = new String(args.CARD);
       uniKey = bankKey.trim().concat(cardKey.trim()); //console.log("uniKey: " + uniKey);    
 
       if (args.NUM != '' && args.NUM != undefined) {
@@ -10340,8 +10340,8 @@ var ExtensionBlocks = /*#__PURE__*/function () {
 
       inoutFlag = true;
       var variable = util.target.lookupOrCreateVariable(null, args.VAL);
-      bankKey = bankName = args.BANK;
-      cardKey = args.CARD;
+      bankKey = bankName = new String(args.BANK);
+      cardKey = new String(args.CARD);
       uniKey = bankKey.trim().concat(cardKey.trim());
 
       if (!crypto || !crypto.subtle) {
@@ -10427,8 +10427,8 @@ var ExtensionBlocks = /*#__PURE__*/function () {
       }
 
       inoutFlag = true;
-      bankKey = bankName = args.BANK;
-      cardKey = args.CARD;
+      bankKey = bankName = new String(args.BANK);
+      cardKey = new String(args.CARD);
       uniKey = bankKey.trim().concat(cardKey.trim());
 
       if (!crypto || !crypto.subtle) {
@@ -10511,8 +10511,8 @@ var ExtensionBlocks = /*#__PURE__*/function () {
       }
 
       inoutFlag = true;
-      bankKey = bankName = args.BANK;
-      cardKey = args.CARD;
+      bankKey = bankName = new String(args.BANK);
+      cardKey = new String(args.CARD);
       uniKey = bankKey.trim().concat(cardKey.trim());
 
       if (!crypto || !crypto.subtle) {
@@ -10588,8 +10588,8 @@ var ExtensionBlocks = /*#__PURE__*/function () {
       }
 
       inoutFlag = true;
-      bankKey = bankName = args.BANK;
-      cardKey = args.CARD;
+      bankKey = bankName = new String(args.BANK);
+      cardKey = new String(args.CARD);
       uniKey = bankKey.trim().concat(cardKey.trim());
 
       if (!crypto || !crypto.subtle) {
