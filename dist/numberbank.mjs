@@ -10511,11 +10511,11 @@ var ExtensionBlocks = /*#__PURE__*/function () {
       }
 
       if (inoutFlag) {
-        console.log("rep recursive");
         return;
       }
 
       inoutFlag = true;
+      var rep_cloudNum = '';
       bankKey = new String(args.BANK);
       bankName = args.BANK;
       cardKey = new String(args.CARD);
@@ -10551,7 +10551,7 @@ var ExtensionBlocks = /*#__PURE__*/function () {
                 vr(wn(db, 'card', uniSha256)).then(function (doc) {
                   // console.log("NumberBank rep 02");
                   var data = doc.data();
-                  cloudNum = data.number;
+                  rep_cloudNum = data.number;
                 }).then(function () {
                   inoutFlag = false;
                 }).catch(function (error) {
@@ -10559,7 +10559,7 @@ var ExtensionBlocks = /*#__PURE__*/function () {
                 });
               } else {
                 // console.log("No Card!");
-                cloudNum = '';
+                rep_cloudNum = '';
                 inoutFlag = false;
               }
             }).catch(function (error) {
@@ -10576,7 +10576,9 @@ var ExtensionBlocks = /*#__PURE__*/function () {
       } // console.log("NumberBank rep ioWaiter");
 
 
-      return reportNumWaiter(interval.MsRep);
+      return reportNumWaiter(interval.MsRep).then(function () {
+        return rep_cloudNum;
+      });
     }
   }, {
     key: "boolAvl",
@@ -10990,7 +10992,7 @@ function reportNumWaiter(msec) {
       if (inoutFlag) {
         reject();
       } else {
-        resolve(cloudNum);
+        resolve(rep_cloudNum);
       }
     }, msec);
   }).catch(function () {

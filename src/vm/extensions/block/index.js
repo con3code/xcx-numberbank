@@ -422,10 +422,11 @@ class ExtensionBlocks {
         if (args.BANK == '' || args.CARD == '') { return; }
 
         if (inoutFlag) { 
-            console.log("rep recursive");
             return; 
         }
         inoutFlag = true;
+
+        let rep_cloudNum = '';
 
         bankKey = new String(args.BANK);
         bankName = args.BANK;
@@ -475,7 +476,7 @@ class ExtensionBlocks {
                                     .then((doc) => {
                                         // console.log("NumberBank rep 02");
                                         let data = doc.data();
-                                        cloudNum = data.number;
+                                        rep_cloudNum = data.number;
                                     })
                                     .then(() => {
                                         inoutFlag = false;
@@ -486,7 +487,7 @@ class ExtensionBlocks {
 
                             } else {
                                 // console.log("No Card!");
-                                cloudNum = '';
+                                rep_cloudNum = '';
                                 inoutFlag = false;
                             }
 
@@ -509,7 +510,7 @@ class ExtensionBlocks {
 
         // console.log("NumberBank rep ioWaiter");
 
-        return reportNumWaiter(interval.MsRep);
+        return reportNumWaiter(interval.MsRep).then(() => {return rep_cloudNum});
 
     }
 
@@ -929,7 +930,7 @@ function reportNumWaiter(msec) {
             if (inoutFlag) {
                 reject();
             } else {
-                resolve(cloudNum);
+                resolve(rep_cloudNum);
             }
         }, msec)
     )
