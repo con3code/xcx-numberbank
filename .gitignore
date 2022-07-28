@@ -1,4 +1,4 @@
 node_modules/
-
 src/vm/*
 !src/vm/extensions/
+.DS_Store
