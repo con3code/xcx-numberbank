@@ -18,7 +18,7 @@ const entry = {
     get name() {
         return formatMessage({
             id: 'numberbank.entry.name',
-            default: 'NumberBank1.0',
+            default: 'NumberBank1.1',
             description: 'Store Numbers to Cloud.'
         });
     },

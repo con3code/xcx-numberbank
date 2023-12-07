@@ -1,15 +1,18 @@
 // NumberBank for Xcratch
-// 20220606 - ver1.0(067)
+// 20231207 - ver1.1(001)
 //
 
 import BlockType from '../../extension-support/block-type';
 import ArgumentType from '../../extension-support/argument-type';
 import translations from './translations.json';
 import blockIcon from './numberbank_icon.png';
-import { initializeApp, deleteApp } from 'firebase/app';
-import * as firestore from 'firebase/firestore/lite';
-import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore/lite';
+
 import Variable from '../../engine/variable';
+
+import { initializeApp, getApps, deleteApp } from 'firebase/app';
+import * as firestore from 'firebase/firestore';
+import { initializeFirestore, doc, getDoc, setDoc, onSnapshot } from 'firebase/firestore';
+
 
 const encoder = new TextEncoder();
 const deoder_utf8 = new TextDecoder('utf-8');
@@ -50,7 +53,7 @@ let extensionURL = 'https://con3office.github.io/xcx-numberbank/dist/numberbank.
 /**
  * Scratch 3.0 blocks for example of Xcratch.
  */
-class ExtensionBlocks {
+class Scratch3Numberbank {
 
     /**
      * @return {string} - the name of this extension.
@@ -107,309 +110,241 @@ class ExtensionBlocks {
 
 
     putNum(args) {
+        return new Promise((resolve, reject) => {
+            if (masterSha256 == '') { resolve(); }
+            if (args.BANK == '' || args.CARD == '' || args.NUM == '') { resolve(); }
 
-        if (masterSha256 == '') { return; }
+            bankKey = new String(args.BANK);
+            bankName = args.BANK;
+            cardKey = new String(args.CARD);
 
-        if (args.BANK == '' || args.CARD == '' || args.NUM == '') { return; }
+            uniKey = bankKey.trim().concat(cardKey.trim());
 
-        if (inoutFlag) { return; }
-        inoutFlag = true;
+            if (args.NUM != '' && args.NUM != undefined) {
+                settingNum = args.NUM;
+            }
 
-        //console.log("putNum...");
+            if (!crypto || !crypto.subtle) {
+                reject("crypto.subtle is not supported.");
+            }
 
-        bankKey = new String(args.BANK);
-        bankName = args.BANK;
-        cardKey = new String(args.CARD);
-        // console.log("bankKey: " + bankKey);
-        // console.log("bankName: " + bankName);
+            if (bankKey != '' && bankKey != undefined) {
+                crypto.subtle.digest('SHA-256', encoder.encode(bankKey))
+                    .then(bankStr => {
+                        bankSha256 = hexString(bankStr);
 
-        uniKey = bankKey.trim().concat(cardKey.trim());
-        //console.log("uniKey: " + uniKey);    
+                        return crypto.subtle.digest('SHA-256', encoder.encode(cardKey));
+                    })
+                    .then(cardStr => {
+                        cardSha256 = hexString(cardStr);
 
-        if (args.NUM != '' && args.NUM != undefined) {
-            settingNum = args.NUM;
-            //console.log("settingNum: " + settingNum);    
-        }
+                        return crypto.subtle.digest('SHA-256', encoder.encode(uniKey));
+                    })
+                    .then(uniStr => {
+                        uniSha256 = hexString(uniStr);
 
-        if (!crypto || !crypto.subtle) {
-            throw Error("crypto.subtle is not supported.");
-        }
+                        return sleep(1);
+                    })
+                    .then(() => {
+                        if (masterSha256 != '' && masterSha256 != undefined) {
+                            const now = Date.now();
+                            const cardDocRef = doc(db, 'card', uniSha256);
+                            const bankDocRef = doc(db, 'bank', bankSha256);
 
-        if (bankKey != '' && bankKey != undefined) {
-            //bankKey
-            crypto.subtle.digest('SHA-256', encoder.encode(bankKey))
-                .then(bankStr => {
-                    bankSha256 = hexString(bankStr);
-                    // console.log("bankSha256: " + bankSha256);
-
-                    //cardKey
-                    return crypto.subtle.digest('SHA-256', encoder.encode(cardKey));
-                })
-                .then(cardStr => {
-                    cardSha256 = hexString(cardStr);
-                    //console.log("cardSha256: " + cardSha256);
-
-                    //uniKey
-                    return crypto.subtle.digest('SHA-256', encoder.encode(uniKey));
-                })
-                .then(uniStr => {
-                    uniSha256 = hexString(uniStr);
-                    // console.log("uniSha256: " + uniSha256);
-
-                    return sleep(1);
-                })
-                .then(() => {
-                    //console.log("masterSha256: " + masterSha256);
-
-                    if (masterSha256 != '' && masterSha256 != undefined) {
-                        // console.log("NumberBank put 00");
-
-                        const now = Date.now();
-                        setDoc(doc(db, 'card', uniSha256), {
-                            number: settingNum,
-                            bank_key: bankSha256,
-                            card_key: cardSha256,
-                            master_key: masterSha256,
-                            time_stamp: now
-                        })
-                            .then(() => {
-                                // console.log("NumberBank put 01:" + bankName);
-
-                                return setDoc(doc(db, 'bank', bankSha256), {
-                                    bank_name: bankName,
+                            enqueueApiCall(() => {
+                                return setDoc(cardDocRef, {
+                                    number: settingNum,
+                                    bank_key: bankSha256,
+                                    card_key: cardSha256,
+                                    master_key: masterSha256,
                                     time_stamp: now
+                                })
+                                .then(() => {
+                                    return setDoc(bankDocRef, {
+                                        bank_name: bankName,
+                                        time_stamp: now
+                                    });
+                                })
+                                .catch(error => {
+                                    console.error("Error writing document: ", error);
+                                    reject();
                                 });
-                            })
-                            .then(() => {
-                                // console.log("NumberBank put 02");
-                                inoutFlag = false;
-                            })
-                            .catch(function (error) {
-                                console.error("Error writing document: ", error);
-                                inoutFlag = false;
                             });
+                            
+                            resolve();
 
-                    } else {
-                        // console.log("No MasterKey!");
-                        inoutFlag = false;
-                    }
-
-                    // console.log("NumberBank put 03");
-
-                });
-
-        }
-
-        // console.log("NumberBank put ioWaiter");
-
-        return ioWaiter(interval.MsPut);
+                        } else {
+                            console.log("No MasterKey!");
+                            resolve();  // MasterKeyがない場合
+                        }
+                    }).catch(error => {
+                        console.error("Error: ", error);
+                        reject(error);
+                    });
+            } else {
+                resolve();
+            }
+        }).then(() => {
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    resolve();
+                }, interval.MsPut);
+            });
+        });
 
     }
 
 
     setNum(args, util) {
+        return new Promise((resolve, reject) => {
+            if (masterSha256 == '') { resolve(); }
+            if (args.BANK == '' || args.CARD == '') { resolve(); }
 
-        if (masterSha256 == '') { return; }
+            const variable = util.target.lookupOrCreateVariable(null, args.VAL);
 
-        if (args.BANK == '' || args.CARD == '') { return; }
+            bankKey = new String(args.BANK);
+            bankName = args.BANK;
+            cardKey = new String(args.CARD);
 
-        if (inoutFlag) { return; }
-        inoutFlag = true;
+            uniKey = bankKey.trim().concat(cardKey.trim());
 
-        const variable = util.target.lookupOrCreateVariable(null, args.VAL);
+            if (!crypto || !crypto.subtle) {
+                reject("crypto.subtle is not supported.");
+            }
 
-        bankKey = bankName = new String(args.BANK);
-        cardKey = new String(args.CARD);
+            if (bankKey != '' && bankKey != undefined) {
+                crypto.subtle.digest('SHA-256', encoder.encode(bankKey))
+                    .then(bankStr => {
+                        bankSha256 = hexString(bankStr);
 
-        uniKey = bankKey.trim().concat(cardKey.trim());
+                        return crypto.subtle.digest('SHA-256', encoder.encode(cardKey));
+                    })
+                    .then(cardStr => {
+                        cardSha256 = hexString(cardStr);
 
-        if (!crypto || !crypto.subtle) {
-            throw Error("crypto.subtle is not supported.");
-        }
+                        return crypto.subtle.digest('SHA-256', encoder.encode(uniKey));
+                    })
+                    .then(uniStr => {
+                        uniSha256 = hexString(uniStr);
 
-        if (bankKey != '' && bankKey != undefined) {
-            //bankKey
-            crypto.subtle.digest('SHA-256', encoder.encode(bankKey))
-                .then(bankStr => {
-                    bankSha256 = hexString(bankStr);
-                    //console.log("bankSha256: " + bankSha256);    
-
-                    //cardKey
-                    return crypto.subtle.digest('SHA-256', encoder.encode(cardKey));
-                })
-                .then(cardStr => {
-                    cardSha256 = hexString(cardStr);
-                    //console.log("cardSha256: " + cardSha256);
-
-                    //uniKey
-                    return crypto.subtle.digest('SHA-256', encoder.encode(uniKey));
-                })
-                .then(uniStr => {
-                    uniSha256 = hexString(uniStr);
-                    //console.log("uniSha256: " + uniSha256);
-
-                    return sleep(1);
-                })
-                .then(() => {
-                    //console.log("masterSha256: " + masterSha256);
-
-                    if (masterSha256 != '' && masterSha256 != undefined) {
-
-                        getDoc(doc(db, 'card', uniSha256)).then(function (ckey) {
-                            // console.log("NumberBank set 00");
-
-                            if (ckey.exists()) {
-                                // console.log("NumberBank set 01");
-
-                                // cardDb.doc(uniSha256).get()
-                                getDoc(doc(db, 'card', uniSha256))
-                                    .then((doc) => {
-                                        // console.log("NumberBank set 02");
-                                        let data = doc.data();
-                                        variable.value = data.number;
+                        return sleep(1);
+                    })
+                    .then(() => {
+                        if (masterSha256 != '' && masterSha256 != undefined) {
+                            enqueueApiCall(() => {
+                                return getDoc(doc(db, 'card', uniSha256))
+                                    .then(docSnapshot => {
+                                        if (docSnapshot.exists()) {
+                                            let data = docSnapshot.data();
+                                            variable.value = data.number;
+                                            resolve();
+                                        } else {
+                                            variable.value = '';
+                                            resolve();
+                                        }
                                     })
-                                    .then(() => {
-                                        inoutFlag = false;
-                                    })
-                                    .catch(function (error) {
+                                    .catch(error => {
                                         console.error("Error getting document: ", error);
-                                    });
+                                        reject();
+                                    })
+                            });
+                            
+                            resolve();
 
-                            } else {
-                                // console.log("No Card!");
-                                variable.value = '';
-                                inoutFlag = false;
-                            }
-
-                        }).catch(function (error) {
-                            console.log("Error cheking document:", error);
-                            inoutFlag = false;
-                        });
-
-                    } else {
-                        // doc.data() will be undefined in this case
-                        console.log("No MasterKey!");
-                        inoutFlag = false;
-                    }
-
-                    // console.log("NumberBank set 03");
-
-                });
-
-        }
-
-        // console.log("NumberBank set ioWaiter");
-
-        return ioWaiter(interval.MsSet);
-
-    }
-
-
-    inoutDone() {
-        return !inoutFlag;
+                        } else {
+                            console.log("No MasterKey!");
+                            resolve();  // MasterKeyがない場合
+                        }
+                    }).catch(error => {
+                        console.error("Error: ", error);
+                        reject(error);
+                    });
+            } else {
+                resolve();
+            }
+        }).then(() => {
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    resolve();
+                }, interval.MsSet);
+            });
+        });
+        
     }
 
 
     getNum(args) {
+        return new Promise((resolve, reject) => {
+            if (masterSha256 == '') { resolve(''); }
+            if (args.BANK == '' || args.CARD == '') { resolve(''); }
 
-        cloudNum = '';
+            cloudNum = '';
 
-        if (masterSha256 == '') { return; }
+            bankKey = new String(args.BANK);
+            bankName = args.BANK;
+            cardKey = new String(args.CARD);
 
-        if (args.BANK == '' || args.CARD == '') { return; }
+            uniKey = bankKey.trim().concat(cardKey.trim());
 
-        // console.log('args.BANK:', args.BANK);
-        // console.log('args.CARD:', args.CARD);
+            if (!crypto || !crypto.subtle) {
+                reject("crypto.subtle is not supported.");
+            }
 
-        if (inoutFlag) { return; }
-        inoutFlag = true;
+            if (bankKey != '' && bankKey != undefined) {
+                crypto.subtle.digest('SHA-256', encoder.encode(bankKey))
+                    .then(bankStr => {
+                        bankSha256 = hexString(bankStr);
 
-        bankKey = new String(args.BANK);
-        bankName = args.BANK;
-        cardKey = new String(args.CARD);
+                        return crypto.subtle.digest('SHA-256', encoder.encode(cardKey));
+                    })
+                    .then(cardStr => {
+                        cardSha256 = hexString(cardStr);
 
-        uniKey = bankKey.trim().concat(cardKey.trim());
+                        return crypto.subtle.digest('SHA-256', encoder.encode(uniKey));
+                    })
+                    .then(uniStr => {
+                        uniSha256 = hexString(uniStr);
 
-        if (!crypto || !crypto.subtle) {
-            throw Error("crypto.subtle is not supported.");
-        }
-
-        if (bankKey != '' && bankKey != undefined) {
-            //bankKey
-            crypto.subtle.digest('SHA-256', encoder.encode(bankKey))
-                .then(bankStr => {
-                    bankSha256 = hexString(bankStr);
-                    //console.log("bankSha256: " + bankSha256);
-
-                    //cardKey
-                    return crypto.subtle.digest('SHA-256', encoder.encode(cardKey));
-                })
-                .then(cardStr => {
-                    cardSha256 = hexString(cardStr);
-                    //console.log("cardSha256: " + cardSha256);
-
-                    //uniKey
-                    return crypto.subtle.digest('SHA-256', encoder.encode(uniKey));
-                })
-                .then(uniStr => {
-                    uniSha256 = hexString(uniStr);
-                    //console.log("uniSha256: " + uniSha256);
-
-                    return sleep(1);
-                })
-                .then(() => {
-                    // console.log("masterSha256: " + masterSha256);
-
-                    if (masterSha256 != '' && masterSha256 != undefined) {
-
-                        getDoc(doc(db, 'card', uniSha256)).then(function (ckey) {
-                            // console.log("NumberBank get 00");
-
-                            if (ckey.exists()) {
-                                // console.log("NumberBank get 01");
-
-                                getDoc(doc(db, 'card', uniSha256))
-                                    .then((doc) => {
-                                        // console.log("NumberBank get 02");
-                                        let data = doc.data();
-                                        cloudNum = data.number;
-                                        // console.log('cloudNum:', cloudNum);
+                        return sleep(1);
+                    })
+                    .then(() => {
+                        if (masterSha256 != '' && masterSha256 != undefined) {
+                            enqueueApiCall(() => {
+                                return getDoc(doc(db, 'card', uniSha256))
+                                    .then(docSnapshot => {
+                                        if (docSnapshot.exists()) {
+                                            let data = docSnapshot.data();
+                                            cloudNum = data.number;
+                                            resolve(cloudNum);
+                                        } else {
+                                            cloudNum = '';
+                                            resolve(cloudNum);
+                                        }
                                     })
-                                    .then(() => {
-                                        // console.log("NumberBank get 03");
-                                        inoutFlag = false;
-                                    })
-                                    .catch(function (error) {
+                                    .catch(error => {
                                         console.error("Error getting document: ", error);
-                                    });
+                                        reject(error);
+                                    })
+                            });
 
-                            } else {
-                                // console.log("NumberBank get 04");
-                                // console.log("No Card!");
-                                cloudNum = '';
-                                inoutFlag = false;
-                            }
-
-                        }).catch(function (error) {
-                            console.log("Error cheking document:", error);
-                            inoutFlag = false;
-                        });
-
-                    } else {
-                        // doc.data() will be undefined in this case
-                        console.log("No MasterKey!");
-                        inoutFlag = false;
-                    }
-
-                    // console.log("NumberBank get 05");
-
-                });
-
-        }
-
-        // console.log("NumberBank get ioWaiter");
-
-        return ioWaiter(interval.MsGet);
+                        } else {
+                            console.log("No MasterKey!");
+                            resolve('');  // MasterKeyがない場合
+                        }
+                    }).catch(error => {
+                        console.error("Error: ", error);
+                        reject(error);
+                    });
+            } else {
+                resolve('');
+            }
+        }).then((ret) => {
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    resolve(ret);
+                }, interval.MsGet);
+            });
+        });
 
     }
 
@@ -420,284 +355,270 @@ class ExtensionBlocks {
 
 
     repCloudNum(args) {
-
-        if (masterSha256 == '') { return; }
-
-        if (args.BANK == '' || args.CARD == '') { return; }
-
-        if (inoutFlag) { return; }
-        inoutFlag = true;
-
-        let rep_cloudNum = '';
-
-        bankKey = new String(args.BANK);
-        bankName = args.BANK;
-        cardKey = new String(args.CARD);
-
-        uniKey = bankKey.trim().concat(cardKey.trim());
-
-        if (!crypto || !crypto.subtle) {
-            throw Error("crypto.subtle is not supported.");
-        }
-
-        if (bankKey != '' && bankKey != undefined) {
-            //bankKey
-            crypto.subtle.digest('SHA-256', encoder.encode(bankKey))
-                .then(bankStr => {
-                    bankSha256 = hexString(bankStr);
-                    //console.log("bankSha256: " + bankSha256);
-
-                    //cardKey
-                    return crypto.subtle.digest('SHA-256', encoder.encode(cardKey));
-                })
-                .then(cardStr => {
-                    cardSha256 = hexString(cardStr);
-                    //console.log("cardSha256: " + cardSha256);
-
-                    //uniKey
-                    return crypto.subtle.digest('SHA-256', encoder.encode(uniKey));
-                })
-                .then(uniStr => {
-                    uniSha256 = hexString(uniStr);
-                    //console.log("uniSha256: " + uniSha256);
-
-                    return sleep(1);
-                })
-                .then(() => {
-                    //console.log("masterSha256: " + masterSha256);
-
-                    if (masterSha256 != '' && masterSha256 != undefined) {
-
-                        getDoc(doc(db, 'card', uniSha256)).then(function (ckey) {
-                            // console.log("NumberBank rep 00");
-
-                            if (ckey.exists()) {
-                                // console.log("NumberBank rep 01");
-
-                                getDoc(doc(db, 'card', uniSha256))
-                                    .then((doc) => {
-                                        // console.log("NumberBank rep 02");
-                                        let data = doc.data();
-                                        rep_cloudNum = data.number;
+        return new Promise((resolve, reject) => {
+            if (masterSha256 == '') { resolve(''); }
+            if (args.BANK == '' || args.CARD == '') { resolve(''); }
+    
+            let rep_cloudNum = '';
+    
+            bankKey = new String(args.BANK);
+            bankName = args.BANK;
+            cardKey = new String(args.CARD);
+    
+            uniKey = bankKey.trim().concat(cardKey.trim());
+    
+            if (!crypto || !crypto.subtle) {
+                reject("crypto.subtle is not supported.");
+            }
+    
+            if (bankKey != '' && bankKey != undefined) {
+                crypto.subtle.digest('SHA-256', encoder.encode(bankKey))
+                    .then(bankStr => {
+                        bankSha256 = hexString(bankStr);
+    
+                        return crypto.subtle.digest('SHA-256', encoder.encode(cardKey));
+                    })
+                    .then(cardStr => {
+                        cardSha256 = hexString(cardStr);
+    
+                        return crypto.subtle.digest('SHA-256', encoder.encode(uniKey));
+                    })
+                    .then(uniStr => {
+                        uniSha256 = hexString(uniStr);
+    
+                        return sleep(1);
+                    })
+                    .then(() => {
+                        if (masterSha256 != '' && masterSha256 != undefined) {
+                            enqueueApiCall(() => {
+                                return getDoc(doc(db, 'card', uniSha256))
+                                    .then(docSnapshot => {
+                                        if (docSnapshot.exists()) {
+                                            let data = docSnapshot.data();
+                                            rep_cloudNum = data.number;
+                                            resolve(rep_cloudNum);
+                                        } else {
+                                            rep_cloudNum = '';
+                                            resolve(rep_cloudNum);
+                                        }
                                     })
-                                    .then(() => {
-                                        inoutFlag = false;
-                                    })
-                                    .catch(function (error) {
+                                    .catch(error => {
                                         console.error("Error getting document: ", error);
-                                    });
+                                        reject(error);
+                                    })
+                            });
 
-                            } else {
-                                // console.log("No Card!");
-                                rep_cloudNum = '';
-                                inoutFlag = false;
-                            }
-
-                        }).catch(function (error) {
-                            console.log("Error cheking document:", error);
-                            inoutFlag = false;
-                        });
-
-                    } else {
-                        // doc.data() will be undefined in this case
-                        console.log("No MasterKey!");
-                        inoutFlag = false;
-                    }
-
-                    // console.log("NumberBank rep 03");
-
-                });
-
-        }
-
-        // console.log("NumberBank rep ioWaiter");
-
-        return reportNumWaiter(interval.MsRep).then(() => {return rep_cloudNum});
+                        } else {
+                            console.log("No MasterKey!");
+                            resolve('');  // MasterKeyがない場合
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error: ", error);
+                        reject(error);
+                    });
+            } else {
+                resolve('');  // bankKeyがない場合
+            }
+        }).then((ret) => {
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    resolve(ret);
+                }, interval.MsRep);
+            });
+        });
 
     }
 
 
     boolAvl(args, util) {
-
-        if (masterSha256 == '') { return; }
-
-        if (args.BANK == '' || args.CARD == '') { return; }
-
-        if (inoutFlag) { return; }
-        inoutFlag = true;
-
-        bankKey = new String(args.BANK);
-        bankName = args.BANK;
-        cardKey = new String(args.CARD);
-
-        uniKey = bankKey.trim().concat(cardKey.trim());
-
-        if (!crypto || !crypto.subtle) {
-            throw Error("crypto.subtle is not supported.");
-        }
-
-        if (bankKey != '' && bankKey != undefined) {
-            //
-            crypto.subtle.digest('SHA-256', encoder.encode(uniKey))
+        return new Promise((resolve, reject) => {
+            if (masterSha256 == '') { resolve(''); }
+            if (args.BANK == '' || args.CARD == '') { resolve(false); }
+    
+            bankKey = new String(args.BANK);
+            bankName = args.BANK;
+            cardKey = new String(args.CARD);
+    
+            uniKey = bankKey.trim().concat(cardKey.trim());
+    
+            if (!crypto || !crypto.subtle) {
+                reject("crypto.subtle is not supported.");
+            }
+    
+            if (bankKey != '' && bankKey != undefined) {
+                crypto.subtle.digest('SHA-256', encoder.encode(uniKey))
                 .then(uniStr => {
                     uniSha256 = hexString(uniStr);
-                    // console.log("uniSha256: " + uniSha256);
-
+    
                     return sleep(1);
                 })
                 .then(() => {
-                    // console.log("masterSha256: " + masterSha256);
-
                     if (masterSha256 != '' && masterSha256 != undefined) {
-
-                        getDoc(doc(db, 'card', uniSha256)).then(function (ckey) {
-                            // console.log("NumberBank avl 00");
-
-                            if (ckey.exists()) {
-                                // console.log("NumberBank avl YES");
-                                inoutFlag = false;
-                                availableFlag = true;
-                            } else {
-                                // console.log("NumberBank avl NO");
-                                inoutFlag = false;
-                                availableFlag = false;
-                            }
-
-                        }).catch(function (error) {
-                            console.log("Error checking document:", error);
-                            inoutFlag = false;
-                            availableFlag = false;
+                        enqueueApiCall(() => {
+                            return getDoc(doc(db, 'card', uniSha256))
+                                .then(ckey => {
+                                    if (ckey.exists()) {
+                                        resolve(true);
+                                    } else {
+                                        resolve(false);
+                                    }
+                                })
+                                .catch(error => {
+                                    console.log("Error checking document:", error);
+                                    reject(error);
+                                })
                         });
-
+                        
                     } else {
-                        // doc.data() will be undefined in this case
                         console.log("No MasterKey!");
-                        inoutFlag = false;
-                        availableFlag = false;
+                        reject('');  // MasterKeyがない場合
                     }
-
-                    // console.log("NumberBank avl 03");
-
-                })
-
-        }
-
-        // console.log("NumberBank avl ioWaiter");
-
-        return availableWaiter(interval.MsAvl);
+                }).catch(error => {
+                    console.error("Error: ", error);
+                    reject(error);
+                });
+            } else {
+                resolve('');
+            }
+        }).then((ret) => {
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    resolve(ret);
+                }, interval.MsAvl);
+            });
+        });
 
     }
 
 
     setMaster(args) {
-        masterSetted = '';
+        return new Promise((resolve, reject) => {
+            if (args.KEY == '') { resolve(''); }
+            if (inoutFlag_setting) { resolve(); }
 
-        if (args.KEY == '') { return masterSetted; }
+            inoutFlag_setting = true;
+            inoutFlag = true;
+    
+            masterSha256 = '';
+            masterSetted = args.KEY;
 
-        if (inoutFlag_setting) { return masterSetted; }
-        inoutFlag_setting = true;
-        inoutFlag = true;
-
-        masterSha256 = '';
-        masterSetted = args.KEY;
-
-        mkbUrl = FBaseUrl + 'mkeybank/?mkey=' + masterSetted;
-        mkbRequest = new Request(mkbUrl, { mode: 'cors' });
-
-
-        if (!crypto || !crypto.subtle) {
-            throw Error("crypto.subtle is not supported.");
-        }
-
-        crypto.subtle.digest('SHA-256', encoder.encode(masterSetted))
-            .then(masterStr => {
-                masterSha256 = hexString(masterStr);
-
-                return fetch(mkbRequest);
-            })
-            .then(response => {
-
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    throw new Error('Unexpected responce status ${response.status} or content type');
-                }
-
-            }).then((resBody) => {
-
-                cloudConfig_mkey.masterKey = resBody.masterKey;
-                cloudConfig_mkey.cloudType = resBody.cloudType;
-                cloudConfig_mkey.apiKey = resBody.apiKey;
-                cloudConfig_mkey.authDomain = resBody.authDomain;
-                cloudConfig_mkey.databaseURL = resBody.databaseURL;
-                cloudConfig_mkey.projectId = resBody.projectId;
-                cloudConfig_mkey.storageBucket = resBody.storageBucket;
-                cloudConfig_mkey.messagingSenderId = resBody.messagingSenderId;
-                cloudConfig_mkey.appId = resBody.appId;
-                cloudConfig_mkey.measurementId = resBody.measurementId;
-                cloudConfig_mkey.cccCheck = resBody.cccCheck;
-                interval.MsPut = resBody.intervalMsPut;
-                interval.MsSet = resBody.intervalMsSet;
-                interval.MsGet = resBody.intervalMsGet;
-                interval.MsRep = resBody.intervalMsRep;
-                interval.MsAvl = resBody.intervalMsAvl;
-
-
-                inoutFlag = false;
-                crypt_decode(cloudConfig_mkey, firebaseConfig);
-                return ioWaiter(1);
-
-            }).then(() => {
-                inoutFlag = true;
-
-                // Initialize Firebase
-
-                if (cloudFlag) {
-
-                    deleteApp(fbApp)
-                    .then(() => {
-                        cloudFlag = false;
-                        fbApp = initializeApp(firebaseConfig);
-                        db = getFirestore(fbApp);
+            mkbUrl = FBaseUrl + 'mkeybank/?mkey=' + masterSetted;
+            mkbRequest = new Request(mkbUrl, { mode: 'cors' });
+    
+            if (!crypto || !crypto.subtle) {
+                reject("crypto.subtle is not supported.");
+            }
+    
+            crypto.subtle.digest('SHA-256', encoder.encode(masterSetted))
+                .then(masterStr => {
+                    masterSha256 = hexString(masterStr);
+    
+                    enqueueApiCall(() => fetch(mkbRequest).then(response => {
+                        if (response.ok) {
+                            return response.json();
+                        } else {
+                            throw new Error('Unexpected responce status ${response.status} or content type');
+                        }
+                        
+                    }).then((resBody) => {
+        
+                        cloudConfig_mkey.masterKey = resBody.masterKey;
+                        cloudConfig_mkey.cloudType = resBody.cloudType;
+                        cloudConfig_mkey.apiKey = resBody.apiKey;
+                        cloudConfig_mkey.authDomain = resBody.authDomain;
+                        cloudConfig_mkey.databaseURL = resBody.databaseURL;
+                        cloudConfig_mkey.projectId = resBody.projectId;
+                        cloudConfig_mkey.storageBucket = resBody.storageBucket;
+                        cloudConfig_mkey.messagingSenderId = resBody.messagingSenderId;
+                        cloudConfig_mkey.appId = resBody.appId;
+                        cloudConfig_mkey.measurementId = resBody.measurementId;
+                        cloudConfig_mkey.cccCheck = resBody.cccCheck;
+                        interval.MsPut = resBody.intervalMsPut;
+                        interval.MsSet = resBody.intervalMsSet;
+                        interval.MsGet = resBody.intervalMsGet;
+                        interval.MsRep = resBody.intervalMsRep;
+                        interval.MsAvl = resBody.intervalMsAvl;
+        
+        
                         inoutFlag = false;
+                        crypt_decode(cloudConfig_mkey, firebaseConfig);
+                        return ioWaiter(1);
+        
+                    }).then(() => {
+                        inoutFlag = true;
+        
+                        // Initialize Firebase
+                        try {
+                            if(!getApps().length){ //V9
+                            //if (!firebase.apps.length) {
+                                        
+                                fbApp = initializeApp(firebaseConfig, masterSetted); //V9
+                                //db = initializeFirestore(fbApp, {localCache: PersistentLocalCache});
+                                db = initializeFirestore(fbApp, {});
+
+                                inoutFlag_setting = false;
+                                inoutFlag = false;
+            
+                            } else {
+            
+                                deleteApp(fbApp)
+                                .then(() => {
+
+                                    fbApp = initializeApp(firebaseConfig, masterSetted); //V9
+                                    //db = initializeFirestore(fbApp, {localCache: PersistentLocalCache}); 
+                                    db = initializeFirestore(fbApp, {});
+
+                                    inoutFlag_setting = false;
+                                })
+                                .catch((error) => {
+                                    console.log('Error deleting fbApp:', error);
+                                    inoutFlag_setting = false;
+                                })
+
+                                inoutFlag = false;
+
+                            }
+
+                        } catch (error) {
+                            console.log('Error initializing or deleting fbApp:', error);
+                            inoutFlag = false;
+                            inoutFlag_setting = false;
+                            reject();
+                        }
+            
+                        return sleep(1);
+        
+                    }).then(() => {
+                        ResponseMaster = masterSetted;
+                        console.log("= MasterKey:", masterSetted);
+                        console.log('= Interval:', interval);
+                        console.log("= MasterKey Accepted =");
+
+                        resolve(ResponseMaster);
+        
                     })
-                    .catch((err) => {
-                        console.log('Err deleting app:', err);
-                        inoutFlag = false;
-                    })
+                    .catch((error) => {
+                        ResponseMaster = 'No masterkey';  // MasterKeyがマッチしない場合
+                        console.log("= No such MasterKey =");
+                        inoutFlag_setting = false;
+                        resolve(ResponseMaster);
+                    }));
 
-                } else {
+                })
+                .catch((error) => {
+                        console.log('Erorr:', error);
+                        reject(error);
+                });
 
-                    fbApp = initializeApp(firebaseConfig);
-                    db = getFirestore(fbApp);
-                    inoutFlag = false;
-
-                }
-
-                return ioWaiter(1);
-
-            }).then(() => {
-
-                masterKey = masterSetted;
-                cloudFlag = true;
-                inoutFlag_setting = false;
-                inoutFlag = false;
-                console.log("= MasterKey:", masterSetted);
-                console.log('= Interval:', interval);
-                console.log("= MasterKey Accepted! =");
-
-            })
-            .catch(function (error) {
-
-                inoutFlag_setting = false;
-                inoutFlag = false;
-                console.log("Error setting MasterKey:", error);
-
-            });
-
-
-        return cloudWaiter(1).then(() => { return masterKey; });
-
+        })
+        .then(() => {
+            return ioSettingWaiter(1);
+        })
+        .then(() => {
+            return ResponseMaster;
+        });
+        
     }
 
 
@@ -709,20 +630,20 @@ class ExtensionBlocks {
     getInfo() {
         setupTranslations();
         return {
-            id: ExtensionBlocks.EXTENSION_ID,
-            name: ExtensionBlocks.EXTENSION_NAME,
-            extensionURL: ExtensionBlocks.extensionURL,
+            id: Scratch3Numberbank.EXTENSION_ID,
+            name: Scratch3Numberbank.EXTENSION_NAME,
+            extensionURL: Scratch3Numberbank.extensionURL,
             blockIconURI: blockIcon,
             showStatusButton: false,
             blocks: [
                 {
                     opcode: 'putNum',
-                    blockType: BlockType.COMMAND,
                     text: formatMessage({
                         id: 'numberbank.putNum',
                         default: 'put[NUM]to[CARD]of[BANK]',
                         description: 'put number to Firebase'
                     }),
+                    blockType: BlockType.COMMAND,
                     arguments: {
                         BANK: {
                             type: ArgumentType.STRING,
@@ -902,7 +823,41 @@ class ExtensionBlocks {
 }
 
 
+//
+function processQueue() {
+    if (processing || apiCallQueue.length === 0) {
+      return;
+    }
+    processing = true;
+    const apiCall = apiCallQueue.shift();
+  
+    apiCall().then(() => {
+      processing = false;
+      processQueue();
+    }).catch(error => {
+      console.error(error);
+      processing = false;
+      processQueue();
+    });
+  }
+  
+  
+  //
+  function enqueueApiCall(apiCall) {
+      return new Promise((resolve, reject) => {
+        apiCallQueue.push(() => apiCall().then(resolve).catch(reject));
+        processQueue();
+      });
+  }
+  
+  
+  function resetQueue() {
+      apiCallQueue = [];
+      processing = false;
+    }
 
+
+//
 function sleep(msec) {
     return new Promise(resolve =>
         setTimeout(() => {
@@ -910,6 +865,7 @@ function sleep(msec) {
         }, msec)
     );
 }
+
 
 function ioWaiter(msec) {
     return new Promise((resolve, reject) =>
@@ -926,10 +882,11 @@ function ioWaiter(msec) {
         });
 }
 
-function reportNumWaiter(msec) {
+
+function ioSettingWaiter(msec) {
     return new Promise((resolve, reject) =>
         setTimeout(() => {
-            if (inoutFlag) {
+            if (inoutFlag_setting) {
                 reject();
             } else {
                 resolve();
@@ -937,39 +894,10 @@ function reportNumWaiter(msec) {
         }, msec)
     )
         .catch(() => {
-            return reportNumWaiter(msec);
+            return ioSettingWaiter(msec);
         });
 }
 
-function availableWaiter(msec) {
-    return new Promise((resolve, reject) =>
-        setTimeout(() => {
-            if (inoutFlag) {
-                reject();
-            } else {
-                resolve(availableFlag);
-            }
-        }, msec)
-    )
-        .catch(() => {
-            return availableWaiter(msec);
-        });
-}
-
-function cloudWaiter(msec) {
-    return new Promise((resolve, reject) =>
-        setTimeout(() => {
-            if (inoutFlag_setting) {
-                reject();
-            } else {
-                resolve(cloudFlag);
-            }
-        }, msec)
-    )
-        .catch(() => {
-            return cloudWaiter(msec);
-        });
-}
 
 
 
@@ -991,10 +919,13 @@ function hexString(textStr) {
 var fbApp;
 var db;
 
+// API呼び出し管理キュー
+let apiCallQueue = [];
+let processing = false;
 
 // Variables
-let masterKey = '';
 let masterSetted = '';
+let ResponseMaster = '';
 let bankName = '';
 let bankKey = '';
 let cardKey = '';
@@ -1007,8 +938,6 @@ let cardSha256 = '';
 let uniSha256 = '';
 let inoutFlag = false;
 let inoutFlag_setting = false;
-let availableFlag = false;
-let cloudFlag = false;
 let mkbRequest;
 let mkbUrl;
 const FBaseUrl = 'https://us-central1-masterkey-bank.cloudfunctions.net/';
@@ -1111,113 +1040,31 @@ function de_crt(data) {
 
 
 function crypt_decode(cryptedConfigData, decodedConfigData) {
-    if (inoutFlag) { return; }
-    inoutFlag = true;
 
     decodedConfigData.cccCheck = cryptedConfigData.cccCheck;
     const cccCheck = de_crt(cryptedConfigData.cccCheck);
 
-    let ckey;
+    const masterStr = crypto.subtle.digest('SHA-256', encoder.encode(masterSetted));
+    const ckeyPromise = masterStr.then(masterStr => crypto.subtle.importKey('raw', masterStr, 'AES-CTR', false, ['encrypt', 'decrypt']));
 
-    switch (cryptedConfigData.cloudType) {
-        case 'firestore':
-            // console.log('switch to Firebase!');
+    const propertiesToDecrypt = ['apiKey', 'authDomain', 'databaseURL', 'projectId', 'storageBucket', 'messagingSenderId', 'appId', 'measurementId'];
 
-            crypto.subtle.digest('SHA-256', encoder.encode(masterSetted))
-                .then((masterStr) => {
+    const decryptPromises = propertiesToDecrypt.map(property => {
+        return ckeyPromise.then(ckey => {
+            const cryptedData = de_get(cryptedConfigData[property]);
+            return crypto.subtle.decrypt({ name: 'AES-CTR', counter: cccCheck, length: 64 }, ckey, cryptedData);
+        }).then(decodedData => {
+            decodedConfigData[property] = de_disp(decodedData);
+        }).catch(error => {
+            console.error(`Error decrypting ${property}:`, error);
+        });
+    });
 
-                    return crypto.subtle.importKey('raw', masterStr, 'AES-CTR', false, ['encrypt', 'decrypt']);
-                })
-                .then((encodedKey) => {
-                    ckey = encodedKey;
-
-                    // 復号化開始
-                    // apiKey
-                    return crypto.subtle.decrypt({ name: 'AES-CTR', counter: cccCheck, length: 64 }, ckey, de_get(cryptedConfigData.apiKey));
-                })
-                .then((decodedData) => {
-                    // console.log('decodedConfigData.apiKey:', de_disp(decodedData));
-                    decodedConfigData.apiKey = de_disp(decodedData);
-
-                    // authDomain
-                    return crypto.subtle.decrypt({ name: 'AES-CTR', counter: cccCheck, length: 64 }, ckey, de_get(cryptedConfigData.authDomain));
-                })
-                .then((decodedData) => {
-                    // console.log('decodedConfigData.authDomain:', de_disp(decodedData));
-                    decodedConfigData.authDomain = de_disp(decodedData);
-
-                    // databaseURL
-                    return crypto.subtle.decrypt({ name: 'AES-CTR', counter: cccCheck, length: 64 }, ckey, de_get(cryptedConfigData.databaseURL));
-                })
-                .then((decodedData) => {
-                    // console.log('decodedConfigData.databaseURL:', de_disp(decodedData));
-                    decodedConfigData.databaseURL = de_disp(decodedData);
-
-                    // projectId
-                    return crypto.subtle.decrypt({ name: 'AES-CTR', counter: cccCheck, length: 64 }, ckey, de_get(cryptedConfigData.projectId));
-                })
-                .then((decodedData) => {
-                    // console.log('decodedConfigData.projectId:', de_disp(decodedData));
-                    decodedConfigData.projectId = de_disp(decodedData);
-
-                    // storageBucket
-                    return crypto.subtle.decrypt({ name: 'AES-CTR', counter: cccCheck, length: 64 }, ckey, de_get(cryptedConfigData.storageBucket));
-                })
-                .then((decodedData) => {
-                    // console.log('decodedConfigData.storageBucket:', de_disp(decodedData));
-                    decodedConfigData.storageBucket = de_disp(decodedData);
-
-                    // messagingSenderId
-                    return crypto.subtle.decrypt({ name: 'AES-CTR', counter: cccCheck, length: 64 }, ckey, de_get(cryptedConfigData.messagingSenderId));
-                })
-                .then((decodedData) => {
-                    // console.log('decodedConfigData.messagingSenderId:', de_disp(decodedData));
-                    decodedConfigData.messagingSenderId = de_disp(decodedData);
-
-                    // appId
-                    return crypto.subtle.decrypt({ name: 'AES-CTR', counter: cccCheck, length: 64 }, ckey, de_get(cryptedConfigData.appId));
-                })
-                .then((decodedData) => {
-                    // console.log('decodedConfigData.appId:', de_disp(decodedData));
-                    decodedConfigData.appId = de_disp(decodedData);
-
-                    // measurementId
-                    return crypto.subtle.decrypt({ name: 'AES-CTR', counter: cccCheck, length: 64 }, ckey, de_get(cryptedConfigData.measurementId));
-                })
-                .then((decodedData) => {
-                    // console.log('decodedConfigData.measurementId:', de_disp(decodedData));
-                    decodedConfigData.measurementId = de_disp(decodedData);
-
-                    inoutFlag = false;
-                    // console.log('inoutFlag(decode end):', inoutFlag);
-                    return decodedConfigData;
-
-                })
-                .catch((err) => {
-                    console.log('decoding error:', err);
-                });
-
-            break;
-
-        case 'dynamo':
-            // console.log('switch to Dynamo!');
-            inoutFlag = false;
-
-            break;
-
-        default:
-            // console.log('switch doesnt work!');
-            inoutFlag = false;
-
-            break;
-    }
-
-
+    return Promise.all(decryptPromises);
 }
 
 
-
 export {
-    ExtensionBlocks as default,
-    ExtensionBlocks as blockClass
+    Scratch3Numberbank as default,
+    Scratch3Numberbank as blockClass
 };

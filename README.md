@@ -1,4 +1,4 @@
-# NumberBank1.0
+# NumberBank1.1
 An example extension for [Xcratch](https://xcratch.github.io/)
 
 This extension add extra-block "do it", that executes string in its input field as a sentence in Javascript and return the result.
@@ -6,7 +6,7 @@ This extension add extra-block "do it", that executes string in its input field 
 
 ## ✨ What You Can Do With This Extension
 
-Play [Example Project](https://xcratch.github.io/editor/#https://con3office.github.io/xcx-numberbank/projects/example.sb3) to look at what you can do with "NumberBank1.0" extension. 
+Play [Example Project](https://xcratch.github.io/editor/#https://con3office.github.io/xcx-numberbank/projects/example.sb3) to look at what you can do with "NumberBank1.1" extension. 
 <iframe src="https://xcratch.github.io/editor/player#https://con3office.github.io/xcx-numberbank/projects/example.sb3" width="540px" height="460px"></iframe>
 
 
