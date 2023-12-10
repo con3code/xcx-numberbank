@@ -143,7 +143,7 @@ class Scratch3Numberbank {
     putNum(args) {
         return new Promise((resolve, reject) => {
             if (masterSha256 == '') { resolve(); }
-            if (args.BANK == '' || args.CARD == '' || args.NUM == '') { resolve(); }
+            if (args.BANK == '' || args.CARD == '' || args.VAL == '') { resolve(); }
 
             bankKey = new String(args.BANK);
             bankName = args.BANK;
@@ -151,8 +151,8 @@ class Scratch3Numberbank {
 
             uniKey = bankKey.trim().concat(cardKey.trim());
 
-            if (args.NUM != '' && args.NUM != undefined) {
-                settingNum = args.NUM;
+            if (args.VAL != '' && args.VAL != undefined) {
+                settingNum = args.VAL;
             }
 
             if (!crypto || !crypto.subtle) {

@@ -11274,15 +11274,15 @@ var Scratch3Numberbank = /*#__PURE__*/function () {
         if (masterSha256 == '') {
           resolve();
         }
-        if (args.BANK == '' || args.CARD == '' || args.NUM == '') {
+        if (args.BANK == '' || args.CARD == '' || args.VAL == '') {
           resolve();
         }
         bankKey = new String(args.BANK);
         bankName = args.BANK;
         cardKey = new String(args.CARD);
         uniKey = bankKey.trim().concat(cardKey.trim());
-        if (args.NUM != '' && args.NUM != undefined) {
-          settingNum = args.NUM;
+        if (args.VAL != '' && args.VAL != undefined) {
+          settingNum = args.VAL;
         }
         if (!crypto || !crypto.subtle) {
           reject("crypto.subtle is not supported.");
