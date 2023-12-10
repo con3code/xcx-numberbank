@@ -1,5 +1,5 @@
 // NumberBank for Xcratch
-// 20231210 - ver2.0(001)
+// 20231210 - ver2.0(2001)
 //
 
 import BlockType from '../../extension-support/block-type';
@@ -846,8 +846,8 @@ class Scratch3Numberbank {
                     opcode: 'putNum',
                     text: formatMessage({
                         id: 'numberbank.putNum',
-                        default: 'put[NUM]to[CARD]of[BANK]',
-                        description: 'put number to Firebase'
+                        default: 'put[VAL]to[CARD]of[BANK]',
+                        description: 'put value to Firebase'
                     }),
                     blockType: BlockType.COMMAND,
                     arguments: {
@@ -865,7 +865,7 @@ class Scratch3Numberbank {
                                 default: 'card'
                             })
                         },
-                        NUM: {
+                        VAL: {
                             type: ArgumentType.NUMBER,
                             defaultValue: '10'
                         }
@@ -878,7 +878,7 @@ class Scratch3Numberbank {
                     text: formatMessage({
                         id: 'numberbank.setNum',
                         default: 'set [VAL] to [CARD]of[BANK]',
-                        description: 'set number by Firebase'
+                        description: 'set value by Firebase'
                     }),
                     arguments: {
                         BANK: {
@@ -910,7 +910,7 @@ class Scratch3Numberbank {
                     text: formatMessage({
                         id: 'numberbank.getNum',
                         default: 'get [CARD]of[BANK]',
-                        description: 'get number from Firebase'
+                        description: 'get value from Firebase'
                     }),
                     arguments: {
                         BANK: {
@@ -934,7 +934,7 @@ class Scratch3Numberbank {
                     text: formatMessage({
                         id: 'numberbank.repNum',
                         default: 'cloud value',
-                        description: 'report Number'
+                        description: 'report value'
                     }),
                     blockType: BlockType.REPORTER
                 },
@@ -945,7 +945,7 @@ class Scratch3Numberbank {
                     text: formatMessage({
                         id: 'numberbank.repCloudNum',
                         default: 'value of[CARD]of[BANK]',
-                        description: 'report Cloud number'
+                        description: 'report cloud value'
                     }),
                     arguments: {
                         BANK: {
@@ -971,7 +971,7 @@ class Scratch3Numberbank {
                     text: formatMessage({
                         id: 'numberbank.boolAvl',
                         default: '[CARD]of[BANK] available?',
-                        description: 'report Number'
+                        description: 'report value'
                     }),
                     arguments: {
                         BANK: {
@@ -997,7 +997,7 @@ class Scratch3Numberbank {
                     text: formatMessage({
                         id: 'numberbank.setMaster',
                         default: 'set Master[KEY]',
-                        description: 'readFirebase'
+                        description: 'initFirebase'
                     }),
                     arguments: {
                         KEY: {
@@ -1017,7 +1017,7 @@ class Scratch3Numberbank {
                     text: formatMessage({
                         id: 'numberbank.lisningNum',
                         default: ' turn lisning [CARD]of[BANK][LISNING_STATE]',
-                        description: 'lisning number by Firebase'
+                        description: 'lisning value by Firebase'
                     }),
                     arguments: {
                         BANK: {
