@@ -1,4 +1,4 @@
-# NumberBank 2.0
+# NumberBank 2.0 for Xcratch
 An example extension for [Xcratch](https://xcratch.github.io/)
 
 This extension add extra-blocks, that enables cloud associative arrays to save values from Scratch 3.0 projects to Firebase Cloud.
