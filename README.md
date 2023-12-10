@@ -1,7 +1,7 @@
 # NumberBank 2.0
 An example extension for [Xcratch](https://xcratch.github.io/)
 
-This extension add extra-block "do it", that executes string in its input field as a sentence in Javascript and return the result.
+This extension add extra-blocks, that enables cloud associative arrays to save values from Scratch 3.0 projects to Firebase Cloud.
 
 
 ## ✨ What You Can Do With This Extension

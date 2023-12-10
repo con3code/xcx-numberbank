@@ -19,7 +19,7 @@ const entry = {
         return formatMessage({
             id: 'numberbank.entry.name',
             default: 'NumberBank 2.0',
-            description: 'Store Numbers to Cloud.'
+            description: 'Store value to cloud.'
         });
     },
     extensionId: 'numberbank',
@@ -30,7 +30,7 @@ const entry = {
     get description() {
         return formatMessage({
             defaultMessage: 'an extension for Xcratch',
-            description: 'Store Numbers to Cloud.',
+            description: 'Store value to cloud.',
             id: 'numberbank.entry.description'
         });
     },

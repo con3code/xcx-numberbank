@@ -1,6 +1,10 @@
-// NumberBank for Xcratch
-// 20231210 - ver2.0(2001)
+/*
 //
+// NumberBank for Xcratch
+// 20231210 - ver2.0(2002)
+//
+//
+*/
 
 import BlockType from '../../extension-support/block-type';
 import ArgumentType from '../../extension-support/argument-type';
@@ -846,7 +850,7 @@ class Scratch3Numberbank {
                     opcode: 'putNum',
                     text: formatMessage({
                         id: 'numberbank.putNum',
-                        default: 'put[VAL]to[CARD]of[BANK]',
+                        default: 'put [VAL] to [CARD]of[BANK]',
                         description: 'put value to Firebase'
                     }),
                     blockType: BlockType.COMMAND,
@@ -944,7 +948,7 @@ class Scratch3Numberbank {
                     blockType: BlockType.REPORTER,
                     text: formatMessage({
                         id: 'numberbank.repCloudNum',
-                        default: 'value of[CARD]of[BANK]',
+                        default: 'value of [CARD]of[BANK]',
                         description: 'report cloud value'
                     }),
                     arguments: {
@@ -1016,7 +1020,7 @@ class Scratch3Numberbank {
                     blockType: BlockType.COMMAND,
                     text: formatMessage({
                         id: 'numberbank.lisningNum',
-                        default: ' turn lisning [CARD]of[BANK][LISNING_STATE]',
+                        default: ' turn lisning [CARD]of[BANK] [LISNING_STATE]',
                         description: 'lisning value by Firebase'
                     }),
                     arguments: {

@@ -33,9 +33,9 @@
     "numberbank.repCloudNum": "[BANK]の[CARD]のあたい",
     "numberbank.boolAvl": "[BANK]の[CARD]がある",
     "numberbank.setMaster": "ますたー[KEY]をセット",
-    "numberbank.lisningNum":"[BANK]の[CARD]のこうしんかくにんを[LISNING_STATE]にする",
-    "numberbank.whenUpdated":"こうしんされたとき",
-    "lisning.off":"きり",
-    "lisning.on":"いり"
+    "numberbank.lisningNum": "[BANK]の[CARD]のこうしんかくにんを[LISNING_STATE]にする",
+    "numberbank.whenUpdated": "こうしんされたとき",
+    "lisning.off": "きり",
+    "lisning.on": "いり"
   }
 }

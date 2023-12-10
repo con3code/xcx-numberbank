@@ -4,7 +4,7 @@ var img$1 = "data:image/svg+xml,%3c%3fxml version='1.0' encoding='UTF-8'%3f%3e%3
 
 var en$2 = {
 	"numberbank.entry.name": "NumberBank 2.0",
-	"numberbank.entry.description": "Store Value to Cloud."
+	"numberbank.entry.description": "Store value to cloud."
 };
 var ja$2 = {
 	"numberbank.entry.name": "NumberBank 2.0",
@@ -37,7 +37,7 @@ var entry = {
     return formatMessage$1({
       id: 'numberbank.entry.name',
       default: 'NumberBank 2.0',
-      description: 'Store Numbers to Cloud.'
+      description: 'Store value to cloud.'
     });
   },
   extensionId: 'numberbank',
@@ -48,7 +48,7 @@ var entry = {
   get description() {
     return formatMessage$1({
       defaultMessage: 'an extension for Xcratch',
-      description: 'Store Numbers to Cloud.',
+      description: 'Store value to cloud.',
       id: 'numberbank.entry.description'
     });
   },
@@ -11875,7 +11875,7 @@ var Scratch3Numberbank = /*#__PURE__*/function () {
           opcode: 'putNum',
           text: formatMessage({
             id: 'numberbank.putNum',
-            default: 'put[VAL]to[CARD]of[BANK]',
+            default: 'put [VAL] to [CARD]of[BANK]',
             description: 'put value to Firebase'
           }),
           blockType: blockType.COMMAND,
@@ -11966,7 +11966,7 @@ var Scratch3Numberbank = /*#__PURE__*/function () {
           blockType: blockType.REPORTER,
           text: formatMessage({
             id: 'numberbank.repCloudNum',
-            default: 'value of[CARD]of[BANK]',
+            default: 'value of [CARD]of[BANK]',
             description: 'report cloud value'
           }),
           arguments: {
@@ -12031,7 +12031,7 @@ var Scratch3Numberbank = /*#__PURE__*/function () {
           blockType: blockType.COMMAND,
           text: formatMessage({
             id: 'numberbank.lisningNum',
-            default: ' turn lisning [CARD]of[BANK][LISNING_STATE]',
+            default: ' turn lisning [CARD]of[BANK] [LISNING_STATE]',
             description: 'lisning value by Firebase'
           }),
           arguments: {
