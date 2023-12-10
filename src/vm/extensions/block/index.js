@@ -1,5 +1,5 @@
 // NumberBank for Xcratch
-// 20231207 - ver1.1(001)
+// 20231210 - ver2.0(001)
 //
 
 import BlockType from '../../extension-support/block-type';
@@ -14,6 +14,7 @@ import * as firestore from 'firebase/firestore';
 import { initializeFirestore, doc, getDoc, setDoc, onSnapshot } from 'firebase/firestore';
 
 
+//
 const encoder = new TextEncoder();
 const deoder_utf8 = new TextDecoder('utf-8');
 
@@ -46,7 +47,7 @@ const EXTENSION_ID = 'numberbank';
  * When it was loaded as a module, 'extensionURL' will be replaced a URL which is retrieved from.
  * @type {string}
  */
-let extensionURL = 'https://con3office.github.io/xcx-numberbank/dist/numberbank.mjs';
+let extensionURL = 'https://con3code.github.io/xcx-numberbank/dist/numberbank.mjs';
 
 
 
@@ -101,12 +102,38 @@ class Scratch3Numberbank {
          */
         this.runtime = runtime;
 
+        this.firstInstall = true;
+
+        //updated
+        this.whenUpdatedCallCountMap = new Map();
+        this.LisningBankCard_flag = false;
+        //onSnapshot
+        this.unsubscribe = () => {};
+
         if (runtime.formatMessage) {
             // Replace 'formatMessage' to a formatter which is used in the runtime.
             formatMessage = runtime.formatMessage;
         }
     }
 
+
+    /**
+     * Create data for a menu in scratch-blocks format, consisting of an array
+     * of objects with text and value properties. The text is a translated
+     * string, and the value is one-indexed.
+     * @param {object[]} info - An array of info objects each having a name
+     *   property.
+     * @return {array} - An array of objects with text and value properties.
+     * @private
+     */
+    _buildMenu (info) {
+        return info.map((entry, index) => {
+            const obj = {};
+            obj.text = entry.name;
+            obj.value = entry.value || String(index + 1);
+            return obj;
+        });
+    }
 
 
     putNum(args) {
@@ -622,6 +649,183 @@ class Scratch3Numberbank {
     }
 
 
+    lisningNum(args, util) {
+        if (masterSha256 == '') { return false; }
+        if (args.BANK == '' || args.CARD == '') { return false; }
+
+        const state = args.LISNING_STATE;
+
+        if(state === Lisning.ON) {
+
+            //onSnapshotに登録
+
+            return new Promise((resolve, reject) => {
+        
+                bankKey = bankName = new String(args.BANK);
+                cardKey = new String(args.CARD);
+    
+                uniKey = bankKey.trim().concat(cardKey.trim());
+    
+                if (!crypto || !crypto.subtle) {
+                    reject("crypto.subtle is not supported.");
+                }
+    
+                if (bankKey != '' && bankKey != undefined) {
+                    crypto.subtle.digest('SHA-256', encoder.encode(bankKey))
+                        .then(bankStr => {
+                            bankSha256 = Lisning.BANK = hexString(bankStr);
+    
+                            return crypto.subtle.digest('SHA-256', encoder.encode(cardKey));
+                        })
+                        .then(cardStr => {
+                            cardSha256 = Lisning.CARD = hexString(cardStr);
+    
+                            return crypto.subtle.digest('SHA-256', encoder.encode(uniKey));
+                        })
+                        .then(uniStr => {
+                            uniSha256 = Lisning.UNI = hexString(uniStr);
+
+                            if (masterSha256 != '' && masterSha256 != undefined) {
+    
+                                this.unsubscribe();
+                                Lisning.FIRST = true;
+                                this.unsubscribe = onSnapshot(doc(db, 'card', uniSha256), (doc) => {
+                                    this.lisningState();
+                                    //console.log("Current data: ", doc.data());
+                                },
+                                (err) => {
+                                    console.log("onSnapshot Error:",err);
+                                
+                                });
+
+                                console.log("= Lisning ON =");
+
+                                resolve(state);
+                                                                    
+                            } else {
+                                console.log("No MasterKey!");
+                                resolve();  // MasterKeyがない場合
+                            }
+    
+                        }).catch(error => {
+                            console.error("Error: ", error);
+                            reject(error);
+                        });
+
+                } else {
+                    resolve(state);
+                }
+            });
+
+
+        } else {
+
+            console.log("= Lisning OFF =");
+
+            //onSnapshotを解除
+            this.unsubscribe();
+         
+        }
+
+        return state;
+    }
+
+
+    snapshotCalled() {
+
+        for (let [blockId, callCount] of this.whenUpdatedCallCountMap.entries()) {
+            callCount += 1;
+            this.whenUpdatedCallCountMap.set(blockId, callCount);
+        }
+
+    }
+
+
+    //onSnapshot設定時にトリガーしてしまう初回を回避
+    lisningState () {
+        const first = Lisning.FIRST;
+        if (first) {
+            Lisning.FIRST = false;
+            this.LisningBankCard_flag = false;
+        } else {
+            this.LisningBankCard_flag = true;
+            this.snapshotCalled();
+        }
+    }
+        
+
+    static get Lisning () {
+        return Lisning;
+    }
+    
+
+    whenUpdatedCalled(blockId) {
+        //console.log('Called:', instanceId);
+        let callCount = this.whenUpdatedCallCountMap.get(blockId) || 0;
+
+        if (this.LisningBankCard_flag) {
+            if(callCount > 0){
+                callCount -= 1;
+                this.whenUpdatedCallCountMap.set(blockId, callCount);
+            } 
+            //console.log('checkCalled', Array.from(this.whenUpdatedCallCountMap));
+            this.checkAllWhenUpdatedCalled();
+        } else {
+            this.whenUpdatedCallCountMap.set(blockId, callCount);
+        }
+
+    }
+
+    
+    checkAllWhenUpdatedCalled() {
+        const allCalled = Array.from(this.whenUpdatedCallCountMap.values()).every(count => count === 0);
+        //console.log('checkCalled', Array.from(this.whenUpdatedCallCountMap));
+
+        if (allCalled) {
+            this.LisningBankCard_flag = false;
+        } 
+    }
+
+
+    whenUpdated(args, util) {
+        const blockId = util.thread.topBlock;
+        //console.log('util:', util.thread.topBlock);
+
+        let callCount = this.whenUpdatedCallCountMap.get(blockId) || 0;
+
+        this.whenUpdatedCalled(blockId);
+
+        return callCount > 0;
+    }
+
+
+    /**
+     * An array of info on video state options for the "lisning" block.
+     * @type {object[]}
+     * @param {string} name - the translatable name to display in the state menu
+     * @param {string} value - the serializable value stored in the block
+     */
+    get LISNING_INFO () {
+        return [
+            {
+                name: formatMessage({
+                    id: 'lisning.off',
+                    default: 'off',
+                    description: 'Option for the "lisning [STATE]" block'
+                }),
+                value: Lisning.OFF
+            },
+            {
+                name: formatMessage({
+                    id: 'lisning.on',
+                    default: 'on',
+                    description: 'Option for the "lisning [STATE]" block'
+                }),
+                value: Lisning.ON
+            }
+        ];
+    }
+
 
 
     /**
@@ -635,6 +839,8 @@ class Scratch3Numberbank {
             extensionURL: Scratch3Numberbank.extensionURL,
             blockIconURI: blockIcon,
             showStatusButton: false,
+            color1: '#78A0B4',
+            color2: '#78A0B4',
             blocks: [
                 {
                     opcode: 'putNum',
@@ -671,7 +877,7 @@ class Scratch3Numberbank {
                     blockType: BlockType.COMMAND,
                     text: formatMessage({
                         id: 'numberbank.setNum',
-                        default: 'set [VAL] to number of[CARD]of[BANK]',
+                        default: 'set [VAL] to [CARD]of[BANK]',
                         description: 'set number by Firebase'
                     }),
                     arguments: {
@@ -703,7 +909,7 @@ class Scratch3Numberbank {
                     blockType: BlockType.COMMAND,
                     text: formatMessage({
                         id: 'numberbank.getNum',
-                        default: 'get number of[CARD]of[BANK]',
+                        default: 'get [CARD]of[BANK]',
                         description: 'get number from Firebase'
                     }),
                     arguments: {
@@ -727,7 +933,7 @@ class Scratch3Numberbank {
                     opcode: 'repNum',
                     text: formatMessage({
                         id: 'numberbank.repNum',
-                        default: 'cloud number',
+                        default: 'cloud value',
                         description: 'report Number'
                     }),
                     blockType: BlockType.REPORTER
@@ -738,7 +944,7 @@ class Scratch3Numberbank {
                     blockType: BlockType.REPORTER,
                     text: formatMessage({
                         id: 'numberbank.repCloudNum',
-                        default: 'number of[CARD]of[BANK]',
+                        default: 'value of[CARD]of[BANK]',
                         description: 'report Cloud number'
                     }),
                     arguments: {
@@ -803,12 +1009,56 @@ class Scratch3Numberbank {
                         }
                     }
 
-                }
+                },
+                '---',
+                {
+                    opcode: 'lisningNum',
+                    blockType: BlockType.COMMAND,
+                    text: formatMessage({
+                        id: 'numberbank.lisningNum',
+                        default: ' turn lisning [CARD]of[BANK][LISNING_STATE]',
+                        description: 'lisning number by Firebase'
+                    }),
+                    arguments: {
+                        BANK: {
+                            type: ArgumentType.STRING,
+                            defaultValue: formatMessage({
+                                id: 'numberbank.argments.bank',
+                                default: 'bank'
+                            })
+                        },
+                        CARD: {
+                            type: ArgumentType.STRING,
+                            defaultValue: formatMessage({
+                                id: 'numberbank.argments.card',
+                                default: 'card'
+                            })
+                        },
+                        LISNING_STATE: {
+                            type: ArgumentType.STRING,
+                            menu: 'lisningMenu',
+                            defaultValue: Lisning.ON
+                        }
+                    }
+                },
+                {
+                    opcode: 'whenUpdated',
+                    blockType: BlockType.HAT,
+                    text: formatMessage({
+                        id: 'numberbank.whenUpdated',
+                        default: 'when updated',
+                        description: 'whenFirebaseUpdated'
+                    }),
+                },
             ],
             menus: {
                 valMenu: {
                     acceptReporters: true,
                     items: 'getDynamicMenuItems'
+                },
+                lisningMenu: {
+                    acceptReporters: true,
+                    items: this._buildMenu(this.LISNING_INFO)
                 }
             }
         };
@@ -899,8 +1149,6 @@ function ioSettingWaiter(msec) {
 }
 
 
-
-
 //
 function hexString(textStr) {
     const byteArray = new Uint8Array(textStr);
@@ -914,7 +1162,6 @@ function hexString(textStr) {
 
 
 
-
 // Firebase関連
 var fbApp;
 var db;
@@ -922,6 +1169,16 @@ var db;
 // API呼び出し管理キュー
 let apiCallQueue = [];
 let processing = false;
+
+//onSnapshot対象
+const Lisning = {
+    OFF: 'off',
+    ON: 'on',
+    BANK:'',
+    CARD:'',
+    UNI:'',
+    FIRST:false
+}
 
 // Variables
 let masterSetted = '';

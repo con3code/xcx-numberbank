@@ -18,12 +18,12 @@ const entry = {
     get name() {
         return formatMessage({
             id: 'numberbank.entry.name',
-            default: 'NumberBank1.1',
+            default: 'NumberBank 2.0',
             description: 'Store Numbers to Cloud.'
         });
     },
     extensionId: 'numberbank',
-    extensionURL: 'https://con3office.github.io/xcx-numberbank/dist/numberbank.mjs',
+    extensionURL: 'https://con3code.github.io/xcx-numberbank/dist/numberbank.mjs',
     collaborator: 'con3office',
     iconURL: iconURL,
     insetIconURL: insetIconURL,
