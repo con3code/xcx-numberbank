@@ -276,7 +276,7 @@ var ja$1 = {
 	"numberbank.argments.bank": "バンク",
 	"numberbank.argments.card": "カード",
 	"numberbank.argments.key": "key",
-	"numberbank.putNum": "[BANK]の[CARD]を[NUM]にする",
+	"numberbank.putNum": "[BANK]の[CARD]を[VAL]にする",
 	"numberbank.setNum": "[VAL]を[BANK]の[CARD]にする",
 	"numberbank.getNum": "[BANK]の[CARD]を読む",
 	"numberbank.repNum": "クラウドの値",
@@ -297,7 +297,7 @@ var translations = {
 	"numberbank.argments.bank": "ばんく",
 	"numberbank.argments.card": "かーど",
 	"numberbank.argments.key": "key",
-	"numberbank.putNum": "[BANK]の[CARD]を[NUM]にする",
+	"numberbank.putNum": "[BANK]の[CARD]を[VAL]にする",
 	"numberbank.setNum": "[VAL]を[BANK]の[CARD]にする",
 	"numberbank.getNum": "[BANK]の[CARD]をよむ",
 	"numberbank.repNum": "クラウドのあたい",
@@ -11875,8 +11875,8 @@ var Scratch3Numberbank = /*#__PURE__*/function () {
           opcode: 'putNum',
           text: formatMessage({
             id: 'numberbank.putNum',
-            default: 'put[NUM]to[CARD]of[BANK]',
-            description: 'put number to Firebase'
+            default: 'put[VAL]to[CARD]of[BANK]',
+            description: 'put value to Firebase'
           }),
           blockType: blockType.COMMAND,
           arguments: {
@@ -11894,7 +11894,7 @@ var Scratch3Numberbank = /*#__PURE__*/function () {
                 default: 'card'
               })
             },
-            NUM: {
+            VAL: {
               type: argumentType.NUMBER,
               defaultValue: '10'
             }
@@ -11905,7 +11905,7 @@ var Scratch3Numberbank = /*#__PURE__*/function () {
           text: formatMessage({
             id: 'numberbank.setNum',
             default: 'set [VAL] to [CARD]of[BANK]',
-            description: 'set number by Firebase'
+            description: 'set value by Firebase'
           }),
           arguments: {
             BANK: {
@@ -11935,7 +11935,7 @@ var Scratch3Numberbank = /*#__PURE__*/function () {
           text: formatMessage({
             id: 'numberbank.getNum',
             default: 'get [CARD]of[BANK]',
-            description: 'get number from Firebase'
+            description: 'get value from Firebase'
           }),
           arguments: {
             BANK: {
@@ -11958,7 +11958,7 @@ var Scratch3Numberbank = /*#__PURE__*/function () {
           text: formatMessage({
             id: 'numberbank.repNum',
             default: 'cloud value',
-            description: 'report Number'
+            description: 'report value'
           }),
           blockType: blockType.REPORTER
         }, '---', {
@@ -11967,7 +11967,7 @@ var Scratch3Numberbank = /*#__PURE__*/function () {
           text: formatMessage({
             id: 'numberbank.repCloudNum',
             default: 'value of[CARD]of[BANK]',
-            description: 'report Cloud number'
+            description: 'report cloud value'
           }),
           arguments: {
             BANK: {
@@ -11991,7 +11991,7 @@ var Scratch3Numberbank = /*#__PURE__*/function () {
           text: formatMessage({
             id: 'numberbank.boolAvl',
             default: '[CARD]of[BANK] available?',
-            description: 'report Number'
+            description: 'report value'
           }),
           arguments: {
             BANK: {
@@ -12015,7 +12015,7 @@ var Scratch3Numberbank = /*#__PURE__*/function () {
           text: formatMessage({
             id: 'numberbank.setMaster',
             default: 'set Master[KEY]',
-            description: 'readFirebase'
+            description: 'initFirebase'
           }),
           arguments: {
             KEY: {
@@ -12032,7 +12032,7 @@ var Scratch3Numberbank = /*#__PURE__*/function () {
           text: formatMessage({
             id: 'numberbank.lisningNum',
             default: ' turn lisning [CARD]of[BANK][LISNING_STATE]',
-            description: 'lisning number by Firebase'
+            description: 'lisning value by Firebase'
           }),
           arguments: {
             BANK: {
