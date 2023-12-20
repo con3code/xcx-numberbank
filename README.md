@@ -6,7 +6,7 @@ This extension add extra-blocks, that enables cloud associative arrays to save v
 
 ## ✨ What You Can Do With This Extension
 
-Play [Example Project](https://xcratch.github.io/editor/#https://con3code.github.io/xcx-numberbank/projects/example.sb3) to look at what you can do with "NumberBank 2.0" extension. 
+Play [Example Project](https://xcratch.github.io/editor/#https://con3code.github.io/xcx-numberbank/projects/example.sb3) to look at what you can do with "NumberBank" extension. 
 <iframe src="https://xcratch.github.io/editor/player#https://con3code.github.io/xcx-numberbank/projects/example.sb3" width="540px" height="460px"></iframe>
 
 

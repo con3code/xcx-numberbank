@@ -1,7 +1,7 @@
 /*
 //
 // NumberBank for Xcratch
-// 20231220 - ver2.0(2007)
+// 20231220 - ver2.0(2008)
 //
 //
 */
@@ -21,6 +21,8 @@ import {initializeFirestore, doc, getDoc, setDoc, onSnapshot} from 'firebase/fir
 //
 const encoder = new TextEncoder();
 const decoderUtf8 = new TextDecoder('utf-8');
+
+const numberbankVersion = 'NumberBank 2.0(2008)';
 
 
 /**
@@ -114,10 +116,13 @@ class Scratch3Numberbank {
         //onSnapshot
         this.unsubscribe = () => {};
 
+        console.log(numberbankVersion);
+
         if (runtime.formatMessage) {
             // Replace 'formatMessage' to a formatter which is used in the runtime.
             formatMessage = runtime.formatMessage;
         }
+
     }
 
 

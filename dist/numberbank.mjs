@@ -37,7 +37,7 @@ var entry = {
     return formatMessage$1({
       id: 'numberbank.entry.name',
       default: 'NumberBank 2.0',
-      description: 'name of the extension'
+      description: 'Name of the extension'
     });
   },
   extensionId: 'numberbank',
@@ -48,7 +48,7 @@ var entry = {
   get description() {
     return formatMessage$1({
       defaultMessage: 'Store value to cloud.',
-      description: 'description of the extension',
+      description: 'Description of the extension',
       id: 'numberbank.entry.description'
     });
   },
@@ -12257,6 +12257,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 var encoder = new TextEncoder();
 var decoderUtf8 = new TextDecoder('utf-8');
+var numberbankVersion = 'NumberBank 2.0(2008)';
 
 /**
  * Formatter which is used for translation.
@@ -12308,6 +12309,7 @@ var Scratch3Numberbank = /*#__PURE__*/function () {
     this.LisningBankCard_flag = false;
     //onSnapshot
     this.unsubscribe = function () {};
+    console.log(numberbankVersion);
     if (runtime.formatMessage) {
       // Replace 'formatMessage' to a formatter which is used in the runtime.
       formatMessage = runtime.formatMessage;
