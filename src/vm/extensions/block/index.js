@@ -1,7 +1,7 @@
 /*
 //
 // NumberBank for Xcratch
-// 20231210 - ver2.0(2002)
+// 20231210 - ver2.0(2007)
 //
 //
 */
@@ -13,14 +13,14 @@ import blockIcon from './numberbank_icon.png';
 
 import Variable from '../../engine/variable';
 
-import { initializeApp, getApps, deleteApp } from 'firebase/app';
+import {initializeApp, getApps, deleteApp} from 'firebase/app';
 import * as firestore from 'firebase/firestore';
-import { initializeFirestore, doc, getDoc, setDoc, onSnapshot } from 'firebase/firestore';
+import {initializeFirestore, doc, getDoc, setDoc, onSnapshot} from 'firebase/firestore';
 
 
 //
 const encoder = new TextEncoder();
-const deoder_utf8 = new TextDecoder('utf-8');
+const decoderUtf8 = new TextDecoder('utf-8');
 
 
 /**
@@ -848,12 +848,12 @@ class Scratch3Numberbank {
             blocks: [
                 {
                     opcode: 'putNum',
+                    blockType: BlockType.COMMAND,
                     text: formatMessage({
                         id: 'numberbank.putNum',
                         default: 'put [VAL] to [CARD]of[BANK]',
                         description: 'put value to Firebase'
                     }),
-                    blockType: BlockType.COMMAND,
                     arguments: {
                         BANK: {
                             type: ArgumentType.STRING,
@@ -881,8 +881,8 @@ class Scratch3Numberbank {
                     blockType: BlockType.COMMAND,
                     text: formatMessage({
                         id: 'numberbank.setNum',
-                        default: 'set [VAL] to [CARD]of[BANK]',
-                        description: 'set value by Firebase'
+                        default: 'set [VAR] to [CARD]of[BANK]',
+                        description: 'set variable by Firebase'
                     }),
                     arguments: {
                         BANK: {
@@ -899,11 +899,11 @@ class Scratch3Numberbank {
                                 default: 'card'
                             })
                         },
-                        VAL: {
+                        VAR: {
                             type: ArgumentType.STRING,
                             fieldName: 'VARIABLE',
                             variableType: Variable.SCALAR_TYPE,
-                            menu: 'valMenu'
+                            menu: 'varMenu'
                         }
                     }
                 },
@@ -935,12 +935,12 @@ class Scratch3Numberbank {
                 },
                 {
                     opcode: 'repNum',
+                    blockType: BlockType.REPORTER,
                     text: formatMessage({
                         id: 'numberbank.repNum',
                         default: 'cloud value',
                         description: 'report value'
-                    }),
-                    blockType: BlockType.REPORTER
+                    })
                 },
                 '---',
                 {
@@ -1020,7 +1020,7 @@ class Scratch3Numberbank {
                     blockType: BlockType.COMMAND,
                     text: formatMessage({
                         id: 'numberbank.lisningNum',
-                        default: ' turn lisning [CARD]of[BANK] [LISNING_STATE]',
+                        default: 'turn lisning [CARD]of[BANK] [LISNING_STATE]',
                         description: 'lisning value by Firebase'
                     }),
                     arguments: {
@@ -1056,7 +1056,7 @@ class Scratch3Numberbank {
                 },
             ],
             menus: {
-                valMenu: {
+                varMenu: {
                     acceptReporters: true,
                     items: 'getDynamicMenuItems'
                 },
@@ -1285,7 +1285,7 @@ function de_get(data) {
 }
 
 function de_disp(data) {
-    return deoder_utf8.decode(data);
+    return decoderUtf8.decode(data);
 }
 
 function en_crt(data) {

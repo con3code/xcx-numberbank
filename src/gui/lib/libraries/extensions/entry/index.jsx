@@ -29,7 +29,7 @@ const entry = {
     insetIconURL: insetIconURL,
     get description() {
         return formatMessage({
-            defaultMessage: 'an extension for Xcratch',
+            defaultMessage: 'Store value to cloud.',
             description: 'Store value to cloud.',
             id: 'numberbank.entry.description'
         });
