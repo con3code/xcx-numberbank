@@ -1,7 +1,7 @@
 /*
 //
 // NumberBank for Xcratch
-// 20231220 - ver2.0(2008)
+// 20231221 - ver2.0(2009)
 //
 //
 */
@@ -22,7 +22,7 @@ import {initializeFirestore, doc, getDoc, setDoc, onSnapshot} from 'firebase/fir
 const encoder = new TextEncoder();
 const decoderUtf8 = new TextDecoder('utf-8');
 
-const numberbankVersion = 'NumberBank 2.0(2008)';
+const numberbankVersion = 'NumberBank 2.0(2009)';
 
 
 /**
@@ -60,7 +60,7 @@ let extensionURL = 'https://con3code.github.io/xcx-numberbank/dist/numberbank.mj
 /**
  * Scratch 3.0 blocks for example of Xcratch.
  */
-class Scratch3Numberbank {
+class Scratch3NumberbankBlocks {
 
     /**
      * @return {string} - the name of this extension.
@@ -187,25 +187,20 @@ class Scratch3Numberbank {
                             const cardDocRef = doc(db, 'card', uniSha256);
                             const bankDocRef = doc(db, 'bank', bankSha256);
 
-                            enqueueApiCall(() => {
-                                return setDoc(cardDocRef, {
-                                    number: settingNum,
-                                    bank_key: bankSha256,
-                                    card_key: cardSha256,
-                                    master_key: masterSha256,
-                                    time_stamp: now
-                                })
-                                .then(() => {
-                                    return setDoc(bankDocRef, {
-                                        bank_name: bankName,
-                                        time_stamp: now
-                                    });
-                                })
+                            enqueueApiCall(() => setDoc(cardDocRef, {
+                                number: settingNum,
+                                bank_key: bankSha256,
+                                card_key: cardSha256,
+                                master_key: masterSha256,
+                                time_stamp: now
+                            })
+                                .then(() => setDoc(bankDocRef, {
+                                    bank_name: bankName,
+                                    time_stamp: now}))
                                 .catch(error => {
                                     console.error("Error writing document: ", error);
                                     reject();
-                                });
-                            });
+                                }));
                             
                             resolve();
 
@@ -220,13 +215,11 @@ class Scratch3Numberbank {
             } else {
                 resolve();
             }
-        }).then(() => {
-            return new Promise((resolve) => {
-                setTimeout(() => {
-                    resolve();
-                }, interval.MsPut);
-            });
-        });
+        }).then(() => new Promise(resolve => {
+            setTimeout(() => {
+                resolve();
+            }, interval.MsPut);
+        }));
 
     }
 
@@ -267,23 +260,21 @@ class Scratch3Numberbank {
                     })
                     .then(() => {
                         if (masterSha256 != '' && masterSha256 != undefined) {
-                            enqueueApiCall(() => {
-                                return getDoc(doc(db, 'card', uniSha256))
-                                    .then(docSnapshot => {
-                                        if (docSnapshot.exists()) {
-                                            let data = docSnapshot.data();
-                                            variable.value = data.number;
-                                            resolve();
-                                        } else {
-                                            variable.value = '';
-                                            resolve();
-                                        }
-                                    })
-                                    .catch(error => {
-                                        console.error("Error getting document: ", error);
-                                        reject();
-                                    })
-                            });
+                            enqueueApiCall(() => getDoc(doc(db, 'card', uniSha256))
+                                .then(docSnapshot => {
+                                    if (docSnapshot.exists()) {
+                                        let data = docSnapshot.data();
+                                        variable.value = data.number;
+                                        resolve();
+                                    } else {
+                                        variable.value = '';
+                                        resolve();
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error("Error getting document: ", error);
+                                    reject();
+                                }));
                             
                             resolve();
 
@@ -298,13 +289,11 @@ class Scratch3Numberbank {
             } else {
                 resolve();
             }
-        }).then(() => {
-            return new Promise((resolve) => {
-                setTimeout(() => {
-                    resolve();
-                }, interval.MsSet);
-            });
-        });
+        }).then(() => new Promise(resolve => {
+            setTimeout(() => {
+                resolve();
+            }, interval.MsSet);
+        }));
         
     }
 
@@ -345,23 +334,21 @@ class Scratch3Numberbank {
                     })
                     .then(() => {
                         if (masterSha256 != '' && masterSha256 != undefined) {
-                            enqueueApiCall(() => {
-                                return getDoc(doc(db, 'card', uniSha256))
-                                    .then(docSnapshot => {
-                                        if (docSnapshot.exists()) {
-                                            let data = docSnapshot.data();
-                                            cloudNum = data.number;
-                                            resolve(cloudNum);
-                                        } else {
-                                            cloudNum = '';
-                                            resolve(cloudNum);
-                                        }
-                                    })
-                                    .catch(error => {
-                                        console.error("Error getting document: ", error);
-                                        reject(error);
-                                    })
-                            });
+                            enqueueApiCall(() => getDoc(doc(db, 'card', uniSha256))
+                                .then(docSnapshot => {
+                                    if (docSnapshot.exists()) {
+                                        let data = docSnapshot.data();
+                                        cloudNum = data.number;
+                                        resolve(cloudNum);
+                                    } else {
+                                        cloudNum = '';
+                                        resolve(cloudNum);
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error("Error getting document: ", error);
+                                    reject(error);
+                                }));
 
                         } else {
                             console.log("No MasterKey!");
@@ -374,13 +361,11 @@ class Scratch3Numberbank {
             } else {
                 resolve('');
             }
-        }).then((ret) => {
-            return new Promise((resolve) => {
-                setTimeout(() => {
-                    resolve(ret);
-                }, interval.MsGet);
-            });
-        });
+        }).then(ret => new Promise(resolve => {
+            setTimeout(() => {
+                resolve(ret);
+            }, interval.MsGet);
+        }));
 
     }
 
@@ -426,23 +411,21 @@ class Scratch3Numberbank {
                     })
                     .then(() => {
                         if (masterSha256 != '' && masterSha256 != undefined) {
-                            enqueueApiCall(() => {
-                                return getDoc(doc(db, 'card', uniSha256))
-                                    .then(docSnapshot => {
-                                        if (docSnapshot.exists()) {
-                                            let data = docSnapshot.data();
-                                            rep_cloudNum = data.number;
-                                            resolve(rep_cloudNum);
-                                        } else {
-                                            rep_cloudNum = '';
-                                            resolve(rep_cloudNum);
-                                        }
-                                    })
-                                    .catch(error => {
-                                        console.error("Error getting document: ", error);
-                                        reject(error);
-                                    })
-                            });
+                            enqueueApiCall(() => getDoc(doc(db, 'card', uniSha256))
+                                .then(docSnapshot => {
+                                    if (docSnapshot.exists()) {
+                                        let data = docSnapshot.data();
+                                        rep_cloudNum = data.number;
+                                        resolve(rep_cloudNum);
+                                    } else {
+                                        rep_cloudNum = '';
+                                        resolve(rep_cloudNum);
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error("Error getting document: ", error);
+                                    reject(error);
+                                }));
 
                         } else {
                             console.log("No MasterKey!");
@@ -456,13 +439,11 @@ class Scratch3Numberbank {
             } else {
                 resolve('');  // bankKeyがない場合
             }
-        }).then((ret) => {
-            return new Promise((resolve) => {
-                setTimeout(() => {
-                    resolve(ret);
-                }, interval.MsRep);
-            });
-        });
+        }).then(ret => new Promise(resolve => {
+            setTimeout(() => {
+                resolve(ret);
+            }, interval.MsRep);
+        }));
 
     }
 
@@ -491,20 +472,18 @@ class Scratch3Numberbank {
                 })
                 .then(() => {
                     if (masterSha256 != '' && masterSha256 != undefined) {
-                        enqueueApiCall(() => {
-                            return getDoc(doc(db, 'card', uniSha256))
-                                .then(ckey => {
-                                    if (ckey.exists()) {
-                                        resolve(true);
-                                    } else {
-                                        resolve(false);
-                                    }
-                                })
-                                .catch(error => {
-                                    console.log("Error checking document:", error);
-                                    reject(error);
-                                })
-                        });
+                        enqueueApiCall(() => getDoc(doc(db, 'card', uniSha256))
+                        .then(ckey => {
+                            if (ckey.exists()) {
+                                resolve(true);
+                            } else {
+                                resolve(false);
+                            }
+                        })
+                        .catch(error => {
+                            console.log("Error checking document:", error);
+                            reject(error);
+                        }));
                         
                     } else {
                         console.log("No MasterKey!");
@@ -517,13 +496,11 @@ class Scratch3Numberbank {
             } else {
                 resolve('');
             }
-        }).then((ret) => {
-            return new Promise((resolve) => {
-                setTimeout(() => {
-                    resolve(ret);
-                }, interval.MsAvl);
-            });
-        });
+        }).then(ret => new Promise(resolve => {
+            setTimeout(() => {
+                resolve(ret);
+            }, interval.MsAvl);
+        }));
 
     }
 
@@ -639,7 +616,8 @@ class Scratch3Numberbank {
                         console.log("= No such MasterKey =");
                         inoutFlag_setting = false;
                         resolve(ResponseMaster);
-                    }));
+                    }),
+                    );
 
                 })
                 .catch((error) => {
@@ -648,12 +626,8 @@ class Scratch3Numberbank {
                 });
 
         })
-        .then(() => {
-            return ioSettingWaiter(1);
-        })
-        .then(() => {
-            return ResponseMaster;
-        });
+        .then(() => ioSettingWaiter(1))
+        .then(() => ResponseMaster);
         
     }
 
@@ -843,9 +817,9 @@ class Scratch3Numberbank {
     getInfo() {
         setupTranslations();
         return {
-            id: Scratch3Numberbank.EXTENSION_ID,
-            name: Scratch3Numberbank.EXTENSION_NAME,
-            extensionURL: Scratch3Numberbank.extensionURL,
+            id: Scratch3NumberbankBlocks.EXTENSION_ID,
+            name: Scratch3NumberbankBlocks.EXTENSION_NAME,
+            extensionURL: Scratch3NumberbankBlocks.extensionURL,
             blockIconURI: blockIcon,
             showStatusButton: false,
             color1: '#78A0B4',
@@ -1136,9 +1110,7 @@ function ioWaiter(msec) {
             }
         }, msec)
     )
-        .catch(() => {
-            return ioWaiter(msec);
-        });
+    .catch(() => ioWaiter(msec));
 }
 
 
@@ -1152,9 +1124,7 @@ function ioSettingWaiter(msec) {
             }
         }, msec)
     )
-        .catch(() => {
-            return ioSettingWaiter(msec);
-        });
+    .catch(() => ioSettingWaiter(msec));
 }
 
 
@@ -1331,6 +1301,6 @@ function crypt_decode(cryptedConfigData, decodedConfigData) {
 
 
 export {
-    Scratch3Numberbank as default,
-    Scratch3Numberbank as blockClass
+    Scratch3NumberbankBlocks as default,
+    Scratch3NumberbankBlocks as blockClass
 };
