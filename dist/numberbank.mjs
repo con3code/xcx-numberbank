@@ -37,7 +37,7 @@ var entry = {
     return formatMessage$1({
       id: 'numberbank.entry.name',
       default: 'NumberBank 2.0',
-      description: 'Store value to cloud.'
+      description: 'name of the extension'
     });
   },
   extensionId: 'numberbank',
@@ -48,7 +48,7 @@ var entry = {
   get description() {
     return formatMessage$1({
       defaultMessage: 'Store value to cloud.',
-      description: 'Store value to cloud.',
+      description: 'description of the extension',
       id: 'numberbank.entry.description'
     });
   },
