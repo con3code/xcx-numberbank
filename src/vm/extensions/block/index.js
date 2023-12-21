@@ -22,7 +22,7 @@ import {initializeFirestore, doc, getDoc, setDoc, onSnapshot} from 'firebase/fir
 const encoder = new TextEncoder();
 const decoderUtf8 = new TextDecoder('utf-8');
 
-const numberbankVersion = 'NumberBank 2.0(2009)';
+const numberbankVersion = 'NumberBank 2.0(2010)';
 
 
 /**

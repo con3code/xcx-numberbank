@@ -12253,7 +12253,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 var encoder = new TextEncoder();
 var decoderUtf8 = new TextDecoder('utf-8');
-var numberbankVersion = 'NumberBank 2.0(2009)';
+var numberbankVersion = 'NumberBank 2.0(2010)';
 
 /**
  * Formatter which is used for translation.
