@@ -12413,7 +12413,7 @@ var Scratch3NumberbankBlocks = /*#__PURE__*/function () {
         if (args.BANK == '' || args.CARD == '') {
           resolve();
         }
-        var variable = util.target.lookupOrCreateVariable(null, args.VAL);
+        var variable = util.target.lookupOrCreateVariable(null, args.VAR);
         bankKey = new String(args.BANK);
         bankName = args.BANK;
         cardKey = new String(args.CARD);

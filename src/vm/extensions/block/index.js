@@ -1,7 +1,7 @@
 /*
 //
 // NumberBank for Xcratch
-// 20231221 - ver2.0(2009)
+// 20231221 - ver2.0(2010)
 //
 //
 */
@@ -229,7 +229,7 @@ class Scratch3NumberbankBlocks {
             if (masterSha256 == '') { resolve(); }
             if (args.BANK == '' || args.CARD == '') { resolve(); }
 
-            const variable = util.target.lookupOrCreateVariable(null, args.VAL);
+            const variable = util.target.lookupOrCreateVariable(null, args.VAR);
 
             bankKey = new String(args.BANK);
             bankName = args.BANK;
