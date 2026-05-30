@@ -1,13 +1,13 @@
-# NumberBank 2.0 for Xcratch
+# NumberBank
 An example extension for [Xcratch](https://xcratch.github.io/)
 
-This extension add extra-blocks, that enables cloud associative arrays to save values from Scratch 3.0 projects to Firebase Cloud.
+This extension add extra-block "do it", that executes string in its input field as a sentence in Javascript and return the result.
 
 
 ## ✨ What You Can Do With This Extension
 
-Play [Example Project](https://xcratch.github.io/editor/#https://con3code.github.io/xcx-numberbank/projects/example.sb3) to look at what you can do with "NumberBank" extension. 
-<iframe src="https://xcratch.github.io/editor/player#https://con3code.github.io/xcx-numberbank/projects/example.sb3" width="540px" height="460px"></iframe>
+Play [Example Project](https://xcratch.github.io/editor/#https://githubAccount.github.io/xcx-numberbank/projects/example.sb3) to look at what you can do with "NumberBank" extension. 
+<iframe src="https://xcratch.github.io/editor/player#https://githubAccount.github.io/xcx-numberbank/projects/example.sb3" width="540px" height="460px"></iframe>
 
 
 ## How to Use in Xcratch
@@ -18,17 +18,26 @@ This extension can be used with other extension in [Xcratch](https://xcratch.git
 3. Select 'Extension Loader' extension
 4. Type the module URL in the input field 
 ```
-https://con3code.github.io/xcx-numberbank/dist/numberbank.mjs
+https://githubAccount.github.io/xcx-numberbank/dist/numberbank.mjs
 ```
+5. Click 'OK' button
+6. Now you can use the blocks of this extension
+
 
 ## Development
 
-### Register on the local Xcratch
-
-Run register script to install this extension on the local Xcratch for testing.
+### Install Dependencies
 
 ```sh
-npm run register
+npm install
+```
+
+### Setup Development Environment
+
+Change ```vmSrcOrg``` to your local ```scratch-vm``` directory in ```./scripts/setup-dev.js``` then run setup-dev script to setup development environment.
+
+```sh
+npm run setup-dev
 ```
 
 ### Bundle into a Module
@@ -39,11 +48,88 @@ Run build script to bundle this extension into a module file which could be load
 npm run build
 ```
 
+### Watch and Bundle
+
+Run watch script to watch the changes of source files and bundle automatically.
+
+```sh
+npm run watch
+```
+
+### Test
+
+Run test script to test this extension.
+
+```sh
+npm run test
+```
+
+### Versioning and Deployment
+
+This project uses npm version commands and GitHub Actions for versioning and deployment.
+
+#### Create a New Version
+
+Use npm version command to update the version number. This will automatically:
+1. Update version in `package.json`
+2. Run the build script
+3. Create version-specific build files in `dist/{version}/`
+4. Update `dist/versions.json` with the new version info
+5. Create a git commit and tag
+
+```sh
+# Patch version (1.3.0 → 1.3.1)
+npm version patch
+
+# Minor version (1.3.1 → 1.4.0)
+npm version minor
+
+# Major version (1.4.0 → 2.0.0)
+npm version major
+```
+
+#### Deploy to GitHub Pages
+
+After creating a new version, push the tag to trigger automatic deployment:
+
+```sh
+# Push the version tag
+git push origin v1.4.0
+
+# Or push all tags
+git push --tags
+```
+
+The GitHub Actions workflow will:
+1. Build the extension
+2. Deploy `dist/`, `projects/`, and `README.md` to GitHub Pages
+
+You can also manually trigger deployment from the Actions tab in GitHub.
+
+#### Version Information
+
+All build versions are recorded in `dist/versions.json`:
+
+```json
+{
+  "extensionId": "numberbank",
+  "latest": "1.0.0",
+  "versions": [
+    {
+      "version": "1.0.0",
+      "buildDate": "2025-10-19T12:34:56.789Z",
+      "module": "1.0.0/numberbank.mjs"
+    }
+  ]
+}
+```
+
+
 ## 🏠 Home Page
 
-Open this page from [https://con3code.github.io/xcx-numberbank/](https://con3code.github.io/xcx-numberbank/)
+Open this page from [https://githubAccount.github.io/xcx-numberbank/](https://githubAccount.github.io/xcx-numberbank/)
 
 
 ## 🤝 Contributing
 
-Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/con3code/xcx-numberbank/issues). 
+Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/githubAccount/xcx-numberbank/issues). 

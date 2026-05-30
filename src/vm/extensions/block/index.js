@@ -11,7 +11,8 @@ import ArgumentType from '../../extension-support/argument-type';
 import translations from './translations.json';
 import blockIcon from './numberbank_icon.png';
 
-import Variable from '../../engine/variable';
+import Variable from '/usr/local/xcratch/scratch-editor/packages/scratch-vm/src/engine/variable';
+//import Variable from '../../engine/variable';
 
 import {initializeApp, getApps, deleteApp} from 'firebase/app';
 import * as firestore from 'firebase/firestore';
