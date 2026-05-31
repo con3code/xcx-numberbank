@@ -227,47 +227,39 @@ class Scratch3NumberbankBlocks {
 
     setNum(args, util) {
         return new Promise((resolve, reject) => {
-            if (masterSha256 == '') { resolve(); }
-            if (args.BANK == '' || args.CARD == '') { resolve(); }
+            if (masterSha256 == '') { resolve(); return; }
+            if (args.BANK == '' || args.CARD == '') { resolve(); return; }
 
             const variable = util.target.lookupOrCreateVariable(null, args.VAR);
-
-            bankKey = new String(args.BANK);
-            bankName = args.BANK;
-            cardKey = new String(args.CARD);
-
-            uniKey = bankKey.trim().concat(cardKey.trim());
+            const cacheKey = args.BANK + '\x00' + args.CARD;
+            const localBankKey = new String(args.BANK);
+            const localCardKey = new String(args.CARD);
+            const localUniKey = localBankKey.trim().concat(localCardKey.trim());
 
             if (!crypto || !crypto.subtle) {
                 reject("crypto.subtle is not supported.");
+                return;
             }
 
-            if (bankKey != '' && bankKey != undefined) {
-                crypto.subtle.digest('SHA-256', encoder.encode(bankKey))
-                    .then(bankStr => {
-                        bankSha256 = hexString(bankStr);
-
-                        return crypto.subtle.digest('SHA-256', encoder.encode(cardKey));
-                    })
-                    .then(cardStr => {
-                        cardSha256 = hexString(cardStr);
-
-                        return crypto.subtle.digest('SHA-256', encoder.encode(uniKey));
-                    })
+            if (localBankKey != '' && localBankKey != undefined) {
+                crypto.subtle.digest('SHA-256', encoder.encode(localBankKey))
+                    .then(() => crypto.subtle.digest('SHA-256', encoder.encode(localCardKey)))
+                    .then(() => crypto.subtle.digest('SHA-256', encoder.encode(localUniKey)))
                     .then(uniStr => {
-                        uniSha256 = hexString(uniStr);
-
-                        return sleep(1);
+                        const localUniSha256 = hexString(uniStr);
+                        return sleep(1).then(() => localUniSha256);
                     })
-                    .then(() => {
+                    .then(localUniSha256 => {
                         if (masterSha256 != '' && masterSha256 != undefined) {
-                            enqueueApiCall(() => getDoc(doc(db, 'card', uniSha256))
+                            enqueueApiCall(() => getDoc(doc(db, 'card', localUniSha256))
                                 .then(docSnapshot => {
                                     if (docSnapshot.exists()) {
-                                        let data = docSnapshot.data();
-                                        variable.value = data.number;
+                                        const value = docSnapshot.data().number;
+                                        cloudReadCache[cacheKey] = value;
+                                        variable.value = value;
                                         resolve();
                                     } else {
+                                        cloudReadCache[cacheKey] = '';
                                         variable.value = '';
                                         resolve();
                                     }
@@ -276,12 +268,9 @@ class Scratch3NumberbankBlocks {
                                     console.error("Error getting document: ", error);
                                     reject();
                                 }));
-                            
-                            resolve();
-
                         } else {
                             console.log("No MasterKey!");
-                            resolve();  // MasterKeyがない場合
+                            resolve();
                         }
                     }).catch(error => {
                         console.error("Error: ", error);
@@ -295,7 +284,7 @@ class Scratch3NumberbankBlocks {
                 resolve();
             }, interval.MsSet);
         }));
-        
+
     }
 
 
@@ -378,59 +367,47 @@ class Scratch3NumberbankBlocks {
 
     repCloudNum(args) {
         return new Promise((resolve, reject) => {
-            if (masterSha256 == '') { resolve(''); }
-            if (args.BANK == '' || args.CARD == '') { resolve(''); }
-    
-            let rep_cloudNum = '';
-    
-            bankKey = new String(args.BANK);
-            bankName = args.BANK;
-            cardKey = new String(args.CARD);
-    
-            uniKey = bankKey.trim().concat(cardKey.trim());
-    
+            if (masterSha256 == '') { resolve(''); return; }
+            if (args.BANK == '' || args.CARD == '') { resolve(''); return; }
+
+            const cacheKey = args.BANK + '\x00' + args.CARD;
+            const localBankKey = new String(args.BANK);
+            const localCardKey = new String(args.CARD);
+            const localUniKey = localBankKey.trim().concat(localCardKey.trim());
+
             if (!crypto || !crypto.subtle) {
                 reject("crypto.subtle is not supported.");
+                return;
             }
-    
-            if (bankKey != '' && bankKey != undefined) {
-                crypto.subtle.digest('SHA-256', encoder.encode(bankKey))
-                    .then(bankStr => {
-                        bankSha256 = hexString(bankStr);
-    
-                        return crypto.subtle.digest('SHA-256', encoder.encode(cardKey));
-                    })
-                    .then(cardStr => {
-                        cardSha256 = hexString(cardStr);
-    
-                        return crypto.subtle.digest('SHA-256', encoder.encode(uniKey));
-                    })
+
+            if (localBankKey != '' && localBankKey != undefined) {
+                crypto.subtle.digest('SHA-256', encoder.encode(localBankKey))
+                    .then(() => crypto.subtle.digest('SHA-256', encoder.encode(localCardKey)))
+                    .then(() => crypto.subtle.digest('SHA-256', encoder.encode(localUniKey)))
                     .then(uniStr => {
-                        uniSha256 = hexString(uniStr);
-    
-                        return sleep(1);
+                        const localUniSha256 = hexString(uniStr);
+                        return sleep(1).then(() => localUniSha256);
                     })
-                    .then(() => {
+                    .then(localUniSha256 => {
                         if (masterSha256 != '' && masterSha256 != undefined) {
-                            enqueueApiCall(() => getDoc(doc(db, 'card', uniSha256))
+                            enqueueApiCall(() => getDoc(doc(db, 'card', localUniSha256))
                                 .then(docSnapshot => {
                                     if (docSnapshot.exists()) {
-                                        let data = docSnapshot.data();
-                                        rep_cloudNum = data.number;
-                                        resolve(rep_cloudNum);
+                                        const value = docSnapshot.data().number;
+                                        cloudReadCache[cacheKey] = value;
+                                        resolve(value);
                                     } else {
-                                        rep_cloudNum = '';
-                                        resolve(rep_cloudNum);
+                                        cloudReadCache[cacheKey] = '';
+                                        resolve('');
                                     }
                                 })
                                 .catch(error => {
                                     console.error("Error getting document: ", error);
                                     reject(error);
                                 }));
-
                         } else {
                             console.log("No MasterKey!");
-                            resolve('');  // MasterKeyがない場合
+                            resolve('');
                         }
                     })
                     .catch(error => {
@@ -438,7 +415,7 @@ class Scratch3NumberbankBlocks {
                         reject(error);
                     });
             } else {
-                resolve('');  // bankKeyがない場合
+                resolve('');
             }
         }).then(ret => new Promise(resolve => {
             setTimeout(() => {
@@ -1168,6 +1145,7 @@ let bankKey = '';
 let cardKey = '';
 let uniKey = '';
 let cloudNum = '';
+const cloudReadCache = {};
 let settingNum = '';
 let masterSha256 = '';
 let bankSha256 = '';

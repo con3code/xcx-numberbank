@@ -4477,7 +4477,7 @@ function isVersionServiceProvider(provider) {
 }
 
 const name$q = "@firebase/app";
-const version$1 = "0.14.10";
+const version$1 = "0.14.13";
 
 /**
  * @license
@@ -4548,7 +4548,7 @@ const name$2 = "@firebase/ai";
 const name$1 = "@firebase/firestore-compat";
 
 const name$r = "firebase";
-const version$2 = "12.11.0";
+const version$2 = "12.14.0";
 
 /**
  * @license
@@ -5350,7 +5350,7 @@ function registerCoreComponents(variant) {
 registerCoreComponents('');
 
 var name = "firebase";
-var version = "12.11.0";
+var version = "12.14.0";
 
 /**
  * @license
@@ -7540,7 +7540,7 @@ User.MOCK_USER = new User("mock-user");
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-let b = "12.11.0";
+let b = "12.14.0";
 
 function __PRIVATE_setSDKVersion(e) {
     b = e;
@@ -10417,8 +10417,14 @@ function __PRIVATE_estimateByteSize(e) {
 }
 
 /** Returns true if `value` is a DoubleValue. */
-/** Returns true if `value` is an ArrayValue. */
-function isArray(e) {
+/** Returns true if `value` is either an IntegerValue or a DoubleValue. */
+function __PRIVATE_isNumber(e) {
+    return isInteger(e) || function __PRIVATE_isDouble(e) {
+        return !!e && "doubleValue" in e;
+    }(e);
+}
+
+/** Returns true if `value` is an ArrayValue. */ function isArray(e) {
     return !!e && "arrayValue" in e;
 }
 
@@ -11162,10 +11168,10 @@ class __PRIVATE_QueryImpl {
      */
     constructor(e, t = null, n = [], r = [], i = null, s = "F" /* LimitType.First */ , o = null, _ = null) {
         this.path = e, this.collectionGroup = t, this.explicitOrderBy = n, this.filters = r, 
-        this.limit = i, this.limitType = s, this.startAt = o, this.endAt = _, this.Ee = null, 
+        this.limit = i, this.limitType = s, this.startAt = o, this.endAt = _, this.Ie = null, 
         // The corresponding `Target` of this `Query` instance, for use with
         // non-aggregate queries.
-        this.Ie = null, 
+        this.Ee = null, 
         // The corresponding `Target` of this `Query` instance, for use with
         // aggregate queries. Unlike targets for non-aggregate queries,
         // aggregate query targets do not contain normalized order-bys, they only
@@ -11220,11 +11226,11 @@ function __PRIVATE_isDocumentQuery$1(e) {
  * order-bys.
  */ function __PRIVATE_queryNormalizedOrderBy(e) {
     const t = __PRIVATE_debugCast(e);
-    if (null === t.Ee) {
-        t.Ee = [];
+    if (null === t.Ie) {
+        t.Ie = [];
         const e = new Set;
         // Any explicit order by fields should be added as is.
-                for (const n of t.explicitOrderBy) t.Ee.push(n), e.add(n.field.canonicalString());
+                for (const n of t.explicitOrderBy) t.Ie.push(n), e.add(n.field.canonicalString());
         // The order of the implicit ordering always matches the last explicit order by.
                 const n = t.explicitOrderBy.length > 0 ? t.explicitOrderBy[t.explicitOrderBy.length - 1].dir : "asc" /* Direction.ASCENDING */ , r = function __PRIVATE_getInequalityFilterFields(e) {
             let t = new SortedSet(FieldPath$1.comparator);
@@ -11244,20 +11250,20 @@ function __PRIVATE_isDocumentQuery$1(e) {
         // Note: `SortedSet<FieldPath>` sorts the key field before other fields. However, we want the key
         // field to be sorted last.
                 r.forEach((r => {
-            e.has(r.canonicalString()) || r.isKeyField() || t.Ee.push(new OrderBy(r, n));
+            e.has(r.canonicalString()) || r.isKeyField() || t.Ie.push(new OrderBy(r, n));
         })), 
         // Add the document key field to the last if it is not explicitly ordered.
-        e.has(FieldPath$1.keyField().canonicalString()) || t.Ee.push(new OrderBy(FieldPath$1.keyField(), n));
+        e.has(FieldPath$1.keyField().canonicalString()) || t.Ie.push(new OrderBy(FieldPath$1.keyField(), n));
     }
-    return t.Ee;
+    return t.Ie;
 }
 
 /**
  * Converts this `Query` instance to its corresponding `Target` representation.
  */ function __PRIVATE_queryToTarget(e) {
     const t = __PRIVATE_debugCast(e);
-    return t.Ie || (t.Ie = __PRIVATE__queryToTarget(t, __PRIVATE_queryNormalizedOrderBy(e))), 
-    t.Ie;
+    return t.Ee || (t.Ee = __PRIVATE__queryToTarget(t, __PRIVATE_queryNormalizedOrderBy(e))), 
+    t.Ee;
 }
 
 function __PRIVATE__queryToTarget(e, t) {
@@ -11628,13 +11634,17 @@ function __PRIVATE_targetIdSet() {
         t && (n.fields[nt] = t), {
             mapValue: n
         };
-    }(n, t) : e instanceof __PRIVATE_ArrayUnionTransformOperation ? __PRIVATE_applyArrayUnionTransformOperation(e, t) : e instanceof __PRIVATE_ArrayRemoveTransformOperation ? __PRIVATE_applyArrayRemoveTransformOperation(e, t) : function __PRIVATE_applyNumericIncrementTransformOperationToLocalView(e, t) {
+    }(n, t) : e instanceof __PRIVATE_ArrayUnionTransformOperation ? __PRIVATE_applyArrayUnionTransformOperation(e, t) : e instanceof __PRIVATE_ArrayRemoveTransformOperation ? __PRIVATE_applyArrayRemoveTransformOperation(e, t) : e instanceof __PRIVATE_NumericIncrementTransformOperation ? function __PRIVATE_applyNumericIncrementTransformOperationToLocalView(e, t) {
         // PORTING NOTE: Since JavaScript's integer arithmetic is limited to 53 bit
         // precision and resolves overflows by reducing precision, we do not
         // manually cap overflows at 2^63.
         const n = __PRIVATE_computeTransformOperationBaseValue(e, t), r = asNumber(n) + asNumber(e.Ae);
         return isInteger(n) && isInteger(e.Ae) ? __PRIVATE_toInteger(r) : __PRIVATE_toDouble(e.serializer, r);
-    }(e, t);
+    }(e, t) : e instanceof __PRIVATE_NumericMinimumTransformOperation ? function __PRIVATE_applyNumericMinimumTransformOperationToLocalView(e, t) {
+        return __PRIVATE_applyNumericTransformOperationToLocalView(e, t, Math.min);
+    }(e, t) : e instanceof __PRIVATE_NumericMaximumTransformOperation ? function __PRIVATE_applyNumericMaximumTransformOperationToLocalView(e, t) {
+        return __PRIVATE_applyNumericTransformOperationToLocalView(e, t, Math.max);
+    }(e, t) : void 0;
 }
 
 /**
@@ -11662,13 +11672,7 @@ function __PRIVATE_targetIdSet() {
  * @returns a base value to store along with the mutation, or null for
  * idempotent transforms.
  */ function __PRIVATE_computeTransformOperationBaseValue(e, t) {
-    return e instanceof __PRIVATE_NumericIncrementTransformOperation ? 
-    /** Returns true if `value` is either an IntegerValue or a DoubleValue. */
-    function __PRIVATE_isNumber(e) {
-        return isInteger(e) || function __PRIVATE_isDouble(e) {
-            return !!e && "doubleValue" in e;
-        }(e);
-    }(t) ? t : {
+    return e instanceof __PRIVATE_NumericIncrementTransformOperation ? __PRIVATE_isNumber(t) ? t : {
         integerValue: 0
     } : null;
 }
@@ -11713,10 +11717,22 @@ function __PRIVATE_applyArrayRemoveTransformOperation(e, t) {
  * transforms. Converts all field values to integers or doubles, but unlike the
  * backend does not cap integer values at 2^63. Instead, JavaScript number
  * arithmetic is used and precision loss can occur for values greater than 2^53.
- */ class __PRIVATE_NumericIncrementTransformOperation extends TransformOperation {
+ */ class __PRIVATE_NumericTransformOperation extends TransformOperation {
     constructor(e, t) {
         super(), this.serializer = e, this.Ae = t;
     }
+}
+
+class __PRIVATE_NumericIncrementTransformOperation extends __PRIVATE_NumericTransformOperation {}
+
+class __PRIVATE_NumericMinimumTransformOperation extends __PRIVATE_NumericTransformOperation {}
+
+class __PRIVATE_NumericMaximumTransformOperation extends __PRIVATE_NumericTransformOperation {}
+
+function __PRIVATE_applyNumericTransformOperationToLocalView(e, t, n) {
+    if (!__PRIVATE_isNumber(t)) return e.Ae;
+    const r = n(asNumber(t), asNumber(e.Ae));
+    return isInteger(t) && isInteger(e.Ae) ? __PRIVATE_toInteger(r) : __PRIVATE_toDouble(e.serializer, r);
 }
 
 function asNumber(e) {
@@ -11729,7 +11745,7 @@ function __PRIVATE_coercedFieldValuesArray(e) {
 
 function __PRIVATE_fieldTransformEquals(e, t) {
     return e.field.isEqual(t.field) && function __PRIVATE_transformOperationEquals(e, t) {
-        return e instanceof __PRIVATE_ArrayUnionTransformOperation && t instanceof __PRIVATE_ArrayUnionTransformOperation || e instanceof __PRIVATE_ArrayRemoveTransformOperation && t instanceof __PRIVATE_ArrayRemoveTransformOperation ? __PRIVATE_arrayEquals(e.elements, t.elements, __PRIVATE_valueEquals) : e instanceof __PRIVATE_NumericIncrementTransformOperation && t instanceof __PRIVATE_NumericIncrementTransformOperation ? __PRIVATE_valueEquals(e.Ae, t.Ae) : e instanceof __PRIVATE_ServerTimestampTransform && t instanceof __PRIVATE_ServerTimestampTransform;
+        return e instanceof __PRIVATE_ArrayUnionTransformOperation && t instanceof __PRIVATE_ArrayUnionTransformOperation || e instanceof __PRIVATE_ArrayRemoveTransformOperation && t instanceof __PRIVATE_ArrayRemoveTransformOperation ? __PRIVATE_arrayEquals(e.elements, t.elements, __PRIVATE_valueEquals) : e instanceof __PRIVATE_NumericIncrementTransformOperation && t instanceof __PRIVATE_NumericIncrementTransformOperation || e instanceof __PRIVATE_NumericMinimumTransformOperation && t instanceof __PRIVATE_NumericMinimumTransformOperation || e instanceof __PRIVATE_NumericMaximumTransformOperation && t instanceof __PRIVATE_NumericMaximumTransformOperation ? __PRIVATE_valueEquals(e.Ae, t.Ae) : e instanceof __PRIVATE_ServerTimestampTransform && t instanceof __PRIVATE_ServerTimestampTransform;
     }(e.transform, t.transform);
 }
 
@@ -12719,7 +12735,11 @@ class __PRIVATE_WatchTargetChange {
 }
 
 /** Tracks the internal state of a Watch target. */ class __PRIVATE_TargetState {
-    constructor() {
+    /**
+     * Track the targetId for logging.
+     */
+    constructor(e) {
+        this.targetId = e, 
         /**
          * The number of pending responses (adds or removes) that we are waiting on.
          * We only consider targets active that have no pending responses.
@@ -12810,7 +12830,8 @@ class __PRIVATE_WatchTargetChange {
     }
     We() {
         this.ve -= 1, __PRIVATE_hardAssert(this.ve >= 0, 3241, {
-            ve: this.ve
+            ve: this.ve,
+            targetId: this.targetId
         });
     }
     Qe() {
@@ -12818,13 +12839,36 @@ class __PRIVATE_WatchTargetChange {
     }
 }
 
+const mt = "WatchChangeAggregator";
+
 /**
  * A helper class to accumulate watch changes into a RemoteEvent.
- */
-class __PRIVATE_WatchChangeAggregator {
+ */ class __PRIVATE_WatchChangeAggregator {
     constructor(e) {
         this.Ge = e, 
-        /** The internal state of all tracked targets. */
+        /**
+         * The internal state of all tracked targets.
+         *
+         * Targets have the following lifecycle of [states] within the WatchChangeAggregator:
+         * [unknown] -> recordPendingTargetRequest(t)
+         *           -> [pending]
+         *           -> handleTargetChange(t, Added)
+         *           -> [added / !pending]
+         *           -> recordPendingTargetRequest(t)
+         *           -> [pending]
+         *           -> handleTargetChange(t, Removed)
+         *           -> [unknown]
+         *
+         * A reset on an [added] target leaves the target in an [added] state.
+         * [added / !pending] -> handleTargetChange(t, Reset)
+         *                    -> [added / !pending]
+         *
+         * [active]: is a substate of [added], where also `remoteStore.listenTargets.has(t) === true`.
+         *           Generally it is expected that when a target is [active / !pending]
+         *           then it is also [active], but the implementation does not guarantee
+         *           this will always be true.
+         *
+         */
         this.ze = new Map, 
         /** Keeps track of the documents to update since the last raised snapshot. */
         this.je = __PRIVATE_mutableDocumentMap(), this.Je = __PRIVATE_documentTargetMap(), 
@@ -12845,10 +12889,12 @@ class __PRIVATE_WatchChangeAggregator {
     }
     /** Processes and adds the WatchTargetChange to the current set of changes. */    tt(e) {
         this.forEachTarget(e, (t => {
-            const n = this.nt(t);
-            switch (e.state) {
+            const n = this.ze.get(t);
+            // skip unknown target state, this indicates the target change is for
+            // an old target
+                        if (n) switch (e.state) {
               case 0 /* WatchTargetChangeState.NoChange */ :
-                this.rt(t) && n.Le(e.resumeToken);
+                this.nt(t) && n.Le(e.resumeToken);
                 break;
 
               case 1 /* WatchTargetChangeState.Added */ :
@@ -12870,22 +12916,22 @@ class __PRIVATE_WatchChangeAggregator {
                 break;
 
               case 3 /* WatchTargetChangeState.Current */ :
-                this.rt(t) && (n.Qe(), n.Le(e.resumeToken));
+                this.nt(t) && (n.Qe(), n.Le(e.resumeToken));
                 break;
 
               case 4 /* WatchTargetChangeState.Reset */ :
-                this.rt(t) && (
+                this.nt(t) && (
                 // Reset the target and synthesizes removes for all existing
                 // documents. The backend will re-add any documents that still
                 // match the target before it sends the next global snapshot.
-                this.it(t), n.Le(e.resumeToken));
+                this.rt(t), n.Le(e.resumeToken));
                 break;
 
               default:
                 fail(56790, {
                     state: e.state
                 });
-            }
+            } else __PRIVATE_logDebug(mt, `handleTargetChange received targetChange for untracked target ID (${t}) with state (${e.state})`);
         }));
     }
     /**
@@ -12894,15 +12940,15 @@ class __PRIVATE_WatchChangeAggregator {
      * active targets.
      */    forEachTarget(e, t) {
         e.targetIds.length > 0 ? e.targetIds.forEach(t) : this.ze.forEach(((e, n) => {
-            this.rt(n) && t(n);
+            this.nt(n) && t(n);
         }));
     }
     /**
      * Handles existence filters and synthesizes deletes for filter mismatches.
      * Targets that are invalidated by filter mismatches are added to
      * `pendingTargetResets`.
-     */    st(e) {
-        const t = e.targetId, n = e.Ce.count, r = this.ot(t);
+     */    it(e) {
+        const t = e.targetId, n = e.Ce.count, r = this.st(t);
         if (r) {
             const i = r.target;
             if (__PRIVATE_targetIsDocumentTarget(i)) if (0 === n) {
@@ -12917,16 +12963,16 @@ class __PRIVATE_WatchChangeAggregator {
             } else __PRIVATE_hardAssert(1 === n, 20013, {
                 expectedCount: n
             }); else {
-                const r = this._t(t);
+                const r = this.ot(t);
                 // Existence filter mismatch. Mark the documents as being in limbo, and
                 // raise a snapshot with `isFromCache:true`.
                                 if (r !== n) {
                     // Apply bloom filter to identify and mark removed documents.
-                    const n = this.ut(e), i = n ? this.ct(n, e, r) : 1 /* BloomFilterApplicationStatus.Skipped */;
+                    const n = this._t(e), i = n ? this.ut(n, e, r) : 1 /* BloomFilterApplicationStatus.Skipped */;
                     if (0 /* BloomFilterApplicationStatus.Success */ !== i) {
                         // If bloom filter application fails, we reset the mapping and
                         // trigger re-run of the query.
-                        this.it(t);
+                        this.rt(t);
                         const e = 2 /* BloomFilterApplicationStatus.FalsePositive */ === i ? "TargetPurposeExistenceFilterMismatchBloom" /* TargetPurpose.ExistenceFilterMismatchBloom */ : "TargetPurposeExistenceFilterMismatch" /* TargetPurpose.ExistenceFilterMismatch */;
                         this.Ze = this.Ze.insert(t, e);
                     }
@@ -12937,7 +12983,7 @@ class __PRIVATE_WatchChangeAggregator {
     /**
      * Parse the bloom filter from the "unchanged_names" field of an existence
      * filter.
-     */    ut(e) {
+     */    _t(e) {
         const t = e.Ce.unchangedNames;
         if (!t || !t.bits) return null;
         const {bits: {bitmap: n = "", padding: r = 0}, hashCount: i = 0} = t;
@@ -12961,27 +13007,27 @@ class __PRIVATE_WatchChangeAggregator {
     /**
      * Apply bloom filter to remove the deleted documents, and return the
      * application status.
-     */    ct(e, t, n) {
-        return t.Ce.count === n - this.Pt(e, t.targetId) ? 0 /* BloomFilterApplicationStatus.Success */ : 2 /* BloomFilterApplicationStatus.FalsePositive */;
+     */    ut(e, t, n) {
+        return t.Ce.count === n - this.ht(e, t.targetId) ? 0 /* BloomFilterApplicationStatus.Success */ : 2 /* BloomFilterApplicationStatus.FalsePositive */;
     }
     /**
      * Filter out removed documents based on bloom filter membership result and
      * return number of documents removed.
-     */    Pt(e, t) {
+     */    ht(e, t) {
         const n = this.Ge.getRemoteKeysForTarget(t);
         let r = 0;
         return n.forEach((n => {
-            const i = this.Ge.ht(), s = `projects/${i.projectId}/databases/${i.database}/documents/${n.path.canonicalString()}`;
+            const i = this.Ge.lt(), s = `projects/${i.projectId}/databases/${i.database}/documents/${n.path.canonicalString()}`;
             e.mightContain(s) || (this.et(t, n, /*updatedDocument=*/ null), r++);
         })), r;
     }
     /**
      * Converts the currently accumulated state into a remote event at the
      * provided snapshot version. Resets the accumulated changes before returning.
-     */    Tt(e) {
+     */    Pt(e) {
         const t = new Map;
         this.ze.forEach(((n, r) => {
-            const i = this.ot(r);
+            const i = this.st(r);
             if (i) {
                 if (n.current && __PRIVATE_targetIsDocumentTarget(i.target)) {
                     // Document queries for document that don't exist can produce an empty
@@ -12993,7 +13039,7 @@ class __PRIVATE_WatchChangeAggregator {
                     // instead resulting in an explicit delete message and we could
                     // remove this special logic.
                     const t = new DocumentKey(i.target.path);
-                    this.Et(t).has(r) || this.It(r, t) || this.et(r, t, MutableDocument.newNoDocument(t, e));
+                    this.Tt(t).has(r) || this.It(r, t) || this.et(r, t, MutableDocument.newNoDocument(t, e));
                 }
                 n.Be && (t.set(r, n.ke()), n.qe());
             }
@@ -13007,7 +13053,7 @@ class __PRIVATE_WatchChangeAggregator {
                 this.He.forEach(((e, t) => {
             let r = true;
             t.forEachWhile((e => {
-                const t = this.ot(e);
+                const t = this.st(e);
                 return !t || "TargetPurposeLimboResolution" /* TargetPurpose.LimboResolution */ === t.purpose || (r = false, 
                 false);
             })), r && (n = n.add(e));
@@ -13023,10 +13069,12 @@ class __PRIVATE_WatchChangeAggregator {
      */
     // Visible for testing.
     Ye(e, t) {
-        if (!this.rt(e)) return;
-        const n = this.It(e, t.key) ? 2 /* ChangeType.Modified */ : 0 /* ChangeType.Added */;
-        this.nt(e).Ke(t.key, n), this.je = this.je.insert(t.key, t), this.Je = this.Je.insert(t.key, this.Et(t.key).add(e)), 
-        this.He = this.He.insert(t.key, this.Rt(t.key).add(e));
+        const n = this.ze.get(e);
+        // skip unknown or inactive targets
+                if (!n || !this.nt(e)) return void __PRIVATE_logDebug(mt, `addDocumentToTarget received document for unknown inactive target (${e})`);
+        const r = this.It(e, t.key) ? 2 /* ChangeType.Modified */ : 0 /* ChangeType.Added */;
+        n.Ke(t.key, r), this.je = this.je.insert(t.key, t), this.Je = this.Je.insert(t.key, this.Tt(t.key).add(e)), 
+        this.He = this.He.insert(t.key, this.Et(t.key).add(e));
     }
     /**
      * Removes the provided document from the target mapping. If the
@@ -13037,13 +13085,14 @@ class __PRIVATE_WatchChangeAggregator {
      */
     // Visible for testing.
     et(e, t, n) {
-        if (!this.rt(e)) return;
-        const r = this.nt(e);
-        this.It(e, t) ? r.Ke(t, 1 /* ChangeType.Removed */) : 
+        const r = this.ze.get(e);
+        // skip unknown target state, this indicates the target change is for
+        // an old target
+                r && this.nt(e) ? (this.It(e, t) ? r.Ke(t, 1 /* ChangeType.Removed */) : 
         // The document may have entered and left the target before we raised a
         // snapshot, so we can just ignore the change.
-        r.Ue(t), this.He = this.He.insert(t, this.Rt(t).delete(e)), this.He = this.He.insert(t, this.Rt(t).add(e)), 
-        n && (this.je = this.je.insert(t, n));
+        r.Ue(t), this.He = this.He.insert(t, this.Et(t).delete(e)), this.He = this.He.insert(t, this.Et(t).add(e)), 
+        n && (this.je = this.je.insert(t, n))) : __PRIVATE_logDebug(mt, `removeDocumentFromTarget received document for unknown or inactive target (${e})`);
     }
     removeTarget(e) {
         this.ze.delete(e);
@@ -13052,26 +13101,28 @@ class __PRIVATE_WatchChangeAggregator {
      * Returns the current count of documents in the target. This includes both
      * the number of documents that the LocalStore considers to be part of the
      * target as well as any accumulated changes.
-     */    _t(e) {
-        const t = this.nt(e).ke();
-        return this.Ge.getRemoteKeysForTarget(e).size + t.addedDocuments.size - t.removedDocuments.size;
+     */    ot(e) {
+        const t = this.ze.get(e);
+        // skip unknown target state
+                if (!t) return 0;
+        const n = t.ke();
+        return this.Ge.getRemoteKeysForTarget(e).size + n.addedDocuments.size - n.removedDocuments.size;
     }
     /**
      * Increment the number of acks needed from watch before we can consider the
      * server to be 'in-sync' with the client's active targets.
      */    $e(e) {
-        this.nt(e).$e();
-    }
-    nt(e) {
+        // For each request we get we need to record we need a response for it.
         let t = this.ze.get(e);
-        return t || (t = new __PRIVATE_TargetState, this.ze.set(e, t)), t;
+        t || (__PRIVATE_logDebug(mt, `recordPendingTargetRequest set up tracking for target ID ${e}`), 
+        t = new __PRIVATE_TargetState(e), this.ze.set(e, t)), t.$e();
     }
-    Rt(e) {
+    Et(e) {
         let t = this.He.get(e);
         return t || (t = new SortedSet(__PRIVATE_primitiveComparator), this.He = this.He.insert(e, t)), 
         t;
     }
-    Et(e) {
+    Tt(e) {
         let t = this.Je.get(e);
         return t || (t = new SortedSet(__PRIVATE_primitiveComparator), this.Je = this.Je.insert(e, t)), 
         t;
@@ -13080,24 +13131,23 @@ class __PRIVATE_WatchChangeAggregator {
      * Verifies that the user is still interested in this target (by calling
      * `getTargetDataForTarget()`) and that we are not waiting for pending ADDs
      * from watch.
-     */    rt(e) {
-        const t = null !== this.ot(e);
-        return t || __PRIVATE_logDebug("WatchChangeAggregator", "Detected inactive target", e), 
-        t;
+     */    nt(e) {
+        const t = null !== this.st(e);
+        return t || __PRIVATE_logDebug(mt, "Detected inactive target", e), t;
     }
     /**
      * Returns the TargetData for an active target (i.e. a target that the user
      * is still interested in that has no outstanding target change requests).
-     */    ot(e) {
+     */    st(e) {
         const t = this.ze.get(e);
-        return t && t.Ne ? null : this.Ge.At(e);
+        return void 0 === t || t.Ne ? null : this.Ge.Rt(e);
     }
     /**
      * Resets the state of a Watch target to its initial state (e.g. sets
      * 'current' to false, clears the resume token and removes its target mapping
      * from all documents).
-     */    it(e) {
-        this.ze.set(e, new __PRIVATE_TargetState);
+     */    rt(e) {
+        this.ze.set(e, new __PRIVATE_TargetState(e));
         this.Ge.getRemoteKeysForTarget(e).forEach((t => {
             this.et(e, t, /*updatedDocument=*/ null);
         }));
@@ -13118,13 +13168,13 @@ function __PRIVATE_snapshotChangesMap() {
     return new SortedMap(DocumentKey.comparator);
 }
 
-const mt = (() => {
+const ft = (() => {
     const e = {
         asc: "ASCENDING",
         desc: "DESCENDING"
     };
     return e;
-})(), ft = (() => {
+})(), gt = (() => {
     const e = {
         "<": "LESS_THAN",
         "<=": "LESS_THAN_OR_EQUAL",
@@ -13138,7 +13188,7 @@ const mt = (() => {
         "array-contains-any": "ARRAY_CONTAINS_ANY"
     };
     return e;
-})(), gt = (() => {
+})(), pt = (() => {
     const e = {
         and: "AND",
         or: "OR"
@@ -13327,7 +13377,7 @@ function __PRIVATE_fromWatchChange(e, t) {
         n = new __PRIVATE_DocumentWatchChange([], s, i, null);
     } else {
         if (!("filter" in t)) return fail(11601, {
-            Vt: t
+            At: t
         });
         {
             t.filter;
@@ -13351,7 +13401,7 @@ function toMutation(e, t) {
         updateMask: __PRIVATE_toDocumentMask(t.fieldMask)
     }; else {
         if (!(t instanceof __PRIVATE_VerifyMutation)) return fail(16599, {
-            dt: t.type
+            Vt: t.type
         });
         n = {
             verify: __PRIVATE_toName(e, t.key)
@@ -13378,6 +13428,14 @@ function toMutation(e, t) {
         if (n instanceof __PRIVATE_NumericIncrementTransformOperation) return {
             fieldPath: t.field.canonicalString(),
             increment: n.Ae
+        };
+        if (n instanceof __PRIVATE_NumericMinimumTransformOperation) return {
+            fieldPath: t.field.canonicalString(),
+            minimum: n.Ae
+        };
+        if (n instanceof __PRIVATE_NumericMaximumTransformOperation) return {
+            fieldPath: t.field.canonicalString(),
+            maximum: n.Ae
         };
         throw fail(20930, {
             transform: t.transform
@@ -13452,7 +13510,7 @@ function __PRIVATE_toQueryTarget(e, t) {
             values: e.position
         };
     }(t.endAt)), {
-        ft: n,
+        dt: n,
         parent: i
     };
 }
@@ -13632,15 +13690,15 @@ function __PRIVATE_fromFilter(e) {
 }
 
 function __PRIVATE_toDirection(e) {
-    return mt[e];
-}
-
-function __PRIVATE_toOperatorName(e) {
     return ft[e];
 }
 
-function __PRIVATE_toCompositeOperatorName(e) {
+function __PRIVATE_toOperatorName(e) {
     return gt[e];
+}
+
+function __PRIVATE_toCompositeOperatorName(e) {
+    return pt[e];
 }
 
 function __PRIVATE_toFieldPathReference(e) {
@@ -13816,7 +13874,7 @@ e) {
  */
 /** Serializer for values stored in the LocalStore. */ class __PRIVATE_LocalSerializer {
     constructor(e) {
-        this.yt = e;
+        this.gt = e;
     }
 }
 
@@ -13854,13 +13912,13 @@ function __PRIVATE_fromBundledQuery(e) {
  * An in-memory implementation of IndexManager.
  */ class __PRIVATE_MemoryIndexManager {
     constructor() {
-        this.bn = new __PRIVATE_MemoryCollectionParentIndex;
+        this.Sn = new __PRIVATE_MemoryCollectionParentIndex;
     }
     addToCollectionParentIndex(e, t) {
-        return this.bn.add(t), PersistencePromise.resolve();
+        return this.Sn.add(t), PersistencePromise.resolve();
     }
     getCollectionParents(e, t) {
-        return PersistencePromise.resolve(this.bn.getEntries(t));
+        return PersistencePromise.resolve(this.Sn.getEntries(t));
     }
     addFieldIndex(e, t) {
         // Field indices are not supported with memory persistence.
@@ -13947,12 +14005,12 @@ function __PRIVATE_fromBundledQuery(e) {
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */ const bt = {
+ */ const St = {
     didRun: false,
     sequenceNumbersCollected: 0,
     targetsRemoved: 0,
     documentsRemoved: 0
-}, St = 41943040;
+}, Dt = 41943040;
 
 class LruParams {
     static withCacheSize(e) {
@@ -13988,7 +14046,7 @@ class LruParams {
  * limitations under the License.
  */
 /** A mutation queue for a specific user, backed by IndexedDB. */ LruParams.DEFAULT_COLLECTION_PERCENTILE = 10, 
-LruParams.DEFAULT_MAX_SEQUENCE_NUMBERS_TO_COLLECT = 1e3, LruParams.DEFAULT = new LruParams(St, LruParams.DEFAULT_COLLECTION_PERCENTILE, LruParams.DEFAULT_MAX_SEQUENCE_NUMBERS_TO_COLLECT), 
+LruParams.DEFAULT_MAX_SEQUENCE_NUMBERS_TO_COLLECT = 1e3, LruParams.DEFAULT = new LruParams(Dt, LruParams.DEFAULT_COLLECTION_PERCENTILE, LruParams.DEFAULT_MAX_SEQUENCE_NUMBERS_TO_COLLECT), 
 LruParams.DISABLED = new LruParams(-1, 0, 0);
 
 /**
@@ -14024,19 +14082,19 @@ LruParams.DISABLED = new LruParams(-1, 0, 0);
  */
 class __PRIVATE_TargetIdGenerator {
     constructor(e) {
-        this.sr = e;
+        this.ir = e;
     }
     next() {
-        return this.sr += 2, this.sr;
+        return this.ir += 2, this.ir;
     }
-    static _r() {
+    static sr() {
         // The target cache generator must return '2' in its first call to `next()`
         // as there is no differentiation in the protocol layer between an unset
         // number and the number '0'. If we were to sent a target with target ID
         // '0', the backend would consider it unset and replace it with its own ID.
         return new __PRIVATE_TargetIdGenerator(0);
     }
-    static ar() {
+    static _r() {
         // Sync engine assigns target IDs for limbo document detection.
         return new __PRIVATE_TargetIdGenerator(-1);
     }
@@ -14057,7 +14115,7 @@ class __PRIVATE_TargetIdGenerator {
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */ const Dt = "LruGarbageCollector", Ct = 1048576;
+ */ const Ct = "LruGarbageCollector", vt = 1048576;
 
 function __PRIVATE_bufferEntryComparator([e, t], [n, r]) {
     const i = __PRIVATE_primitiveComparator(e, n);
@@ -14070,14 +14128,14 @@ function __PRIVATE_bufferEntryComparator([e, t], [n, r]) {
  * them in `maxValue`.
  */ class __PRIVATE_RollingSequenceNumberBuffer {
     constructor(e) {
-        this.Pr = e, this.buffer = new SortedSet(__PRIVATE_bufferEntryComparator), this.Tr = 0;
+        this.hr = e, this.buffer = new SortedSet(__PRIVATE_bufferEntryComparator), this.Pr = 0;
     }
-    Er() {
-        return ++this.Tr;
+    Tr() {
+        return ++this.Pr;
     }
     Ir(e) {
-        const t = [ e, this.Er() ];
-        if (this.buffer.size < this.Pr) this.buffer = this.buffer.add(t); else {
+        const t = [ e, this.Tr() ];
+        if (this.buffer.size < this.hr) this.buffer = this.buffer.add(t); else {
             const e = this.buffer.last();
             __PRIVATE_bufferEntryComparator(t, e) < 0 && (this.buffer = this.buffer.delete(e).add(t));
         }
@@ -14098,26 +14156,26 @@ function __PRIVATE_bufferEntryComparator([e, t], [n, r]) {
  * whether or not GC is enabled, as well as which delay to use before the next run.
  */ class __PRIVATE_LruScheduler {
     constructor(e, t, n) {
-        this.garbageCollector = e, this.asyncQueue = t, this.localStore = n, this.Rr = null;
+        this.garbageCollector = e, this.asyncQueue = t, this.localStore = n, this.Er = null;
     }
     start() {
-        -1 !== this.garbageCollector.params.cacheSizeCollectionThreshold && this.Ar(6e4);
+        -1 !== this.garbageCollector.params.cacheSizeCollectionThreshold && this.Rr(6e4);
     }
     stop() {
-        this.Rr && (this.Rr.cancel(), this.Rr = null);
+        this.Er && (this.Er.cancel(), this.Er = null);
     }
     get started() {
-        return null !== this.Rr;
+        return null !== this.Er;
     }
-    Ar(e) {
-        __PRIVATE_logDebug(Dt, `Garbage collection scheduled in ${e}ms`), this.Rr = this.asyncQueue.enqueueAfterDelay("lru_garbage_collection" /* TimerId.LruGarbageCollection */ , e, (async () => {
-            this.Rr = null;
+    Rr(e) {
+        __PRIVATE_logDebug(Ct, `Garbage collection scheduled in ${e}ms`), this.Er = this.asyncQueue.enqueueAfterDelay("lru_garbage_collection" /* TimerId.LruGarbageCollection */ , e, (async () => {
+            this.Er = null;
             try {
                 await this.localStore.collectGarbage(this.garbageCollector);
             } catch (e) {
-                __PRIVATE_isIndexedDbTransactionError(e) ? __PRIVATE_logDebug(Dt, "Ignoring IndexedDB error during garbage collection: ", e) : await __PRIVATE_ignoreIfPrimaryLeaseLoss(e);
+                __PRIVATE_isIndexedDbTransactionError(e) ? __PRIVATE_logDebug(Ct, "Ignoring IndexedDB error during garbage collection: ", e) : await __PRIVATE_ignoreIfPrimaryLeaseLoss(e);
             }
-            await this.Ar(3e5);
+            await this.Rr(3e5);
         }));
     }
 }
@@ -14126,31 +14184,31 @@ function __PRIVATE_bufferEntryComparator([e, t], [n, r]) {
  * Implements the steps for LRU garbage collection.
  */ class __PRIVATE_LruGarbageCollectorImpl {
     constructor(e, t) {
-        this.Vr = e, this.params = t;
+        this.Ar = e, this.params = t;
     }
     calculateTargetCount(e, t) {
-        return this.Vr.dr(e).next((e => Math.floor(t / 100 * e)));
+        return this.Ar.Vr(e).next((e => Math.floor(t / 100 * e)));
     }
     nthSequenceNumber(e, t) {
         if (0 === t) return PersistencePromise.resolve(__PRIVATE_ListenSequence.ce);
         const n = new __PRIVATE_RollingSequenceNumberBuffer(t);
-        return this.Vr.forEachTarget(e, (e => n.Ir(e.sequenceNumber))).next((() => this.Vr.mr(e, (e => n.Ir(e))))).next((() => n.maxValue));
+        return this.Ar.forEachTarget(e, (e => n.Ir(e.sequenceNumber))).next((() => this.Ar.dr(e, (e => n.Ir(e))))).next((() => n.maxValue));
     }
     removeTargets(e, t, n) {
-        return this.Vr.removeTargets(e, t, n);
+        return this.Ar.removeTargets(e, t, n);
     }
     removeOrphanedDocuments(e, t) {
-        return this.Vr.removeOrphanedDocuments(e, t);
+        return this.Ar.removeOrphanedDocuments(e, t);
     }
     collect(e, t) {
         return -1 === this.params.cacheSizeCollectionThreshold ? (__PRIVATE_logDebug("LruGarbageCollector", "Garbage collection skipped; disabled"), 
-        PersistencePromise.resolve(bt)) : this.getCacheSize(e).next((n => n < this.params.cacheSizeCollectionThreshold ? (__PRIVATE_logDebug("LruGarbageCollector", `Garbage collection skipped; Cache size ${n} is lower than threshold ${this.params.cacheSizeCollectionThreshold}`), 
-        bt) : this.gr(e, t)));
+        PersistencePromise.resolve(St)) : this.getCacheSize(e).next((n => n < this.params.cacheSizeCollectionThreshold ? (__PRIVATE_logDebug("LruGarbageCollector", `Garbage collection skipped; Cache size ${n} is lower than threshold ${this.params.cacheSizeCollectionThreshold}`), 
+        St) : this.mr(e, t)));
     }
     getCacheSize(e) {
-        return this.Vr.getCacheSize(e);
+        return this.Ar.getCacheSize(e);
     }
-    gr(e, t) {
+    mr(e, t) {
         let n, r, i, s, o, _, a;
         const u = Date.now();
         return this.calculateTargetCount(e, this.params.percentileToCollect).next((t => (
@@ -14593,13 +14651,13 @@ class OverlayedDocument {
  * limitations under the License.
  */ class __PRIVATE_MemoryBundleCache {
     constructor(e) {
-        this.serializer = e, this.Nr = new Map, this.Br = new Map;
+        this.serializer = e, this.Or = new Map, this.Nr = new Map;
     }
     getBundleMetadata(e, t) {
-        return PersistencePromise.resolve(this.Nr.get(t));
+        return PersistencePromise.resolve(this.Or.get(t));
     }
     saveBundleMetadata(e, t) {
-        return this.Nr.set(t.id, 
+        return this.Or.set(t.id, 
         /** Decodes a BundleMetadata proto into a BundleMetadata object. */
         function __PRIVATE_fromBundleMetadata(e) {
             return {
@@ -14610,10 +14668,10 @@ class OverlayedDocument {
         }(t)), PersistencePromise.resolve();
     }
     getNamedQuery(e, t) {
-        return PersistencePromise.resolve(this.Br.get(t));
+        return PersistencePromise.resolve(this.Nr.get(t));
     }
     saveNamedQuery(e, t) {
-        return this.Br.set(t.name, function __PRIVATE_fromProtoNamedQuery(e) {
+        return this.Nr.set(t.name, function __PRIVATE_fromProtoNamedQuery(e) {
             return {
                 name: e.name,
                 query: __PRIVATE_fromBundledQuery(e.bundledQuery),
@@ -14645,7 +14703,7 @@ class OverlayedDocument {
     constructor() {
         // A map sorted by DocumentKey, whose value is a pair of the largest batch id
         // for the overlay and the overlay itself.
-        this.overlays = new SortedMap(DocumentKey.comparator), this.Lr = new Map;
+        this.overlays = new SortedMap(DocumentKey.comparator), this.Br = new Map;
     }
     getOverlay(e, t) {
         return PersistencePromise.resolve(this.overlays.get(t));
@@ -14658,13 +14716,13 @@ class OverlayedDocument {
     }
     saveOverlays(e, t, n) {
         return n.forEach(((n, r) => {
-            this.St(e, t, r);
+            this.wt(e, t, r);
         })), PersistencePromise.resolve();
     }
     removeOverlaysForBatchId(e, t, n) {
-        const r = this.Lr.get(n);
+        const r = this.Br.get(n);
         return void 0 !== r && (r.forEach((e => this.overlays = this.overlays.remove(e))), 
-        this.Lr.delete(n)), PersistencePromise.resolve();
+        this.Br.delete(n)), PersistencePromise.resolve();
     }
     getOverlaysForCollection(e, t, n) {
         const r = __PRIVATE_newOverlayMap(), i = t.length + 1, s = new DocumentKey(t.child("")), o = this.overlays.getIteratorFrom(s);
@@ -14693,17 +14751,17 @@ class OverlayedDocument {
         }
         return PersistencePromise.resolve(o);
     }
-    St(e, t, n) {
+    wt(e, t, n) {
         // Remove the association of the overlay to its batch id.
         const r = this.overlays.get(n.key);
         if (null !== r) {
-            const e = this.Lr.get(r.largestBatchId).delete(n.key);
-            this.Lr.set(r.largestBatchId, e);
+            const e = this.Br.get(r.largestBatchId).delete(n.key);
+            this.Br.set(r.largestBatchId, e);
         }
         this.overlays = this.overlays.insert(n.key, new Overlay(t, n));
         // Create the association of this overlay to the given largestBatchId.
-        let i = this.Lr.get(t);
-        void 0 === i && (i = __PRIVATE_documentKeySet(), this.Lr.set(t, i)), this.Lr.set(t, i.add(n.key));
+        let i = this.Br.get(t);
+        void 0 === i && (i = __PRIVATE_documentKeySet(), this.Br.set(t, i)), this.Br.set(t, i.add(n.key));
     }
 }
 
@@ -14767,66 +14825,66 @@ class OverlayedDocument {
  */ class __PRIVATE_ReferenceSet {
     constructor() {
         // A set of outstanding references to a document sorted by key.
-        this.kr = new SortedSet(__PRIVATE_DocReference.qr), 
+        this.Lr = new SortedSet(__PRIVATE_DocReference.kr), 
         // A set of outstanding references to a document sorted by target id.
-        this.Kr = new SortedSet(__PRIVATE_DocReference.Ur);
+        this.qr = new SortedSet(__PRIVATE_DocReference.Kr);
     }
     /** Returns true if the reference set contains no references. */    isEmpty() {
-        return this.kr.isEmpty();
+        return this.Lr.isEmpty();
     }
     /** Adds a reference to the given document key for the given ID. */    addReference(e, t) {
         const n = new __PRIVATE_DocReference(e, t);
-        this.kr = this.kr.add(n), this.Kr = this.Kr.add(n);
+        this.Lr = this.Lr.add(n), this.qr = this.qr.add(n);
     }
-    /** Add references to the given document keys for the given ID. */    $r(e, t) {
+    /** Add references to the given document keys for the given ID. */    Ur(e, t) {
         e.forEach((e => this.addReference(e, t)));
     }
     /**
      * Removes a reference to the given document key for the given
      * ID.
      */    removeReference(e, t) {
-        this.Wr(new __PRIVATE_DocReference(e, t));
+        this.$r(new __PRIVATE_DocReference(e, t));
     }
-    Qr(e, t) {
+    Wr(e, t) {
         e.forEach((e => this.removeReference(e, t)));
     }
     /**
      * Clears all references with a given ID. Calls removeRef() for each key
      * removed.
-     */    Gr(e) {
+     */    Qr(e) {
         const t = new DocumentKey(new ResourcePath([])), n = new __PRIVATE_DocReference(t, e), r = new __PRIVATE_DocReference(t, e + 1), i = [];
-        return this.Kr.forEachInRange([ n, r ], (e => {
-            this.Wr(e), i.push(e.key);
+        return this.qr.forEachInRange([ n, r ], (e => {
+            this.$r(e), i.push(e.key);
         })), i;
     }
-    zr() {
-        this.kr.forEach((e => this.Wr(e)));
+    Gr() {
+        this.Lr.forEach((e => this.$r(e)));
     }
-    Wr(e) {
-        this.kr = this.kr.delete(e), this.Kr = this.Kr.delete(e);
+    $r(e) {
+        this.Lr = this.Lr.delete(e), this.qr = this.qr.delete(e);
     }
-    jr(e) {
+    zr(e) {
         const t = new DocumentKey(new ResourcePath([])), n = new __PRIVATE_DocReference(t, e), r = new __PRIVATE_DocReference(t, e + 1);
         let i = __PRIVATE_documentKeySet();
-        return this.Kr.forEachInRange([ n, r ], (e => {
+        return this.qr.forEachInRange([ n, r ], (e => {
             i = i.add(e.key);
         })), i;
     }
     containsKey(e) {
-        const t = new __PRIVATE_DocReference(e, 0), n = this.kr.firstAfterOrEqual(t);
+        const t = new __PRIVATE_DocReference(e, 0), n = this.Lr.firstAfterOrEqual(t);
         return null !== n && e.isEqual(n.key);
     }
 }
 
 class __PRIVATE_DocReference {
     constructor(e, t) {
-        this.key = e, this.Jr = t;
+        this.key = e, this.jr = t;
     }
-    /** Compare by key then by ID */    static qr(e, t) {
-        return DocumentKey.comparator(e.key, t.key) || __PRIVATE_primitiveComparator(e.Jr, t.Jr);
+    /** Compare by key then by ID */    static kr(e, t) {
+        return DocumentKey.comparator(e.key, t.key) || __PRIVATE_primitiveComparator(e.jr, t.jr);
     }
-    /** Compare by ID then by key */    static Ur(e, t) {
-        return __PRIVATE_primitiveComparator(e.Jr, t.Jr) || DocumentKey.comparator(e.key, t.key);
+    /** Compare by ID then by key */    static Kr(e, t) {
+        return __PRIVATE_primitiveComparator(e.jr, t.jr) || DocumentKey.comparator(e.key, t.key);
     }
 }
 
@@ -14854,42 +14912,42 @@ class __PRIVATE_DocReference {
          */
         this.mutationQueue = [], 
         /** Next value to use when assigning sequential IDs to each mutation batch. */
-        this.Yn = 1, 
+        this.Xn = 1, 
         /** An ordered mapping between documents and the mutations batch IDs. */
-        this.Hr = new SortedSet(__PRIVATE_DocReference.qr);
+        this.Jr = new SortedSet(__PRIVATE_DocReference.kr);
     }
     checkEmpty(e) {
         return PersistencePromise.resolve(0 === this.mutationQueue.length);
     }
     addMutationBatch(e, t, n, r) {
-        const i = this.Yn;
-        this.Yn++, this.mutationQueue.length > 0 && this.mutationQueue[this.mutationQueue.length - 1];
+        const i = this.Xn;
+        this.Xn++, this.mutationQueue.length > 0 && this.mutationQueue[this.mutationQueue.length - 1];
         const s = new MutationBatch(i, t, n, r);
         this.mutationQueue.push(s);
         // Track references by document key and index collection parents.
-        for (const t of r) this.Hr = this.Hr.add(new __PRIVATE_DocReference(t.key, i)), 
+        for (const t of r) this.Jr = this.Jr.add(new __PRIVATE_DocReference(t.key, i)), 
         this.indexManager.addToCollectionParentIndex(e, t.key.path.popLast());
         return PersistencePromise.resolve(s);
     }
     lookupMutationBatch(e, t) {
-        return PersistencePromise.resolve(this.Zr(t));
+        return PersistencePromise.resolve(this.Hr(t));
     }
     getNextMutationBatchAfterBatchId(e, t) {
-        const n = t + 1, r = this.Xr(n), i = r < 0 ? 0 : r;
+        const n = t + 1, r = this.Zr(n), i = r < 0 ? 0 : r;
         // The requested batchId may still be out of range so normalize it to the
         // start of the queue.
                 return PersistencePromise.resolve(this.mutationQueue.length > i ? this.mutationQueue[i] : null);
     }
     getHighestUnacknowledgedBatchId() {
-        return PersistencePromise.resolve(0 === this.mutationQueue.length ? q : this.Yn - 1);
+        return PersistencePromise.resolve(0 === this.mutationQueue.length ? q : this.Xn - 1);
     }
     getAllMutationBatches(e) {
         return PersistencePromise.resolve(this.mutationQueue.slice());
     }
     getAllMutationBatchesAffectingDocumentKey(e, t) {
         const n = new __PRIVATE_DocReference(t, 0), r = new __PRIVATE_DocReference(t, Number.POSITIVE_INFINITY), i = [];
-        return this.Hr.forEachInRange([ n, r ], (e => {
-            const t = this.Zr(e.Jr);
+        return this.Jr.forEachInRange([ n, r ], (e => {
+            const t = this.Hr(e.jr);
             i.push(t);
         })), PersistencePromise.resolve(i);
     }
@@ -14897,10 +14955,10 @@ class __PRIVATE_DocReference {
         let n = new SortedSet(__PRIVATE_primitiveComparator);
         return t.forEach((e => {
             const t = new __PRIVATE_DocReference(e, 0), r = new __PRIVATE_DocReference(e, Number.POSITIVE_INFINITY);
-            this.Hr.forEachInRange([ t, r ], (e => {
-                n = n.add(e.Jr);
+            this.Jr.forEachInRange([ t, r ], (e => {
+                n = n.add(e.jr);
             }));
-        })), PersistencePromise.resolve(this.Yr(n));
+        })), PersistencePromise.resolve(this.Xr(n));
     }
     getAllMutationBatchesAffectingQuery(e, t) {
         // Use the query path as a prefix for testing if a document matches the
@@ -14916,7 +14974,7 @@ class __PRIVATE_DocReference {
         // Find unique batchIDs referenced by all documents potentially matching the
         // query.
                 let o = new SortedSet(__PRIVATE_primitiveComparator);
-        return this.Hr.forEachWhile((e => {
+        return this.Jr.forEachWhile((e => {
             const t = e.key.path;
             return !!n.isPrefixOf(t) && (
             // Rows with document keys more than one segment longer than the query
@@ -14924,33 +14982,33 @@ class __PRIVATE_DocReference {
             // the document /rooms/abc/messages/xyx.
             // TODO(mcg): we'll need a different scanner when we implement
             // ancestor queries.
-            t.length === r && (o = o.add(e.Jr)), true);
-        }), s), PersistencePromise.resolve(this.Yr(o));
+            t.length === r && (o = o.add(e.jr)), true);
+        }), s), PersistencePromise.resolve(this.Xr(o));
     }
-    Yr(e) {
+    Xr(e) {
         // Construct an array of matching batches, sorted by batchID to ensure that
         // multiple mutations affecting the same document key are applied in order.
         const t = [];
         return e.forEach((e => {
-            const n = this.Zr(e);
+            const n = this.Hr(e);
             null !== n && t.push(n);
         })), t;
     }
     removeMutationBatch(e, t) {
-        __PRIVATE_hardAssert(0 === this.ei(t.batchId, "removed"), 55003), this.mutationQueue.shift();
-        let n = this.Hr;
+        __PRIVATE_hardAssert(0 === this.Yr(t.batchId, "removed"), 55003), this.mutationQueue.shift();
+        let n = this.Jr;
         return PersistencePromise.forEach(t.mutations, (r => {
             const i = new __PRIVATE_DocReference(r.key, t.batchId);
             return n = n.delete(i), this.referenceDelegate.markPotentiallyOrphaned(e, r.key);
         })).next((() => {
-            this.Hr = n;
+            this.Jr = n;
         }));
     }
-    nr(e) {
+    tr(e) {
         // No-op since the memory mutation queue does not maintain a separate cache.
     }
     containsKey(e, t) {
-        const n = new __PRIVATE_DocReference(t, 0), r = this.Hr.firstAfterOrEqual(n);
+        const n = new __PRIVATE_DocReference(t, 0), r = this.Jr.firstAfterOrEqual(n);
         return PersistencePromise.resolve(t.isEqual(r && r.key));
     }
     performConsistencyCheck(e) {
@@ -14963,8 +15021,8 @@ class __PRIVATE_DocReference {
      * @param batchId - The batchId to search for
      * @param action - A description of what the caller is doing, phrased in passive
      * form (e.g. "acknowledged" in a routine that acknowledges batches).
-     */    ei(e, t) {
-        return this.Xr(e);
+     */    Yr(e, t) {
+        return this.Zr(e);
     }
     /**
      * Finds the index of the given batchId in the mutation queue. This operation
@@ -14974,7 +15032,7 @@ class __PRIVATE_DocReference {
      * the state of the queue. Note this index can be negative if the requested
      * batchId has already been removed from the queue or past the end of the
      * queue if the batchId is larger than the last added batch.
-     */    Xr(e) {
+     */    Zr(e) {
         if (0 === this.mutationQueue.length) 
         // As an index this is past the end of the queue
         return 0;
@@ -14987,8 +15045,8 @@ class __PRIVATE_DocReference {
     /**
      * A version of lookupMutationBatch that doesn't return a promise, this makes
      * other functions that uses this code easier to read and more efficient.
-     */    Zr(e) {
-        const t = this.Xr(e);
+     */    Hr(e) {
+        const t = this.Zr(e);
         if (t < 0 || t >= this.mutationQueue.length) return null;
         return this.mutationQueue[t];
     }
@@ -15024,7 +15082,7 @@ class __PRIVATE_MemoryRemoteDocumentCacheImpl {
      * calculating the size.
      */
     constructor(e) {
-        this.ti = e, 
+        this.ei = e, 
         /** Underlying cache of documents and their read times. */
         this.docs = function __PRIVATE_documentEntryMap() {
             return new SortedMap(DocumentKey.comparator);
@@ -15041,7 +15099,7 @@ class __PRIVATE_MemoryRemoteDocumentCacheImpl {
      * All calls of `addEntry`  are required to go through the RemoteDocumentChangeBuffer
      * returned by `newChangeBuffer()`.
      */    addEntry(e, t) {
-        const n = t.key, r = this.docs.get(n), i = r ? r.size : 0, s = this.ti(t);
+        const n = t.key, r = this.docs.get(n), i = r ? r.size : 0, s = this.ei(t);
         return this.docs = this.docs.insert(n, {
             document: t.mutableCopy(),
             size: s
@@ -15087,7 +15145,7 @@ class __PRIVATE_MemoryRemoteDocumentCacheImpl {
         // is enabled.
         fail(9500);
     }
-    ni(e, t) {
+    ti(e, t) {
         return PersistencePromise.forEach(this.docs, (e => t(e)));
     }
     newChangeBuffer(e) {
@@ -15112,19 +15170,19 @@ class __PRIVATE_MemoryRemoteDocumentCacheImpl {
  */
 class __PRIVATE_MemoryRemoteDocumentChangeBuffer extends RemoteDocumentChangeBuffer {
     constructor(e) {
-        super(), this.Mr = e;
+        super(), this.Fr = e;
     }
     applyChanges(e) {
         const t = [];
         return this.changes.forEach(((n, r) => {
-            r.isValidDocument() ? t.push(this.Mr.addEntry(e, r)) : this.Mr.removeEntry(n);
+            r.isValidDocument() ? t.push(this.Fr.addEntry(e, r)) : this.Fr.removeEntry(n);
         })), PersistencePromise.waitFor(t);
     }
     getFromCache(e, t) {
-        return this.Mr.getEntry(e, t);
+        return this.Fr.getEntry(e, t);
     }
     getAllFromCache(e, t) {
-        return this.Mr.getEntries(e, t);
+        return this.Fr.getEntries(e, t);
     }
 }
 
@@ -15149,56 +15207,56 @@ class __PRIVATE_MemoryRemoteDocumentChangeBuffer extends RemoteDocumentChangeBuf
         /**
          * Maps a target to the data about that target
          */
-        this.ri = new ObjectMap((e => __PRIVATE_canonifyTarget(e)), __PRIVATE_targetEquals), 
+        this.ni = new ObjectMap((e => __PRIVATE_canonifyTarget(e)), __PRIVATE_targetEquals), 
         /** The last received snapshot version. */
         this.lastRemoteSnapshotVersion = SnapshotVersion.min(), 
         /** The highest numbered target ID encountered. */
         this.highestTargetId = 0, 
         /** The highest sequence number encountered. */
-        this.ii = 0, 
+        this.ri = 0, 
         /**
          * A ordered bidirectional mapping between documents and the remote target
          * IDs.
          */
-        this.si = new __PRIVATE_ReferenceSet, this.targetCount = 0, this.oi = __PRIVATE_TargetIdGenerator._r();
+        this.ii = new __PRIVATE_ReferenceSet, this.targetCount = 0, this.si = __PRIVATE_TargetIdGenerator.sr();
     }
     forEachTarget(e, t) {
-        return this.ri.forEach(((e, n) => t(n))), PersistencePromise.resolve();
+        return this.ni.forEach(((e, n) => t(n))), PersistencePromise.resolve();
     }
     getLastRemoteSnapshotVersion(e) {
         return PersistencePromise.resolve(this.lastRemoteSnapshotVersion);
     }
     getHighestSequenceNumber(e) {
-        return PersistencePromise.resolve(this.ii);
+        return PersistencePromise.resolve(this.ri);
     }
     allocateTargetId(e) {
-        return this.highestTargetId = this.oi.next(), PersistencePromise.resolve(this.highestTargetId);
+        return this.highestTargetId = this.si.next(), PersistencePromise.resolve(this.highestTargetId);
     }
     setTargetsMetadata(e, t, n) {
-        return n && (this.lastRemoteSnapshotVersion = n), t > this.ii && (this.ii = t), 
+        return n && (this.lastRemoteSnapshotVersion = n), t > this.ri && (this.ri = t), 
         PersistencePromise.resolve();
     }
-    lr(e) {
-        this.ri.set(e.target, e);
+    cr(e) {
+        this.ni.set(e.target, e);
         const t = e.targetId;
-        t > this.highestTargetId && (this.oi = new __PRIVATE_TargetIdGenerator(t), this.highestTargetId = t), 
-        e.sequenceNumber > this.ii && (this.ii = e.sequenceNumber);
+        t > this.highestTargetId && (this.si = new __PRIVATE_TargetIdGenerator(t), this.highestTargetId = t), 
+        e.sequenceNumber > this.ri && (this.ri = e.sequenceNumber);
     }
     addTargetData(e, t) {
-        return this.lr(t), this.targetCount += 1, PersistencePromise.resolve();
+        return this.cr(t), this.targetCount += 1, PersistencePromise.resolve();
     }
     updateTargetData(e, t) {
-        return this.lr(t), PersistencePromise.resolve();
+        return this.cr(t), PersistencePromise.resolve();
     }
     removeTargetData(e, t) {
-        return this.ri.delete(t.target), this.si.Gr(t.targetId), this.targetCount -= 1, 
+        return this.ni.delete(t.target), this.ii.Qr(t.targetId), this.targetCount -= 1, 
         PersistencePromise.resolve();
     }
     removeTargets(e, t, n) {
         let r = 0;
         const i = [];
-        return this.ri.forEach(((s, o) => {
-            o.sequenceNumber <= t && null === n.get(o.targetId) && (this.ri.delete(s), i.push(this.removeMatchingKeysForTargetId(e, o.targetId)), 
+        return this.ni.forEach(((s, o) => {
+            o.sequenceNumber <= t && null === n.get(o.targetId) && (this.ni.delete(s), i.push(this.removeMatchingKeysForTargetId(e, o.targetId)), 
             r++);
         })), PersistencePromise.waitFor(i).next((() => r));
     }
@@ -15206,28 +15264,28 @@ class __PRIVATE_MemoryRemoteDocumentChangeBuffer extends RemoteDocumentChangeBuf
         return PersistencePromise.resolve(this.targetCount);
     }
     getTargetData(e, t) {
-        const n = this.ri.get(t) || null;
+        const n = this.ni.get(t) || null;
         return PersistencePromise.resolve(n);
     }
     addMatchingKeys(e, t, n) {
-        return this.si.$r(t, n), PersistencePromise.resolve();
+        return this.ii.Ur(t, n), PersistencePromise.resolve();
     }
     removeMatchingKeys(e, t, n) {
-        this.si.Qr(t, n);
+        this.ii.Wr(t, n);
         const r = this.persistence.referenceDelegate, i = [];
         return r && t.forEach((t => {
             i.push(r.markPotentiallyOrphaned(e, t));
         })), PersistencePromise.waitFor(i);
     }
     removeMatchingKeysForTargetId(e, t) {
-        return this.si.Gr(t), PersistencePromise.resolve();
+        return this.ii.Qr(t), PersistencePromise.resolve();
     }
     getMatchingKeysForTargetId(e, t) {
-        const n = this.si.jr(t);
+        const n = this.ii.zr(t);
         return PersistencePromise.resolve(n);
     }
     containsKey(e, t) {
-        return PersistencePromise.resolve(this.si.containsKey(t));
+        return PersistencePromise.resolve(this.ii.containsKey(t));
     }
 }
 
@@ -15259,23 +15317,23 @@ class __PRIVATE_MemoryPersistence {
      * checked or asserted on every access.
      */
     constructor(e, t) {
-        this._i = {}, this.overlays = {}, this.ai = new __PRIVATE_ListenSequence(0), this.ui = false, 
-        this.ui = true, this.ci = new __PRIVATE_MemoryGlobalsCache, this.referenceDelegate = e(this), 
-        this.li = new __PRIVATE_MemoryTargetCache(this);
+        this.oi = {}, this.overlays = {}, this._i = new __PRIVATE_ListenSequence(0), this.ai = false, 
+        this.ai = true, this.ui = new __PRIVATE_MemoryGlobalsCache, this.referenceDelegate = e(this), 
+        this.ci = new __PRIVATE_MemoryTargetCache(this);
         this.indexManager = new __PRIVATE_MemoryIndexManager, this.remoteDocumentCache = function __PRIVATE_newMemoryRemoteDocumentCache(e) {
             return new __PRIVATE_MemoryRemoteDocumentCacheImpl(e);
-        }((e => this.referenceDelegate.hi(e))), this.serializer = new __PRIVATE_LocalSerializer(t), 
-        this.Pi = new __PRIVATE_MemoryBundleCache(this.serializer);
+        }((e => this.referenceDelegate.li(e))), this.serializer = new __PRIVATE_LocalSerializer(t), 
+        this.hi = new __PRIVATE_MemoryBundleCache(this.serializer);
     }
     start() {
         return Promise.resolve();
     }
     shutdown() {
         // No durable state to ensure is closed on shutdown.
-        return this.ui = false, Promise.resolve();
+        return this.ai = false, Promise.resolve();
     }
     get started() {
-        return this.ui;
+        return this.ai;
     }
     setDatabaseDeletedListener() {
         // No op.
@@ -15294,30 +15352,30 @@ class __PRIVATE_MemoryPersistence {
         t;
     }
     getMutationQueue(e, t) {
-        let n = this._i[e.toKey()];
-        return n || (n = new __PRIVATE_MemoryMutationQueue(t, this.referenceDelegate), this._i[e.toKey()] = n), 
+        let n = this.oi[e.toKey()];
+        return n || (n = new __PRIVATE_MemoryMutationQueue(t, this.referenceDelegate), this.oi[e.toKey()] = n), 
         n;
     }
     getGlobalsCache() {
-        return this.ci;
+        return this.ui;
     }
     getTargetCache() {
-        return this.li;
+        return this.ci;
     }
     getRemoteDocumentCache() {
         return this.remoteDocumentCache;
     }
     getBundleCache() {
-        return this.Pi;
+        return this.hi;
     }
     runTransaction(e, t, n) {
         __PRIVATE_logDebug("MemoryPersistence", "Starting transaction:", e);
-        const r = new __PRIVATE_MemoryTransaction(this.ai.next());
-        return this.referenceDelegate.Ti(), n(r).next((e => this.referenceDelegate.Ei(r).next((() => e)))).toPromise().then((e => (r.raiseOnCommittedEvent(), 
+        const r = new __PRIVATE_MemoryTransaction(this._i.next());
+        return this.referenceDelegate.Pi(), n(r).next((e => this.referenceDelegate.Ti(r).next((() => e)))).toPromise().then((e => (r.raiseOnCommittedEvent(), 
         e)));
     }
     Ii(e, t) {
-        return PersistencePromise.or(Object.values(this._i).map((n => () => n.containsKey(e, t))));
+        return PersistencePromise.or(Object.values(this.oi).map((n => () => n.containsKey(e, t))));
     }
 }
 
@@ -15334,89 +15392,89 @@ class __PRIVATE_MemoryEagerDelegate {
     constructor(e) {
         this.persistence = e, 
         /** Tracks all documents that are active in Query views. */
-        this.Ri = new __PRIVATE_ReferenceSet, 
+        this.Ei = new __PRIVATE_ReferenceSet, 
         /** The list of documents that are potentially GCed after each transaction. */
-        this.Ai = null;
+        this.Ri = null;
     }
-    static Vi(e) {
+    static Ai(e) {
         return new __PRIVATE_MemoryEagerDelegate(e);
     }
-    get di() {
-        if (this.Ai) return this.Ai;
+    get Vi() {
+        if (this.Ri) return this.Ri;
         throw fail(60996);
     }
     addReference(e, t, n) {
-        return this.Ri.addReference(n, t), this.di.delete(n.toString()), PersistencePromise.resolve();
+        return this.Ei.addReference(n, t), this.Vi.delete(n.toString()), PersistencePromise.resolve();
     }
     removeReference(e, t, n) {
-        return this.Ri.removeReference(n, t), this.di.add(n.toString()), PersistencePromise.resolve();
+        return this.Ei.removeReference(n, t), this.Vi.add(n.toString()), PersistencePromise.resolve();
     }
     markPotentiallyOrphaned(e, t) {
-        return this.di.add(t.toString()), PersistencePromise.resolve();
+        return this.Vi.add(t.toString()), PersistencePromise.resolve();
     }
     removeTarget(e, t) {
-        this.Ri.Gr(t.targetId).forEach((e => this.di.add(e.toString())));
+        this.Ei.Qr(t.targetId).forEach((e => this.Vi.add(e.toString())));
         const n = this.persistence.getTargetCache();
         return n.getMatchingKeysForTargetId(e, t.targetId).next((e => {
-            e.forEach((e => this.di.add(e.toString())));
+            e.forEach((e => this.Vi.add(e.toString())));
         })).next((() => n.removeTargetData(e, t)));
     }
-    Ti() {
-        this.Ai = new Set;
+    Pi() {
+        this.Ri = new Set;
     }
-    Ei(e) {
+    Ti(e) {
         // Remove newly orphaned documents.
         const t = this.persistence.getRemoteDocumentCache().newChangeBuffer();
-        return PersistencePromise.forEach(this.di, (n => {
+        return PersistencePromise.forEach(this.Vi, (n => {
             const r = DocumentKey.fromPath(n);
-            return this.mi(e, r).next((e => {
+            return this.di(e, r).next((e => {
                 e || t.removeEntry(r, SnapshotVersion.min());
             }));
-        })).next((() => (this.Ai = null, t.apply(e))));
+        })).next((() => (this.Ri = null, t.apply(e))));
     }
     updateLimboDocument(e, t) {
-        return this.mi(e, t).next((e => {
-            e ? this.di.delete(t.toString()) : this.di.add(t.toString());
+        return this.di(e, t).next((e => {
+            e ? this.Vi.delete(t.toString()) : this.Vi.add(t.toString());
         }));
     }
-    hi(e) {
+    li(e) {
         // For eager GC, we don't care about the document size, there are no size thresholds.
         return 0;
     }
-    mi(e, t) {
-        return PersistencePromise.or([ () => PersistencePromise.resolve(this.Ri.containsKey(t)), () => this.persistence.getTargetCache().containsKey(e, t), () => this.persistence.Ii(e, t) ]);
+    di(e, t) {
+        return PersistencePromise.or([ () => PersistencePromise.resolve(this.Ei.containsKey(t)), () => this.persistence.getTargetCache().containsKey(e, t), () => this.persistence.Ii(e, t) ]);
     }
 }
 
 class __PRIVATE_MemoryLruDelegate {
     constructor(e, t) {
-        this.persistence = e, this.fi = new ObjectMap((e => __PRIVATE_encodeResourcePath(e.path)), ((e, t) => e.isEqual(t))), 
+        this.persistence = e, this.mi = new ObjectMap((e => __PRIVATE_encodeResourcePath(e.path)), ((e, t) => e.isEqual(t))), 
         this.garbageCollector = __PRIVATE_newLruGarbageCollector(this, t);
     }
-    static Vi(e, t) {
+    static Ai(e, t) {
         return new __PRIVATE_MemoryLruDelegate(e, t);
     }
     // No-ops, present so memory persistence doesn't have to care which delegate
     // it has.
-    Ti() {}
-    Ei(e) {
+    Pi() {}
+    Ti(e) {
         return PersistencePromise.resolve();
     }
     forEachTarget(e, t) {
         return this.persistence.getTargetCache().forEachTarget(e, t);
     }
-    dr(e) {
-        const t = this.pr(e);
+    Vr(e) {
+        const t = this.gr(e);
         return this.persistence.getTargetCache().getTargetCount(e).next((e => t.next((t => e + t))));
     }
-    pr(e) {
+    gr(e) {
         let t = 0;
-        return this.mr(e, (e => {
+        return this.dr(e, (e => {
             t++;
         })).next((() => t));
     }
-    mr(e, t) {
-        return PersistencePromise.forEach(this.fi, ((n, r) => this.wr(e, n, r).next((e => e ? PersistencePromise.resolve() : t(r)))));
+    dr(e, t) {
+        return PersistencePromise.forEach(this.mi, ((n, r) => this.yr(e, n, r).next((e => e ? PersistencePromise.resolve() : t(r)))));
     }
     removeTargets(e, t, n) {
         return this.persistence.getTargetCache().removeTargets(e, t, n);
@@ -15424,33 +15482,33 @@ class __PRIVATE_MemoryLruDelegate {
     removeOrphanedDocuments(e, t) {
         let n = 0;
         const r = this.persistence.getRemoteDocumentCache(), i = r.newChangeBuffer();
-        return r.ni(e, (r => this.wr(e, r, t).next((e => {
+        return r.ti(e, (r => this.yr(e, r, t).next((e => {
             e || (n++, i.removeEntry(r, SnapshotVersion.min()));
         })))).next((() => i.apply(e))).next((() => n));
     }
     markPotentiallyOrphaned(e, t) {
-        return this.fi.set(t, e.currentSequenceNumber), PersistencePromise.resolve();
+        return this.mi.set(t, e.currentSequenceNumber), PersistencePromise.resolve();
     }
     removeTarget(e, t) {
         const n = t.withSequenceNumber(e.currentSequenceNumber);
         return this.persistence.getTargetCache().updateTargetData(e, n);
     }
     addReference(e, t, n) {
-        return this.fi.set(n, e.currentSequenceNumber), PersistencePromise.resolve();
+        return this.mi.set(n, e.currentSequenceNumber), PersistencePromise.resolve();
     }
     removeReference(e, t, n) {
-        return this.fi.set(n, e.currentSequenceNumber), PersistencePromise.resolve();
+        return this.mi.set(n, e.currentSequenceNumber), PersistencePromise.resolve();
     }
     updateLimboDocument(e, t) {
-        return this.fi.set(t, e.currentSequenceNumber), PersistencePromise.resolve();
+        return this.mi.set(t, e.currentSequenceNumber), PersistencePromise.resolve();
     }
-    hi(e) {
+    li(e) {
         let t = e.key.toString().length;
         return e.isFoundDocument() && (t += __PRIVATE_estimateByteSize(e.data.value)), t;
     }
-    wr(e, t, n) {
+    yr(e, t, n) {
         return PersistencePromise.or([ () => this.persistence.Ii(e, t), () => this.persistence.getTargetCache().containsKey(e, t), () => {
-            const e = this.fi.get(t);
+            const e = this.mi.get(t);
             return PersistencePromise.resolve(void 0 !== e && e > n);
         } ]);
     }
@@ -15482,7 +15540,7 @@ class __PRIVATE_MemoryLruDelegate {
  */
 class __PRIVATE_LocalViewChanges {
     constructor(e, t, n, r) {
-        this.targetId = e, this.fromCache = t, this.Ts = n, this.Es = r;
+        this.targetId = e, this.fromCache = t, this.Ps = n, this.Ts = r;
     }
     static Is(e, t) {
         let n = __PRIVATE_documentKeySet(), r = __PRIVATE_documentKeySet();
@@ -15589,12 +15647,12 @@ class __PRIVATE_LocalViewChanges {
  */
 class __PRIVATE_QueryEngine {
     constructor() {
-        this.Rs = false, this.As = false, 
+        this.Es = false, this.Rs = false, 
         /**
          * SDK only decides whether it should create index when collection size is
          * larger than this.
          */
-        this.Vs = 100, this.ds = 
+        this.As = 100, this.Vs = 
         /**
  * This cost represents the evaluation result of
  * (([index, docKey] + [docKey, docContent]) per document in the result set)
@@ -15609,7 +15667,7 @@ class __PRIVATE_QueryEngine {
         }();
     }
     /** Sets the document view to query against. */    initialize(e, t) {
-        this.fs = e, this.indexManager = t, this.Rs = true;
+        this.ds = e, this.indexManager = t, this.Es = true;
     }
     /** Returns all local documents matching the specified query. */    getDocumentsMatchingQuery(e, t, n, r) {
         // Stores the result from executing the query; using this object is more
@@ -15618,30 +15676,30 @@ class __PRIVATE_QueryEngine {
         const i = {
             result: null
         };
-        return this.gs(e, t).next((e => {
+        return this.fs(e, t).next((e => {
             i.result = e;
         })).next((() => {
-            if (!i.result) return this.ps(e, t, r, n).next((e => {
+            if (!i.result) return this.gs(e, t, r, n).next((e => {
                 i.result = e;
             }));
         })).next((() => {
             if (i.result) return;
             const n = new QueryContext;
-            return this.ys(e, t, n).next((r => {
-                if (i.result = r, this.As) return this.ws(e, t, n, r.size);
+            return this.ps(e, t, n).next((r => {
+                if (i.result = r, this.Rs) return this.ys(e, t, n, r.size);
             }));
         })).next((() => i.result));
     }
-    ws(e, t, n, r) {
-        return n.documentReadCount < this.Vs ? (__PRIVATE_getLogLevel() <= LogLevel.DEBUG && __PRIVATE_logDebug("QueryEngine", "SDK will not create cache indexes for query:", __PRIVATE_stringifyQuery(t), "since it only creates cache indexes for collection contains", "more than or equal to", this.Vs, "documents"), 
+    ys(e, t, n, r) {
+        return n.documentReadCount < this.As ? (__PRIVATE_getLogLevel() <= LogLevel.DEBUG && __PRIVATE_logDebug("QueryEngine", "SDK will not create cache indexes for query:", __PRIVATE_stringifyQuery(t), "since it only creates cache indexes for collection contains", "more than or equal to", this.As, "documents"), 
         PersistencePromise.resolve()) : (__PRIVATE_getLogLevel() <= LogLevel.DEBUG && __PRIVATE_logDebug("QueryEngine", "Query:", __PRIVATE_stringifyQuery(t), "scans", n.documentReadCount, "local documents and returns", r, "documents as results."), 
-        n.documentReadCount > this.ds * r ? (__PRIVATE_getLogLevel() <= LogLevel.DEBUG && __PRIVATE_logDebug("QueryEngine", "The SDK decides to create cache indexes for query:", __PRIVATE_stringifyQuery(t), "as using cache indexes may help improve performance."), 
+        n.documentReadCount > this.Vs * r ? (__PRIVATE_getLogLevel() <= LogLevel.DEBUG && __PRIVATE_logDebug("QueryEngine", "The SDK decides to create cache indexes for query:", __PRIVATE_stringifyQuery(t), "as using cache indexes may help improve performance."), 
         this.indexManager.createTargetIndexes(e, __PRIVATE_queryToTarget(t))) : PersistencePromise.resolve());
     }
     /**
      * Performs an indexed query that evaluates the query based on a collection's
      * persisted index values. Returns `null` if an index is not available.
-     */    gs(e, t) {
+     */    fs(e, t) {
         if (__PRIVATE_queryMatchesAllDocuments(t)) 
         // Queries that match all documents don't benefit from using
         // key-based lookups. It is more efficient to scan all documents in a
@@ -15659,25 +15717,25 @@ class __PRIVATE_QueryEngine {
         t = __PRIVATE_queryWithLimit(t, null, "F" /* LimitType.First */), n = __PRIVATE_queryToTarget(t)), 
         this.indexManager.getDocumentsMatchingTarget(e, n).next((r => {
             const i = __PRIVATE_documentKeySet(...r);
-            return this.fs.getDocuments(e, i).next((r => this.indexManager.getMinOffset(e, n).next((n => {
-                const s = this.Ss(t, r);
-                return this.bs(t, s, i, n.readTime) ? this.gs(e, __PRIVATE_queryWithLimit(t, null, "F" /* LimitType.First */)) : this.Ds(e, s, t, n);
+            return this.ds.getDocuments(e, i).next((r => this.indexManager.getMinOffset(e, n).next((n => {
+                const s = this.ws(t, r);
+                return this.Ss(t, s, i, n.readTime) ? this.fs(e, __PRIVATE_queryWithLimit(t, null, "F" /* LimitType.First */)) : this.bs(e, s, t, n);
             }))));
         })))));
     }
     /**
      * Performs a query based on the target's persisted query mapping. Returns
      * `null` if the mapping is not available or cannot be used.
-     */    ps(e, t, n, r) {
-        return __PRIVATE_queryMatchesAllDocuments(t) || r.isEqual(SnapshotVersion.min()) ? PersistencePromise.resolve(null) : this.fs.getDocuments(e, n).next((i => {
-            const s = this.Ss(t, i);
-            return this.bs(t, s, n, r) ? PersistencePromise.resolve(null) : (__PRIVATE_getLogLevel() <= LogLevel.DEBUG && __PRIVATE_logDebug("QueryEngine", "Re-using previous result from %s to execute query: %s", r.toString(), __PRIVATE_stringifyQuery(t)), 
-            this.Ds(e, s, t, __PRIVATE_newIndexOffsetSuccessorFromReadTime(r, N)).next((e => e)));
+     */    gs(e, t, n, r) {
+        return __PRIVATE_queryMatchesAllDocuments(t) || r.isEqual(SnapshotVersion.min()) ? PersistencePromise.resolve(null) : this.ds.getDocuments(e, n).next((i => {
+            const s = this.ws(t, i);
+            return this.Ss(t, s, n, r) ? PersistencePromise.resolve(null) : (__PRIVATE_getLogLevel() <= LogLevel.DEBUG && __PRIVATE_logDebug("QueryEngine", "Re-using previous result from %s to execute query: %s", r.toString(), __PRIVATE_stringifyQuery(t)), 
+            this.bs(e, s, t, __PRIVATE_newIndexOffsetSuccessorFromReadTime(r, N)).next((e => e)));
         }));
         // Queries that have never seen a snapshot without limbo free documents
         // should also be run as a full collection scan.
         }
-    /** Applies the query filter and sorting to the provided documents.  */    Ss(e, t) {
+    /** Applies the query filter and sorting to the provided documents.  */    ws(e, t) {
         // Sort the documents and re-apply the query filter since previously
         // matching documents do not necessarily still match the query.
         let n = new SortedSet(__PRIVATE_newQueryComparator(e));
@@ -15696,7 +15754,7 @@ class __PRIVATE_QueryEngine {
      * snapshot.
      * @param limboFreeSnapshotVersion - The version of the snapshot when the
      * query was last synchronized.
-     */    bs(e, t, n, r) {
+     */    Ss(e, t, n, r) {
         if (null === e.limit) 
         // Queries without limits do not need to be refilled.
         return false;
@@ -15715,16 +15773,16 @@ class __PRIVATE_QueryEngine {
                 const i = "F" /* LimitType.First */ === e.limitType ? t.last() : t.first();
         return !!i && (i.hasPendingWrites || i.version.compareTo(r) > 0);
     }
-    ys(e, t, n) {
+    ps(e, t, n) {
         return __PRIVATE_getLogLevel() <= LogLevel.DEBUG && __PRIVATE_logDebug("QueryEngine", "Using full collection scan to execute query:", __PRIVATE_stringifyQuery(t)), 
-        this.fs.getDocumentsMatchingQuery(e, t, IndexOffset.min(), n);
+        this.ds.getDocumentsMatchingQuery(e, t, IndexOffset.min(), n);
     }
     /**
      * Combines the results from an indexed execution with the remaining documents
      * that have not yet been indexed.
-     */    Ds(e, t, n, r) {
+     */    bs(e, t, n, r) {
         // Retrieve all results for documents that were updated since the offset.
-        return this.fs.getDocumentsMatchingQuery(e, n, r).next((e => (
+        return this.ds.getDocumentsMatchingQuery(e, n, r).next((e => (
         // Merge with existing results
         t.forEach((t => {
             e = e.insert(t.key, t);
@@ -15747,7 +15805,7 @@ class __PRIVATE_QueryEngine {
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */ const Nt = "LocalStore", Bt = 3e8;
+ */ const Bt = "LocalStore", Lt = 3e8;
 
 /**
  * The maximum time to leave a resume token buffered without writing it out.
@@ -15768,35 +15826,35 @@ class __PRIVATE_LocalStoreImpl {
     constructor(
     /** Manages our in-memory or durable persistence. */
     e, t, n, r) {
-        this.persistence = e, this.Cs = t, this.serializer = r, 
+        this.persistence = e, this.Ds = t, this.serializer = r, 
         /**
          * Maps a targetID to data about its target.
          *
          * PORTING NOTE: We are using an immutable data structure on Web to make re-runs
          * of `applyRemoteEvent()` idempotent.
          */
-        this.vs = new SortedMap(__PRIVATE_primitiveComparator), 
+        this.Cs = new SortedMap(__PRIVATE_primitiveComparator), 
         /** Maps a target to its targetID. */
         // TODO(wuandy): Evaluate if TargetId can be part of Target.
-        this.Fs = new ObjectMap((e => __PRIVATE_canonifyTarget(e)), __PRIVATE_targetEquals), 
+        this.vs = new ObjectMap((e => __PRIVATE_canonifyTarget(e)), __PRIVATE_targetEquals), 
         /**
          * A per collection group index of the last read time processed by
          * `getNewDocumentChanges()`.
          *
          * PORTING NOTE: This is only used for multi-tab synchronization.
          */
-        this.Ms = new Map, this.xs = e.getRemoteDocumentCache(), this.li = e.getTargetCache(), 
-        this.Pi = e.getBundleCache(), this.Os(n);
+        this.Fs = new Map, this.Ms = e.getRemoteDocumentCache(), this.ci = e.getTargetCache(), 
+        this.hi = e.getBundleCache(), this.xs(n);
     }
-    Os(e) {
+    xs(e) {
         // TODO(indexing): Add spec tests that test these components change after a
         // user change
         this.documentOverlayCache = this.persistence.getDocumentOverlayCache(e), this.indexManager = this.persistence.getIndexManager(e), 
-        this.mutationQueue = this.persistence.getMutationQueue(e, this.indexManager), this.localDocuments = new LocalDocumentsView(this.xs, this.mutationQueue, this.documentOverlayCache, this.indexManager), 
-        this.xs.setIndexManager(this.indexManager), this.Cs.initialize(this.localDocuments, this.indexManager);
+        this.mutationQueue = this.persistence.getMutationQueue(e, this.indexManager), this.localDocuments = new LocalDocumentsView(this.Ms, this.mutationQueue, this.documentOverlayCache, this.indexManager), 
+        this.Ms.setIndexManager(this.indexManager), this.Ds.initialize(this.localDocuments, this.indexManager);
     }
     collectGarbage(e) {
-        return this.persistence.runTransaction("Collect garbage", "readwrite-primary", (t => e.collect(t, this.vs)));
+        return this.persistence.runTransaction("Collect garbage", "readwrite-primary", (t => e.collect(t, this.Cs)));
     }
 }
 
@@ -15820,7 +15878,7 @@ async function __PRIVATE_localStoreHandleUserChange(e, t) {
         // Swap out the mutation queue, grabbing the pending mutation batches
         // before and after.
         let r;
-        return n.mutationQueue.getAllMutationBatches(e).next((i => (r = i, n.Os(t), n.mutationQueue.getAllMutationBatches(e)))).next((t => {
+        return n.mutationQueue.getAllMutationBatches(e).next((i => (r = i, n.xs(t), n.mutationQueue.getAllMutationBatches(e)))).next((t => {
             const i = [], s = [];
             // Union the old/new changed keys.
             let o = __PRIVATE_documentKeySet();
@@ -15835,7 +15893,7 @@ async function __PRIVATE_localStoreHandleUserChange(e, t) {
             // Return the set of all (potentially) changed documents and the list
             // of mutation batch IDs that were affected by change.
                         return n.localDocuments.getDocuments(e, o).next((e => ({
-                Ns: e,
+                Os: e,
                 removedBatchIds: i,
                 addedBatchIds: s
             })));
@@ -15861,7 +15919,7 @@ async function __PRIVATE_localStoreHandleUserChange(e, t) {
 function __PRIVATE_localStoreAcknowledgeBatch(e, t) {
     const n = __PRIVATE_debugCast(e);
     return n.persistence.runTransaction("Acknowledge batch", "readwrite-primary", (e => {
-        const r = t.batch.keys(), i = n.xs.newChangeBuffer({
+        const r = t.batch.keys(), i = n.Ms.newChangeBuffer({
             trackRemovals: true
         });
         return function __PRIVATE_applyWriteToRemoteDocuments(e, t, n, r) {
@@ -15903,7 +15961,7 @@ function __PRIVATE_localStoreAcknowledgeBatch(e, t) {
  */
 function __PRIVATE_localStoreGetLastRemoteSnapshotVersion(e) {
     const t = __PRIVATE_debugCast(e);
-    return t.persistence.runTransaction("Get last remote snapshot version", "readonly", (e => t.li.getLastRemoteSnapshotVersion(e)));
+    return t.persistence.runTransaction("Get last remote snapshot version", "readonly", (e => t.ci.getLastRemoteSnapshotVersion(e)));
 }
 
 /**
@@ -15915,13 +15973,13 @@ function __PRIVATE_localStoreGetLastRemoteSnapshotVersion(e) {
  * queue.
  */ function __PRIVATE_localStoreApplyRemoteEventToLocalCache(e, t) {
     const n = __PRIVATE_debugCast(e), r = t.snapshotVersion;
-    let i = n.vs;
+    let i = n.Cs;
     return n.persistence.runTransaction("Apply remote event", "readwrite-primary", (e => {
-        const s = n.xs.newChangeBuffer({
+        const s = n.Ms.newChangeBuffer({
             trackRemovals: true
         });
         // Reset newTargetDataByTargetMap in case this transaction gets re-run.
-                i = n.vs;
+                i = n.Cs;
         const o = [];
         t.targetChanges.forEach(((s, _) => {
             const a = i.get(_);
@@ -15929,7 +15987,7 @@ function __PRIVATE_localStoreGetLastRemoteSnapshotVersion(e) {
             // Only update the remote keys if the target is still active. This
             // ensures that we can persist the updated target data along with
             // the updated assignment.
-                        o.push(n.li.removeMatchingKeys(e, s.removedDocuments, _).next((() => n.li.addMatchingKeys(e, s.addedDocuments, _))));
+                        o.push(n.ci.removeMatchingKeys(e, s.removedDocuments, _).next((() => n.ci.addMatchingKeys(e, s.addedDocuments, _))));
             let u = a.withSequenceNumber(e.currentSequenceNumber);
             null !== t.targetMismatches.get(_) ? u = u.withResumeToken(ByteString.EMPTY_BYTE_STRING, SnapshotVersion.min()).withLastLimboFreeSnapshotVersion(SnapshotVersion.min()) : s.resumeToken.approximateByteSize() > 0 && (u = u.withResumeToken(s.resumeToken, r)), 
             i = i.insert(_, u), 
@@ -15955,7 +16013,7 @@ function __PRIVATE_localStoreGetLastRemoteSnapshotVersion(e) {
                 // we may not get time to do anything interesting while the current tab is
                 // closing.
                                 const r = t.snapshotVersion.toMicroseconds() - e.snapshotVersion.toMicroseconds();
-                if (r >= Bt) return true;
+                if (r >= Lt) return true;
                 // Otherwise if the only thing that has changed about a target is its resume
                 // token it's not worth persisting. Note that the RemoteStore keeps an
                 // in-memory view of the currently active targets which includes the current
@@ -15966,7 +16024,7 @@ function __PRIVATE_localStoreGetLastRemoteSnapshotVersion(e) {
             }
             /**
  * Notifies local store of the changed views to locally pin documents.
- */ (a, u, s) && o.push(n.li.updateTargetData(e, u));
+ */ (a, u, s) && o.push(n.ci.updateTargetData(e, u));
         }));
         let _ = __PRIVATE_mutableDocumentMap(), a = __PRIVATE_documentKeySet();
         // HACK: The only reason we allow a null snapshot version is so that we
@@ -15979,13 +16037,13 @@ function __PRIVATE_localStoreGetLastRemoteSnapshotVersion(e) {
         // Each loop iteration only affects its "own" doc, so it's safe to get all
         // the remote documents in advance in a single call.
         o.push(__PRIVATE_populateDocumentChangeBuffer(e, s, t.documentUpdates).next((e => {
-            _ = e.Bs, a = e.Ls;
+            _ = e.Ns, a = e.Bs;
         }))), !r.isEqual(SnapshotVersion.min())) {
-            const t = n.li.getLastRemoteSnapshotVersion(e).next((t => n.li.setTargetsMetadata(e, e.currentSequenceNumber, r)));
+            const t = n.ci.getLastRemoteSnapshotVersion(e).next((t => n.ci.setTargetsMetadata(e, e.currentSequenceNumber, r)));
             o.push(t);
         }
         return PersistencePromise.waitFor(o).next((() => s.apply(e))).next((() => n.localDocuments.getLocalViewOfDocuments(e, _, a))).next((() => _));
-    })).then((e => (n.vs = i, e)));
+    })).then((e => (n.Cs = i, e)));
 }
 
 /**
@@ -16014,10 +16072,10 @@ function __PRIVATE_localStoreGetLastRemoteSnapshotVersion(e) {
             // events. We remove these documents from cache since we lost
             // access.
             t.removeEntry(n, s.readTime), r = r.insert(n, s)) : !o.isValidDocument() || s.version.compareTo(o.version) > 0 || 0 === s.version.compareTo(o.version) && o.hasPendingWrites ? (t.addEntry(s), 
-            r = r.insert(n, s)) : __PRIVATE_logDebug(Nt, "Ignoring outdated watch update for ", n, ". Current version:", o.version, " Watch version:", s.version);
+            r = r.insert(n, s)) : __PRIVATE_logDebug(Bt, "Ignoring outdated watch update for ", n, ". Current version:", o.version, " Watch version:", s.version);
         })), {
-            Bs: r,
-            Ls: i
+            Ns: r,
+            Bs: i
         };
     }));
 }
@@ -16050,18 +16108,18 @@ function __PRIVATE_localStoreAllocateTarget(e, t) {
     const n = __PRIVATE_debugCast(e);
     return n.persistence.runTransaction("Allocate target", "readwrite", (e => {
         let r;
-        return n.li.getTargetData(e, t).next((i => i ? (
+        return n.ci.getTargetData(e, t).next((i => i ? (
         // This target has been listened to previously, so reuse the
         // previous targetID.
         // TODO(mcg): freshen last accessed date?
-        r = i, PersistencePromise.resolve(r)) : n.li.allocateTargetId(e).next((i => (r = new TargetData(t, i, "TargetPurposeListen" /* TargetPurpose.Listen */ , e.currentSequenceNumber), 
-        n.li.addTargetData(e, r).next((() => r)))))));
+        r = i, PersistencePromise.resolve(r)) : n.ci.allocateTargetId(e).next((i => (r = new TargetData(t, i, "TargetPurposeListen" /* TargetPurpose.Listen */ , e.currentSequenceNumber), 
+        n.ci.addTargetData(e, r).next((() => r)))))));
     })).then((e => {
         // If Multi-Tab is enabled, the existing target data may be newer than
         // the in-memory data
-        const r = n.vs.get(e.targetId);
-        return (null === r || e.snapshotVersion.compareTo(r.snapshotVersion) > 0) && (n.vs = n.vs.insert(e.targetId, e), 
-        n.Fs.set(t, e.targetId)), e;
+        const r = n.Cs.get(e.targetId);
+        return (null === r || e.snapshotVersion.compareTo(r.snapshotVersion) > 0) && (n.Cs = n.Cs.insert(e.targetId, e), 
+        n.vs.set(t, e.targetId)), e;
     }));
 }
 
@@ -16079,7 +16137,7 @@ function __PRIVATE_localStoreAllocateTarget(e, t) {
  */
 // PORTING NOTE: `keepPersistedTargetData` is multi-tab only.
 async function __PRIVATE_localStoreReleaseTarget(e, t, n) {
-    const r = __PRIVATE_debugCast(e), i = r.vs.get(t), s = n ? "readwrite" : "readwrite-primary";
+    const r = __PRIVATE_debugCast(e), i = r.Cs.get(t), s = n ? "readwrite" : "readwrite-primary";
     try {
         n || await r.persistence.runTransaction("Release target", s, (e => r.persistence.referenceDelegate.removeTarget(e, i)));
     } catch (e) {
@@ -16089,9 +16147,9 @@ async function __PRIVATE_localStoreReleaseTarget(e, t, n) {
         // activity. If we lose this write this could cause a very slight
         // difference in the order of target deletion during GC, but we
         // don't define exact LRU semantics so this is acceptable.
-        __PRIVATE_logDebug(Nt, `Failed to update sequence numbers for target ${t}: ${e}`);
+        __PRIVATE_logDebug(Bt, `Failed to update sequence numbers for target ${t}: ${e}`);
     }
-    r.vs = r.vs.remove(t), r.Fs.delete(i.target);
+    r.Cs = r.Cs.remove(t), r.vs.delete(i.target);
 }
 
 /**
@@ -16107,26 +16165,26 @@ async function __PRIVATE_localStoreReleaseTarget(e, t, n) {
     return r.persistence.runTransaction("Execute query", "readwrite", (// Use readwrite instead of readonly so indexes can be created
     // Use readwrite instead of readonly so indexes can be created
     e => function __PRIVATE_localStoreGetTargetData(e, t, n) {
-        const r = __PRIVATE_debugCast(e), i = r.Fs.get(n);
-        return void 0 !== i ? PersistencePromise.resolve(r.vs.get(i)) : r.li.getTargetData(t, n);
+        const r = __PRIVATE_debugCast(e), i = r.vs.get(n);
+        return void 0 !== i ? PersistencePromise.resolve(r.Cs.get(i)) : r.ci.getTargetData(t, n);
     }(r, e, __PRIVATE_queryToTarget(t)).next((t => {
-        if (t) return i = t.lastLimboFreeSnapshotVersion, r.li.getMatchingKeysForTargetId(e, t.targetId).next((e => {
+        if (t) return i = t.lastLimboFreeSnapshotVersion, r.ci.getMatchingKeysForTargetId(e, t.targetId).next((e => {
             s = e;
         }));
-    })).next((() => r.Cs.getDocumentsMatchingQuery(e, t, n ? i : SnapshotVersion.min(), n ? s : __PRIVATE_documentKeySet()))).next((e => (__PRIVATE_setMaxReadTime(r, __PRIVATE_queryCollectionGroup(t), e), 
+    })).next((() => r.Ds.getDocumentsMatchingQuery(e, t, n ? i : SnapshotVersion.min(), n ? s : __PRIVATE_documentKeySet()))).next((e => (__PRIVATE_setMaxReadTime(r, __PRIVATE_queryCollectionGroup(t), e), 
     {
         documents: e,
-        ks: s
+        Ls: s
     })))));
 }
 
 /** Sets the collection group's maximum read time from the given documents. */
 // PORTING NOTE: Multi-Tab only.
 function __PRIVATE_setMaxReadTime(e, t, n) {
-    let r = e.Ms.get(t) || SnapshotVersion.min();
+    let r = e.Fs.get(t) || SnapshotVersion.min();
     n.forEach(((e, t) => {
         t.readTime.compareTo(r) > 0 && (r = t.readTime);
-    })), e.Ms.set(t, r);
+    })), e.Fs.set(t, r);
 }
 
 /**
@@ -16144,16 +16202,16 @@ class __PRIVATE_LocalClientState {
     constructor() {
         this.activeTargetIds = __PRIVATE_targetIdSet();
     }
-    Qs(e) {
+    Ws(e) {
         this.activeTargetIds = this.activeTargetIds.add(e);
     }
-    Gs(e) {
+    Qs(e) {
         this.activeTargetIds = this.activeTargetIds.delete(e);
     }
     /**
      * Converts this entry into a JSON-encoded format we can use for WebStorage.
      * Does not encode `clientId` as it is part of the key in WebStorage.
-     */    Ws() {
+     */    $s() {
         const e = {
             activeTargetIds: this.activeTargetIds.toArray(),
             updateTimeMs: Date.now()
@@ -16164,7 +16222,7 @@ class __PRIVATE_LocalClientState {
 
 class __PRIVATE_MemorySharedClientState {
     constructor() {
-        this.vo = new __PRIVATE_LocalClientState, this.Fo = {}, this.onlineStateHandler = null, 
+        this.Co = new __PRIVATE_LocalClientState, this.vo = {}, this.onlineStateHandler = null, 
         this.sequenceNumberHandler = null;
     }
     addPendingMutation(e) {
@@ -16174,28 +16232,28 @@ class __PRIVATE_MemorySharedClientState {
         // No op.
     }
     addLocalQueryTarget(e, t = true) {
-        return t && this.vo.Qs(e), this.Fo[e] || "not-current";
+        return t && this.Co.Ws(e), this.vo[e] || "not-current";
     }
     updateQueryState(e, t, n) {
-        this.Fo[e] = t;
+        this.vo[e] = t;
     }
     removeLocalQueryTarget(e) {
-        this.vo.Gs(e);
+        this.Co.Qs(e);
     }
     isLocalQueryTarget(e) {
-        return this.vo.activeTargetIds.has(e);
+        return this.Co.activeTargetIds.has(e);
     }
     clearQueryState(e) {
-        delete this.Fo[e];
+        delete this.vo[e];
     }
     getAllActiveQueryTargets() {
-        return this.vo.activeTargetIds;
+        return this.Co.activeTargetIds;
     }
     isActiveQueryTarget(e) {
-        return this.vo.activeTargetIds.has(e);
+        return this.Co.activeTargetIds.has(e);
     }
     start() {
-        return this.vo = new __PRIVATE_LocalClientState, Promise.resolve();
+        return this.Co = new __PRIVATE_LocalClientState, Promise.resolve();
     }
     handleUserChange(e, t, n) {
         // No op.
@@ -16226,7 +16284,7 @@ class __PRIVATE_MemorySharedClientState {
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ class __PRIVATE_NoopConnectivityMonitor {
-    Mo(e) {
+    Fo(e) {
         // No-op.
     }
     shutdown() {
@@ -16251,30 +16309,30 @@ class __PRIVATE_MemorySharedClientState {
  * limitations under the License.
  */
 // References to `window` are guarded by BrowserConnectivityMonitor.isAvailable()
-/* eslint-disable no-restricted-globals */ const Ut$1 = "ConnectivityMonitor";
+/* eslint-disable no-restricted-globals */ const $t = "ConnectivityMonitor";
 
 /**
  * Browser implementation of ConnectivityMonitor.
  */ class __PRIVATE_BrowserConnectivityMonitor {
     constructor() {
-        this.xo = () => this.Oo(), this.No = () => this.Bo(), this.Lo = [], this.ko();
+        this.Mo = () => this.xo(), this.Oo = () => this.No(), this.Bo = [], this.Lo();
     }
-    Mo(e) {
-        this.Lo.push(e);
+    Fo(e) {
+        this.Bo.push(e);
     }
     shutdown() {
-        window.removeEventListener("online", this.xo), window.removeEventListener("offline", this.No);
+        window.removeEventListener("online", this.Mo), window.removeEventListener("offline", this.Oo);
     }
-    ko() {
-        window.addEventListener("online", this.xo), window.addEventListener("offline", this.No);
+    Lo() {
+        window.addEventListener("online", this.Mo), window.addEventListener("offline", this.Oo);
     }
-    Oo() {
-        __PRIVATE_logDebug(Ut$1, "Network connectivity changed: AVAILABLE");
-        for (const e of this.Lo) e(0 /* NetworkStatus.AVAILABLE */);
+    xo() {
+        __PRIVATE_logDebug($t, "Network connectivity changed: AVAILABLE");
+        for (const e of this.Bo) e(0 /* NetworkStatus.AVAILABLE */);
     }
-    Bo() {
-        __PRIVATE_logDebug(Ut$1, "Network connectivity changed: UNAVAILABLE");
-        for (const e of this.Lo) e(1 /* NetworkStatus.UNAVAILABLE */);
+    No() {
+        __PRIVATE_logDebug($t, "Network connectivity changed: UNAVAILABLE");
+        for (const e of this.Bo) e(1 /* NetworkStatus.UNAVAILABLE */);
     }
     // TODO(chenbrian): Consider passing in window either into this component or
     // here for testing via FakeWindow.
@@ -16303,7 +16361,7 @@ class __PRIVATE_MemorySharedClientState {
 /**
  * The value returned from the most recent invocation of
  * `generateUniqueDebugId()`, or null if it has never been invoked.
- */ let $t = null;
+ */ let Wt = null;
 
 /**
  * Generates and returns an initial value for `lastUniqueDebugId`.
@@ -16328,9 +16386,9 @@ class __PRIVATE_MemorySharedClientState {
  * @returns the 10-character generated ID (e.g. "0xa1b2c3d4").
  */
 function __PRIVATE_generateUniqueDebugId() {
-    return null === $t ? $t = function __PRIVATE_generateInitialUniqueDebugId() {
+    return null === Wt ? Wt = function __PRIVATE_generateInitialUniqueDebugId() {
         return 268435456 + Math.round(2147483648 * Math.random());
-    }() : $t++, "0x" + $t.toString(16);
+    }() : Wt++, "0x" + Wt.toString(16);
 }
 
 /**
@@ -16348,7 +16406,7 @@ function __PRIVATE_generateUniqueDebugId() {
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */ const Wt = "RestConnection", Qt = {
+ */ const Qt = "RestConnection", Gt = {
     BatchGetDocuments: "batchGet",
     Commit: "commit",
     RunQuery: "runQuery",
@@ -16366,7 +16424,7 @@ function __PRIVATE_generateUniqueDebugId() {
  * HTTP).
  */
 class __PRIVATE_RestConnection {
-    get qo() {
+    get ko() {
         // Both `invokeRPC()` and `invokeStreamingRPC()` use their `path` arguments to determine
         // where to run the query, and expect the `request` to NOT specify the "path".
         return false;
@@ -16374,32 +16432,32 @@ class __PRIVATE_RestConnection {
     constructor(e) {
         this.databaseInfo = e, this.databaseId = e.databaseId;
         const t = e.ssl ? "https" : "http", n = encodeURIComponent(this.databaseId.projectId), r = encodeURIComponent(this.databaseId.database);
-        this.Ko = t + "://" + e.host, this.Uo = `projects/${n}/databases/${r}`, this.$o = this.databaseId.database === it ? `project_id=${n}` : `project_id=${n}&database_id=${r}`;
+        this.qo = t + "://" + e.host, this.Ko = `projects/${n}/databases/${r}`, this.Uo = this.databaseId.database === it ? `project_id=${n}` : `project_id=${n}&database_id=${r}`;
     }
-    Wo(e, t, n, r, i) {
-        const s = __PRIVATE_generateUniqueDebugId(), o = this.Qo(e, t.toUriEncodedString());
-        __PRIVATE_logDebug(Wt, `Sending RPC '${e}' ${s}:`, o, n);
+    $o(e, t, n, r, i) {
+        const s = __PRIVATE_generateUniqueDebugId(), o = this.Wo(e, t.toUriEncodedString());
+        __PRIVATE_logDebug(Qt, `Sending RPC '${e}' ${s}:`, o, n);
         const _ = {
-            "google-cloud-resource-prefix": this.Uo,
-            "x-goog-request-params": this.$o
+            "google-cloud-resource-prefix": this.Ko,
+            "x-goog-request-params": this.Uo
         };
-        this.Go(_, r, i);
+        this.Qo(_, r, i);
         const {host: a} = new URL(o), c = isCloudWorkstation(a);
-        return this.zo(e, o, _, n, c).then((t => (__PRIVATE_logDebug(Wt, `Received RPC '${e}' ${s}: `, t), 
+        return this.Go(e, o, _, n, c).then((t => (__PRIVATE_logDebug(Qt, `Received RPC '${e}' ${s}: `, t), 
         t)), (t => {
-            throw __PRIVATE_logWarn(Wt, `RPC '${e}' ${s} failed with error: `, t, "url: ", o, "request:", n), 
+            throw __PRIVATE_logWarn(Qt, `RPC '${e}' ${s} failed with error: `, t, "url: ", o, "request:", n), 
             t;
         }));
     }
-    jo(e, t, n, r, i, s) {
+    zo(e, t, n, r, i, s) {
         // The REST API automatically aggregates all of the streamed results, so we
         // can just use the normal invoke() method.
-        return this.Wo(e, t, n, r, i);
+        return this.$o(e, t, n, r, i);
     }
     /**
      * Modifies the headers for a request, adding any authorization token if
      * present and any additional headers for the request.
-     */    Go(e, t, n) {
+     */    Qo(e, t, n) {
         e["X-Goog-Api-Client"] = 
         // SDK_VERSION is updated to different value at runtime depending on the entry point,
         // so we need to get its value when we need it in a function.
@@ -16413,9 +16471,9 @@ class __PRIVATE_RestConnection {
         e["Content-Type"] = "text/plain", this.databaseInfo.appId && (e["X-Firebase-GMPID"] = this.databaseInfo.appId), 
         t && t.headers.forEach(((t, n) => e[n] = t)), n && n.headers.forEach(((t, n) => e[n] = t));
     }
-    Qo(e, t) {
-        const n = Qt[e];
-        let r = `${this.Ko}/v1/${t}:${n}`;
+    Wo(e, t) {
+        const n = Gt[e];
+        let r = `${this.qo}/v1/${t}:${n}`;
         return this.databaseInfo.apiKey && (r = `${r}?key=${encodeURIComponent(this.databaseInfo.apiKey)}`), 
         r;
     }
@@ -16450,37 +16508,37 @@ class __PRIVATE_RestConnection {
  * interface. The stream callbacks are invoked with the callOn... methods.
  */ class __PRIVATE_StreamBridge {
     constructor(e) {
-        this.Jo = e.Jo, this.Ho = e.Ho;
+        this.jo = e.jo, this.Jo = e.Jo;
     }
-    Zo(e) {
-        this.Xo = e;
+    Ho(e) {
+        this.Zo = e;
     }
-    Yo(e) {
-        this.e_ = e;
+    Xo(e) {
+        this.Yo = e;
     }
-    t_(e) {
-        this.n_ = e;
+    e_(e) {
+        this.t_ = e;
     }
     onMessage(e) {
-        this.r_ = e;
+        this.n_ = e;
     }
     close() {
-        this.Ho();
+        this.Jo();
     }
     send(e) {
-        this.Jo(e);
+        this.jo(e);
+    }
+    r_() {
+        this.Zo();
     }
     i_() {
-        this.Xo();
+        this.Yo();
     }
-    s_() {
-        this.e_();
+    s_(e) {
+        this.t_(e);
     }
     o_(e) {
         this.n_(e);
-    }
-    __(e) {
-        this.r_(e);
     }
 }
 
@@ -16499,7 +16557,7 @@ class __PRIVATE_RestConnection {
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */ const Gt = "WebChannelConnection", __PRIVATE_unguardedEventListen = (e, t, n) => {
+ */ const zt = "WebChannelConnection", __PRIVATE_unguardedEventListen = (e, t, n) => {
     // TODO(dimond): closure typing seems broken because WebChannel does
     // not implement goog.events.Listenable
     e.listen(t, (e => {
@@ -16517,21 +16575,21 @@ class __PRIVATE_WebChannelConnection extends __PRIVATE_RestConnection {
     constructor(e) {
         super(e), 
         /** A collection of open WebChannel instances */
-        this.a_ = [], this.forceLongPolling = e.forceLongPolling, this.autoDetectLongPolling = e.autoDetectLongPolling, 
+        this.__ = [], this.forceLongPolling = e.forceLongPolling, this.autoDetectLongPolling = e.autoDetectLongPolling, 
         this.useFetchStreams = e.useFetchStreams, this.longPollingOptions = e.longPollingOptions;
     }
     /**
      * Initialize STAT_EVENT listener once. Subsequent calls are a no-op.
      * getStatEventTarget() returns the same target every time.
-     */    static u_() {
-        if (!__PRIVATE_WebChannelConnection.c_) {
+     */    static a_() {
+        if (!__PRIVATE_WebChannelConnection.u_) {
             const e = getStatEventTarget();
             __PRIVATE_unguardedEventListen(e, Event.STAT_EVENT, (e => {
-                e.stat === Stat.PROXY ? __PRIVATE_logDebug(Gt, "STAT_EVENT: detected buffering proxy") : e.stat === Stat.NOPROXY && __PRIVATE_logDebug(Gt, "STAT_EVENT: detected no buffering proxy");
-            })), __PRIVATE_WebChannelConnection.c_ = true;
+                e.stat === Stat.PROXY ? __PRIVATE_logDebug(zt, "STAT_EVENT: detected buffering proxy") : e.stat === Stat.NOPROXY && __PRIVATE_logDebug(zt, "STAT_EVENT: detected no buffering proxy");
+            })), __PRIVATE_WebChannelConnection.u_ = true;
         }
     }
-    zo(e, t, n, r, i) {
+    Go(e, t, n, r, i) {
         const s = __PRIVATE_generateUniqueDebugId();
         return new Promise(((i, o) => {
             const _ = new XhrIo;
@@ -16540,17 +16598,17 @@ class __PRIVATE_WebChannelConnection extends __PRIVATE_RestConnection {
                     switch (_.getLastErrorCode()) {
                       case ErrorCode.NO_ERROR:
                         const t = _.getResponseJson();
-                        __PRIVATE_logDebug(Gt, `XHR for RPC '${e}' ${s} received:`, JSON.stringify(t)), 
+                        __PRIVATE_logDebug(zt, `XHR for RPC '${e}' ${s} received:`, JSON.stringify(t)), 
                         i(t);
                         break;
 
                       case ErrorCode.TIMEOUT:
-                        __PRIVATE_logDebug(Gt, `RPC '${e}' ${s} timed out`), o(new FirestoreError(D.DEADLINE_EXCEEDED, "Request time out"));
+                        __PRIVATE_logDebug(zt, `RPC '${e}' ${s} timed out`), o(new FirestoreError(D.DEADLINE_EXCEEDED, "Request time out"));
                         break;
 
                       case ErrorCode.HTTP_ERROR:
                         const n = _.getStatus();
-                        if (__PRIVATE_logDebug(Gt, `RPC '${e}' ${s} failed with status:`, n, "response text:", _.getResponseText()), 
+                        if (__PRIVATE_logDebug(zt, `RPC '${e}' ${s} failed with status:`, n, "response text:", _.getResponseText()), 
                         n > 0) {
                             let e = _.getResponseJson();
                             Array.isArray(e) && (e = e[0]);
@@ -16570,22 +16628,22 @@ class __PRIVATE_WebChannelConnection extends __PRIVATE_RestConnection {
 
                       default:
                         fail(9055, {
-                            l_: e,
+                            c_: e,
                             streamId: s,
-                            h_: _.getLastErrorCode(),
-                            P_: _.getLastError()
+                            l_: _.getLastErrorCode(),
+                            h_: _.getLastError()
                         });
                     }
                 } finally {
-                    __PRIVATE_logDebug(Gt, `RPC '${e}' ${s} completed.`);
+                    __PRIVATE_logDebug(zt, `RPC '${e}' ${s} completed.`);
                 }
             }));
             const a = JSON.stringify(r);
-            __PRIVATE_logDebug(Gt, `RPC '${e}' ${s} sending request:`, r), _.send(t, "POST", a, n, 15);
+            __PRIVATE_logDebug(zt, `RPC '${e}' ${s} sending request:`, r), _.send(t, "POST", a, n, 15);
         }));
     }
-    T_(e, t, n) {
-        const r = __PRIVATE_generateUniqueDebugId(), i = [ this.Ko, "/", "google.firestore.v1.Firestore", "/", e, "/channel" ], s = this.createWebChannelTransport(), o = {
+    P_(e, t, n) {
+        const r = __PRIVATE_generateUniqueDebugId(), i = [ this.qo, "/", "google.firestore.v1.Firestore", "/", e, "/channel" ], s = this.createWebChannelTransport(), o = {
             // Required for backend stickiness, routing behavior is based on this
             // parameter.
             httpSessionIdParam: "gsessionid",
@@ -16610,7 +16668,7 @@ class __PRIVATE_WebChannelConnection extends __PRIVATE_RestConnection {
             detectBufferingProxy: this.autoDetectLongPolling
         }, _ = this.longPollingOptions.timeoutSeconds;
         void 0 !== _ && (o.longPollingTimeout = Math.round(1e3 * _)), this.useFetchStreams && (o.useFetchStreams = true), 
-        this.Go(o.initMessageHeaders, t, n), 
+        this.Qo(o.initMessageHeaders, t, n), 
         // Sending the custom headers we just added to request.initMessageHeaders
         // (Authorization, etc.) will trigger the browser to make a CORS preflight
         // request because the XHR will no longer meet the criteria for a "simple"
@@ -16622,9 +16680,9 @@ class __PRIVATE_WebChannelConnection extends __PRIVATE_RestConnection {
         // which is recognized by the webchannel backend.
         o.encodeInitMessageHeaders = true;
         const a = i.join("");
-        __PRIVATE_logDebug(Gt, `Creating RPC '${e}' stream ${r}: ${a}`, o);
+        __PRIVATE_logDebug(zt, `Creating RPC '${e}' stream ${r}: ${a}`, o);
         const u = s.createWebChannel(a, o);
-        this.E_(u);
+        this.T_(u);
         // WebChannel supports sending the first message with the handshake - saving
         // a network round trip. However, it will have to call send in the same
         // JS event loop as open. In order to enforce this, we delay actually
@@ -16635,21 +16693,21 @@ class __PRIVATE_WebChannelConnection extends __PRIVATE_RestConnection {
         // error/close event) to avoid delivering multiple close events or sending
         // on a closed stream
                 const h = new __PRIVATE_StreamBridge({
-            Jo: t => {
-                l ? __PRIVATE_logDebug(Gt, `Not sending because RPC '${e}' stream ${r} is closed:`, t) : (c || (__PRIVATE_logDebug(Gt, `Opening RPC '${e}' stream ${r} transport.`), 
-                u.open(), c = true), __PRIVATE_logDebug(Gt, `RPC '${e}' stream ${r} sending:`, t), 
+            jo: t => {
+                l ? __PRIVATE_logDebug(zt, `Not sending because RPC '${e}' stream ${r} is closed:`, t) : (c || (__PRIVATE_logDebug(zt, `Opening RPC '${e}' stream ${r} transport.`), 
+                u.open(), c = true), __PRIVATE_logDebug(zt, `RPC '${e}' stream ${r} sending:`, t), 
                 u.send(t));
             },
-            Ho: () => u.close()
+            Jo: () => u.close()
         });
         return __PRIVATE_unguardedEventListen(u, WebChannel.EventType.OPEN, (() => {
-            l || (__PRIVATE_logDebug(Gt, `RPC '${e}' stream ${r} transport opened.`), h.i_());
+            l || (__PRIVATE_logDebug(zt, `RPC '${e}' stream ${r} transport opened.`), h.r_());
         })), __PRIVATE_unguardedEventListen(u, WebChannel.EventType.CLOSE, (() => {
-            l || (l = !0, __PRIVATE_logDebug(Gt, `RPC '${e}' stream ${r} transport closed`), 
-            h.o_(), this.I_(u));
+            l || (l = !0, __PRIVATE_logDebug(zt, `RPC '${e}' stream ${r} transport closed`), 
+            h.s_(), this.I_(u));
         })), __PRIVATE_unguardedEventListen(u, WebChannel.EventType.ERROR, (t => {
-            l || (l = !0, __PRIVATE_logWarn(Gt, `RPC '${e}' stream ${r} transport errored. Name:`, t.name, "Message:", t.message), 
-            h.o_(new FirestoreError(D.UNAVAILABLE, "The operation could not be completed")));
+            l || (l = !0, __PRIVATE_logWarn(zt, `RPC '${e}' stream ${r} transport errored. Name:`, t.name, "Message:", t.message), 
+            h.s_(new FirestoreError(D.UNAVAILABLE, "The operation could not be completed")));
         })), __PRIVATE_unguardedEventListen(u, WebChannel.EventType.MESSAGE, (t => {
             if (!l) {
                 const n = t.data[0];
@@ -16661,7 +16719,7 @@ class __PRIVATE_WebChannelConnection extends __PRIVATE_RestConnection {
                 // Use any because msgData.error is not typed.
                 const i = n, s = i?.error || i[0]?.error;
                 if (s) {
-                    __PRIVATE_logDebug(Gt, `RPC '${e}' stream ${r} received error:`, s);
+                    __PRIVATE_logDebug(zt, `RPC '${e}' stream ${r} received error:`, s);
                     // error.status will be a string like 'OK' or 'NOT_FOUND'.
                     const t = s.status;
                     let n = 
@@ -16680,17 +16738,17 @@ class __PRIVATE_WebChannelConnection extends __PRIVATE_RestConnection {
                     "NOT_FOUND" === t && i.includes("database") && i.includes("does not exist") && i.includes(this.databaseId.database) && __PRIVATE_logWarn(`Database '${this.databaseId.database}' not found. Please check your project configuration.`), 
                     void 0 === n && (n = D.INTERNAL, i = "Unknown error status: " + t + " with message " + s.message), 
                     // Mark closed so no further events are propagated
-                    l = !0, h.o_(new FirestoreError(n, i)), u.close();
-                } else __PRIVATE_logDebug(Gt, `RPC '${e}' stream ${r} received:`, n), h.__(n);
+                    l = !0, h.s_(new FirestoreError(n, i)), u.close();
+                } else __PRIVATE_logDebug(zt, `RPC '${e}' stream ${r} received:`, n), h.o_(n);
             }
         })), 
         // Ensure that event listeners are configured for STAT_EVENTs.
-        __PRIVATE_WebChannelConnection.u_(), setTimeout((() => {
+        __PRIVATE_WebChannelConnection.a_(), setTimeout((() => {
             // Technically we could/should wait for the WebChannel opened event,
             // but because we want to send the first message with the WebChannel
             // handshake we pretend the channel opened here (asynchronously), and
             // then delay the actual open until the first message is sent.
-            h.s_();
+            h.i_();
         }), 0), h;
     }
     /**
@@ -16698,25 +16756,25 @@ class __PRIVATE_WebChannelConnection extends __PRIVATE_RestConnection {
      */    terminate() {
         // If the Firestore instance is terminated, we will explicitly
         // close any remaining open WebChannel instances.
-        this.a_.forEach((e => e.close())), this.a_ = [];
+        this.__.forEach((e => e.close())), this.__ = [];
     }
     /**
      * Add a WebChannel instance to the collection of open instances.
      * @param webChannel
-     */    E_(e) {
-        this.a_.push(e);
+     */    T_(e) {
+        this.__.push(e);
     }
     /**
      * Remove a WebChannel instance from the collection of open instances.
      * @param webChannel
      */    I_(e) {
-        this.a_ = this.a_.filter((t => t === e));
+        this.__ = this.__.filter((t => t === e));
     }
     /**
      * Modifies the headers for a request, adding the api key if present,
      * and then calling super.modifyHeadersForRequest
-     */    Go(e, t, n) {
-        super.Go(e, t, n), 
+     */    Qo(e, t, n) {
+        super.Qo(e, t, n), 
         // For web channel streams, we want to send the api key in the headers.
         this.databaseInfo.apiKey && (e["x-goog-api-key"] = this.databaseInfo.apiKey);
     }
@@ -16792,7 +16850,7 @@ function __PRIVATE_newConnection(e) {
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */ __PRIVATE_WebChannelConnection.c_ = false;
+ */ __PRIVATE_WebChannelConnection.u_ = false;
 
 /**
  * A helper for running delayed tasks following an exponential backoff curve
@@ -16828,10 +16886,10 @@ class __PRIVATE_ExponentialBackoff {
      * Note that jitter will still be applied, so the actual delay could be as
      * much as 1.5*maxDelayMs.
      */ , i = 6e4) {
-        this.Ci = e, this.timerId = t, this.R_ = n, this.A_ = r, this.V_ = i, this.d_ = 0, 
-        this.m_ = null, 
+        this.Di = e, this.timerId = t, this.E_ = n, this.R_ = r, this.A_ = i, this.V_ = 0, 
+        this.d_ = null, 
         /** The last backoff attempt, as epoch milliseconds. */
-        this.f_ = Date.now(), this.reset();
+        this.m_ = Date.now(), this.reset();
     }
     /**
      * Resets the backoff delay.
@@ -16840,40 +16898,40 @@ class __PRIVATE_ExponentialBackoff {
      * (i.e. due to an error), initialDelayMs (plus jitter) will be used, and
      * subsequent ones will increase according to the backoffFactor.
      */    reset() {
-        this.d_ = 0;
+        this.V_ = 0;
     }
     /**
      * Resets the backoff delay to the maximum delay (e.g. for use after a
      * RESOURCE_EXHAUSTED error).
-     */    g_() {
-        this.d_ = this.V_;
+     */    f_() {
+        this.V_ = this.A_;
     }
     /**
      * Returns a promise that resolves after currentDelayMs, and increases the
      * delay for any subsequent attempts. If there was a pending backoff operation
      * already, it will be canceled.
-     */    p_(e) {
+     */    g_(e) {
         // Cancel any pending backoff operation.
         this.cancel();
         // First schedule using the current base (which may be 0 and should be
         // honored as such).
-        const t = Math.floor(this.d_ + this.y_()), n = Math.max(0, Date.now() - this.f_), r = Math.max(0, t - n);
+        const t = Math.floor(this.V_ + this.p_()), n = Math.max(0, Date.now() - this.m_), r = Math.max(0, t - n);
         // Guard against lastAttemptTime being in the future due to a clock change.
-                r > 0 && __PRIVATE_logDebug("ExponentialBackoff", `Backing off for ${r} ms (base delay: ${this.d_} ms, delay with jitter: ${t} ms, last attempt: ${n} ms ago)`), 
-        this.m_ = this.Ci.enqueueAfterDelay(this.timerId, r, (() => (this.f_ = Date.now(), 
+                r > 0 && __PRIVATE_logDebug("ExponentialBackoff", `Backing off for ${r} ms (base delay: ${this.V_} ms, delay with jitter: ${t} ms, last attempt: ${n} ms ago)`), 
+        this.d_ = this.Di.enqueueAfterDelay(this.timerId, r, (() => (this.m_ = Date.now(), 
         e()))), 
         // Apply backoff factor to determine next delay and ensure it is within
         // bounds.
-        this.d_ *= this.A_, this.d_ < this.R_ && (this.d_ = this.R_), this.d_ > this.V_ && (this.d_ = this.V_);
+        this.V_ *= this.R_, this.V_ < this.E_ && (this.V_ = this.E_), this.V_ > this.A_ && (this.V_ = this.A_);
     }
-    w_() {
-        null !== this.m_ && (this.m_.skipDelay(), this.m_ = null);
+    y_() {
+        null !== this.d_ && (this.d_.skipDelay(), this.d_ = null);
     }
     cancel() {
-        null !== this.m_ && (this.m_.cancel(), this.m_ = null);
+        null !== this.d_ && (this.d_.cancel(), this.d_ = null);
     }
-    /** Returns a random value in the range [-currentBaseMs/2, currentBaseMs/2] */    y_() {
-        return (Math.random() - .5) * this.d_;
+    /** Returns a random value in the range [-currentBaseMs/2, currentBaseMs/2] */    p_() {
+        return (Math.random() - .5) * this.V_;
     }
 }
 
@@ -16892,7 +16950,7 @@ class __PRIVATE_ExponentialBackoff {
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */ const zt = "PersistentStream";
+ */ const jt = "PersistentStream";
 
 /** The time a stream stays open after it is marked idle. */
 /**
@@ -16929,18 +16987,18 @@ class __PRIVATE_ExponentialBackoff {
  */
 class __PRIVATE_PersistentStream {
     constructor(e, t, n, r, i, s, o, _) {
-        this.Ci = e, this.S_ = n, this.b_ = r, this.connection = i, this.authCredentialsProvider = s, 
+        this.Di = e, this.w_ = n, this.S_ = r, this.connection = i, this.authCredentialsProvider = s, 
         this.appCheckCredentialsProvider = o, this.listener = _, this.state = 0 /* PersistentStreamState.Initial */ , 
         /**
          * A close count that's incremented every time the stream is closed; used by
          * getCloseGuardedDispatcher() to invalidate callbacks that happen after
          * close.
          */
-        this.D_ = 0, this.C_ = null, this.v_ = null, this.stream = null, 
+        this.b_ = 0, this.D_ = null, this.C_ = null, this.stream = null, 
         /**
          * Count of response messages received.
          */
-        this.F_ = 0, this.M_ = new __PRIVATE_ExponentialBackoff(e, t);
+        this.v_ = 0, this.F_ = new __PRIVATE_ExponentialBackoff(e, t);
     }
     /**
      * Returns true if start() has been called and no error has occurred. True
@@ -16948,13 +17006,13 @@ class __PRIVATE_PersistentStream {
      * encompasses respecting backoff, getting auth tokens, and starting the
      * actual RPC). Use isOpen() to determine if the stream is open and ready for
      * outbound requests.
-     */    x_() {
-        return 1 /* PersistentStreamState.Starting */ === this.state || 5 /* PersistentStreamState.Backoff */ === this.state || this.O_();
+     */    M_() {
+        return 1 /* PersistentStreamState.Starting */ === this.state || 5 /* PersistentStreamState.Backoff */ === this.state || this.x_();
     }
     /**
      * Returns true if the underlying RPC is open (the onOpen() listener has been
      * called) and the stream is ready for outbound requests.
-     */    O_() {
+     */    x_() {
         return 2 /* PersistentStreamState.Open */ === this.state || 3 /* PersistentStreamState.Healthy */ === this.state;
     }
     /**
@@ -16964,7 +17022,7 @@ class __PRIVATE_PersistentStream {
      *
      * When start returns, isStarted() will return true.
      */    start() {
-        this.F_ = 0, 4 /* PersistentStreamState.Error */ !== this.state ? this.auth() : this.N_();
+        this.v_ = 0, 4 /* PersistentStreamState.Error */ !== this.state ? this.auth() : this.O_();
     }
     /**
      * Stops the RPC. This call is idempotent and allowed regardless of the
@@ -16972,7 +17030,7 @@ class __PRIVATE_PersistentStream {
      *
      * When stop returns, isStarted() and isOpen() will both return false.
      */    async stop() {
-        this.x_() && await this.close(0 /* PersistentStreamState.Initial */);
+        this.M_() && await this.close(0 /* PersistentStreamState.Initial */);
     }
     /**
      * After an error the stream will usually back off on the next attempt to
@@ -16981,8 +17039,8 @@ class __PRIVATE_PersistentStream {
      *
      * Each error will call the onClose() listener. That function can decide to
      * inhibit backoff if required.
-     */    B_() {
-        this.state = 0 /* PersistentStreamState.Initial */ , this.M_.reset();
+     */    N_() {
+        this.state = 0 /* PersistentStreamState.Initial */ , this.F_.reset();
     }
     /**
      * Marks this stream as idle. If no further actions are performed on the
@@ -16993,25 +17051,25 @@ class __PRIVATE_PersistentStream {
      *
      * Only streams that are in state 'Open' can be marked idle, as all other
      * states imply pending network operations.
-     */    L_() {
+     */    B_() {
         // Starts the idle time if we are in state 'Open' and are not yet already
         // running a timer (in which case the previous idle timeout still applies).
-        this.O_() && null === this.C_ && (this.C_ = this.Ci.enqueueAfterDelay(this.S_, 6e4, (() => this.k_())));
+        this.x_() && null === this.D_ && (this.D_ = this.Di.enqueueAfterDelay(this.w_, 6e4, (() => this.L_())));
     }
-    /** Sends a message to the underlying stream. */    q_(e) {
-        this.K_(), this.stream.send(e);
+    /** Sends a message to the underlying stream. */    k_(e) {
+        this.q_(), this.stream.send(e);
     }
-    /** Called by the idle timer when the stream should close due to inactivity. */    async k_() {
-        if (this.O_()) 
+    /** Called by the idle timer when the stream should close due to inactivity. */    async L_() {
+        if (this.x_()) 
         // When timing out an idle stream there's no reason to force the stream into backoff when
         // it restarts so set the stream state to Initial instead of Error.
         return this.close(0 /* PersistentStreamState.Initial */);
     }
-    /** Marks the stream as active again. */    K_() {
-        this.C_ && (this.C_.cancel(), this.C_ = null);
+    /** Marks the stream as active again. */    q_() {
+        this.D_ && (this.D_.cancel(), this.D_ = null);
     }
-    /** Cancels the health check delayed operation. */    U_() {
-        this.v_ && (this.v_.cancel(), this.v_ = null);
+    /** Cancels the health check delayed operation. */    K_() {
+        this.C_ && (this.C_.cancel(), this.C_ = null);
     }
     /**
      * Closes the stream and cleans up as necessary:
@@ -17027,15 +17085,15 @@ class __PRIVATE_PersistentStream {
      * @param error - the error the connection was closed with.
      */    async close(e, t) {
         // Cancel any outstanding timers (they're guaranteed not to execute).
-        this.K_(), this.U_(), this.M_.cancel(), 
+        this.q_(), this.K_(), this.F_.cancel(), 
         // Invalidates any stream-related callbacks (e.g. from auth or the
         // underlying stream), guaranteeing they won't execute.
-        this.D_++, 4 /* PersistentStreamState.Error */ !== e ? 
+        this.b_++, 4 /* PersistentStreamState.Error */ !== e ? 
         // If this is an intentional close ensure we don't delay our next connection attempt.
-        this.M_.reset() : t && t.code === D.RESOURCE_EXHAUSTED ? (
+        this.F_.reset() : t && t.code === D.RESOURCE_EXHAUSTED ? (
         // Log the error. (Probably either 'quota exceeded' or 'max queue length reached'.)
         __PRIVATE_logError(t.toString()), __PRIVATE_logError("Using maximum backoff delay to prevent overloading the backend."), 
-        this.M_.g_()) : t && t.code === D.UNAUTHENTICATED && 3 /* PersistentStreamState.Healthy */ !== this.state && (
+        this.F_.f_()) : t && t.code === D.UNAUTHENTICATED && 3 /* PersistentStreamState.Healthy */ !== this.state && (
         // "unauthenticated" error means the token was rejected. This should rarely
         // happen since both Auth and AppCheck ensure a sufficient TTL when we
         // request a token. If a user manually resets their system clock this can
@@ -17044,72 +17102,72 @@ class __PRIVATE_PersistentStream {
         // to ensure that we fetch a new token.
         this.authCredentialsProvider.invalidateToken(), this.appCheckCredentialsProvider.invalidateToken()), 
         // Clean up the underlying stream because we are no longer interested in events.
-        null !== this.stream && (this.W_(), this.stream.close(), this.stream = null), 
+        null !== this.stream && (this.U_(), this.stream.close(), this.stream = null), 
         // This state must be assigned before calling onClose() to allow the callback to
         // inhibit backoff or otherwise manipulate the state in its non-started state.
         this.state = e, 
         // Notify the listener that the stream closed.
-        await this.listener.t_(t);
+        await this.listener.e_(t);
     }
     /**
      * Can be overridden to perform additional cleanup before the stream is closed.
      * Calling super.tearDown() is not required.
-     */    W_() {}
+     */    U_() {}
     auth() {
         this.state = 1 /* PersistentStreamState.Starting */;
-        const e = this.Q_(this.D_), t = this.D_;
+        const e = this.W_(this.b_), t = this.b_;
         // TODO(mikelehen): Just use dispatchIfNotClosed, but see TODO below.
                 Promise.all([ this.authCredentialsProvider.getToken(), this.appCheckCredentialsProvider.getToken() ]).then((([e, n]) => {
             // Stream can be stopped while waiting for authentication.
             // TODO(mikelehen): We really should just use dispatchIfNotClosed
             // and let this dispatch onto the queue, but that opened a spec test can
             // of worms that I don't want to deal with in this PR.
-            this.D_ === t && 
+            this.b_ === t && 
             // Normally we'd have to schedule the callback on the AsyncQueue.
             // However, the following calls are safe to be called outside the
             // AsyncQueue since they don't chain asynchronous calls
-            this.G_(e, n);
+            this.Q_(e, n);
         }), (t => {
             e((() => {
                 const e = new FirestoreError(D.UNKNOWN, "Fetching auth token failed: " + t.message);
-                return this.z_(e);
+                return this.G_(e);
             }));
         }));
     }
-    G_(e, t) {
-        const n = this.Q_(this.D_);
-        this.stream = this.j_(e, t), this.stream.Zo((() => {
-            n((() => this.listener.Zo()));
-        })), this.stream.Yo((() => {
-            n((() => (this.state = 2 /* PersistentStreamState.Open */ , this.v_ = this.Ci.enqueueAfterDelay(this.b_, 1e4, (() => (this.O_() && (this.state = 3 /* PersistentStreamState.Healthy */), 
-            Promise.resolve()))), this.listener.Yo())));
-        })), this.stream.t_((e => {
-            n((() => this.z_(e)));
+    Q_(e, t) {
+        const n = this.W_(this.b_);
+        this.stream = this.z_(e, t), this.stream.Ho((() => {
+            n((() => this.listener.Ho()));
+        })), this.stream.Xo((() => {
+            n((() => (this.state = 2 /* PersistentStreamState.Open */ , this.C_ = this.Di.enqueueAfterDelay(this.S_, 1e4, (() => (this.x_() && (this.state = 3 /* PersistentStreamState.Healthy */), 
+            Promise.resolve()))), this.listener.Xo())));
+        })), this.stream.e_((e => {
+            n((() => this.G_(e)));
         })), this.stream.onMessage((e => {
-            n((() => 1 == ++this.F_ ? this.J_(e) : this.onNext(e)));
+            n((() => 1 == ++this.v_ ? this.j_(e) : this.onNext(e)));
         }));
     }
-    N_() {
-        this.state = 5 /* PersistentStreamState.Backoff */ , this.M_.p_((async () => {
+    O_() {
+        this.state = 5 /* PersistentStreamState.Backoff */ , this.F_.g_((async () => {
             this.state = 0 /* PersistentStreamState.Initial */ , this.start();
         }));
     }
     // Visible for tests
-    z_(e) {
+    G_(e) {
         // In theory the stream could close cleanly, however, in our current model
         // we never expect this to happen because if we stop a stream ourselves,
         // this callback will never be called. To prevent cases where we retry
         // without a backoff accidentally, we set the stream to error in all cases.
-        return __PRIVATE_logDebug(zt, `close with error: ${e}`), this.stream = null, this.close(4 /* PersistentStreamState.Error */ , e);
+        return __PRIVATE_logDebug(jt, `close with error: ${e}`), this.stream = null, this.close(4 /* PersistentStreamState.Error */ , e);
     }
     /**
      * Returns a "dispatcher" function that dispatches operations onto the
      * AsyncQueue but only runs them if closeCount remains unchanged. This allows
      * us to turn auth / stream callbacks into no-ops if the stream is closed /
      * re-opened, etc.
-     */    Q_(e) {
+     */    W_(e) {
         return t => {
-            this.Ci.enqueueAndForget((() => this.D_ === e ? t() : (__PRIVATE_logDebug(zt, "stream callback skipped by getCloseGuardedDispatcher."), 
+            this.Di.enqueueAndForget((() => this.b_ === e ? t() : (__PRIVATE_logDebug(jt, "stream callback skipped by getCloseGuardedDispatcher."), 
             Promise.resolve())));
         };
     }
@@ -17126,15 +17184,15 @@ class __PRIVATE_PersistentStream {
         super(e, "listen_stream_connection_backoff" /* TimerId.ListenStreamConnectionBackoff */ , "listen_stream_idle" /* TimerId.ListenStreamIdle */ , "health_check_timeout" /* TimerId.HealthCheckTimeout */ , t, n, r, s), 
         this.serializer = i;
     }
-    j_(e, t) {
-        return this.connection.T_("Listen", e, t);
+    z_(e, t) {
+        return this.connection.P_("Listen", e, t);
     }
-    J_(e) {
+    j_(e) {
         return this.onNext(e);
     }
     onNext(e) {
         // A successful response means the stream is healthy
-        this.M_.reset();
+        this.F_.reset();
         const t = __PRIVATE_fromWatchChange(this.serializer, e), n = function __PRIVATE_versionFromListenResponse(e) {
             // We have only reached a consistent snapshot for the entire stream if there
             // is a read_time set and it applies to all targets (i.e. the list of
@@ -17143,14 +17201,14 @@ class __PRIVATE_PersistentStream {
             const t = e.targetChange;
             return t.targetIds && t.targetIds.length ? SnapshotVersion.min() : t.readTime ? __PRIVATE_fromVersion(t.readTime) : SnapshotVersion.min();
         }(e);
-        return this.listener.H_(t, n);
+        return this.listener.J_(t, n);
     }
     /**
      * Registers interest in the results of the given target. If the target
      * includes a resumeToken it will be included in the request. Results that
      * affect the target will be streamed back as WatchChange messages that
      * reference the targetId.
-     */    Z_(e) {
+     */    H_(e) {
         const t = {};
         t.database = __PRIVATE_getEncodedDatabaseId(this.serializer), t.addTarget = function __PRIVATE_toTarget(e, t) {
             let n;
@@ -17158,7 +17216,7 @@ class __PRIVATE_PersistentStream {
             if (n = __PRIVATE_targetIsDocumentTarget(r) ? {
                 documents: __PRIVATE_toDocumentsTarget(e, r)
             } : {
-                query: __PRIVATE_toQueryTarget(e, r).ft
+                query: __PRIVATE_toQueryTarget(e, r).dt
             }, n.targetId = t.targetId, t.resumeToken.approximateByteSize() > 0) {
                 n.resumeToken = __PRIVATE_toBytes(e, t.resumeToken);
                 const r = __PRIVATE_toInt32Proto(e, t.expectedCount);
@@ -17174,15 +17232,15 @@ class __PRIVATE_PersistentStream {
             return n;
         }(this.serializer, e);
         const n = __PRIVATE_toListenRequestLabels(this.serializer, e);
-        n && (t.labels = n), this.q_(t);
+        n && (t.labels = n), this.k_(t);
     }
     /**
      * Unregisters interest in the results of the target associated with the
      * given targetId.
-     */    X_(e) {
+     */    Z_(e) {
         const t = {};
         t.database = __PRIVATE_getEncodedDatabaseId(this.serializer), t.removeTarget = e, 
-        this.q_(t);
+        this.k_(t);
     }
 }
 
@@ -17210,24 +17268,24 @@ class __PRIVATE_PersistentStream {
     /**
      * Tracks whether or not a handshake has been successfully exchanged and
      * the stream is ready to accept mutations.
-     */    get Y_() {
-        return this.F_ > 0;
+     */    get X_() {
+        return this.v_ > 0;
     }
     // Override of PersistentStream.start
     start() {
         this.lastStreamToken = void 0, super.start();
     }
-    W_() {
-        this.Y_ && this.ea([]);
+    U_() {
+        this.X_ && this.Y_([]);
     }
-    j_(e, t) {
-        return this.connection.T_("Write", e, t);
+    z_(e, t) {
+        return this.connection.P_("Write", e, t);
     }
-    J_(e) {
+    j_(e) {
         // Always capture the last stream token.
         return __PRIVATE_hardAssert(!!e.streamToken, 31322), this.lastStreamToken = e.streamToken, 
         // The first response is always the handshake response
-        __PRIVATE_hardAssert(!e.writeResults || 0 === e.writeResults.length, 55816), this.listener.ta();
+        __PRIVATE_hardAssert(!e.writeResults || 0 === e.writeResults.length, 55816), this.listener.ea();
     }
     onNext(e) {
         // Always capture the last stream token.
@@ -17235,26 +17293,26 @@ class __PRIVATE_PersistentStream {
         // A successful first write response means the stream is healthy,
         // Note, that we could consider a successful handshake healthy, however,
         // the write itself might be causing an error we want to back off from.
-        this.M_.reset();
+        this.F_.reset();
         const t = __PRIVATE_fromWriteResults(e.writeResults, e.commitTime), n = __PRIVATE_fromVersion(e.commitTime);
-        return this.listener.na(n, t);
+        return this.listener.ta(n, t);
     }
     /**
      * Sends an initial streamToken to the server, performing the handshake
      * required to make the StreamingWrite RPC work. Subsequent
      * calls should wait until onHandshakeComplete was called.
-     */    ra() {
+     */    na() {
         // TODO(dimond): Support stream resumption. We intentionally do not set the
         // stream token on the handshake, ignoring any stream token we might have.
         const e = {};
-        e.database = __PRIVATE_getEncodedDatabaseId(this.serializer), this.q_(e);
+        e.database = __PRIVATE_getEncodedDatabaseId(this.serializer), this.k_(e);
     }
-    /** Sends a group of mutations to the Firestore backend to apply. */    ea(e) {
+    /** Sends a group of mutations to the Firestore backend to apply. */    Y_(e) {
         const t = {
             streamToken: this.lastStreamToken,
             writes: e.map((e => toMutation(this.serializer, e)))
         };
-        this.q_(t);
+        this.k_(t);
     }
 }
 
@@ -17286,25 +17344,25 @@ class __PRIVATE_PersistentStream {
  */ class __PRIVATE_DatastoreImpl extends Datastore {
     constructor(e, t, n, r) {
         super(), this.authCredentials = e, this.appCheckCredentials = t, this.connection = n, 
-        this.serializer = r, this.ia = false;
+        this.serializer = r, this.ra = false;
     }
-    sa() {
-        if (this.ia) throw new FirestoreError(D.FAILED_PRECONDITION, "The client has already been terminated.");
+    ia() {
+        if (this.ra) throw new FirestoreError(D.FAILED_PRECONDITION, "The client has already been terminated.");
     }
-    /** Invokes the provided RPC with auth and AppCheck tokens. */    Wo(e, t, n, r) {
-        return this.sa(), Promise.all([ this.authCredentials.getToken(), this.appCheckCredentials.getToken() ]).then((([i, s]) => this.connection.Wo(e, __PRIVATE_toResourcePath(t, n), r, i, s))).catch((e => {
+    /** Invokes the provided RPC with auth and AppCheck tokens. */    $o(e, t, n, r) {
+        return this.ia(), Promise.all([ this.authCredentials.getToken(), this.appCheckCredentials.getToken() ]).then((([i, s]) => this.connection.$o(e, __PRIVATE_toResourcePath(t, n), r, i, s))).catch((e => {
             throw "FirebaseError" === e.name ? (e.code === D.UNAUTHENTICATED && (this.authCredentials.invalidateToken(), 
             this.appCheckCredentials.invalidateToken()), e) : new FirestoreError(D.UNKNOWN, e.toString());
         }));
     }
-    /** Invokes the provided RPC with streamed results with auth and AppCheck tokens. */    jo(e, t, n, r, i) {
-        return this.sa(), Promise.all([ this.authCredentials.getToken(), this.appCheckCredentials.getToken() ]).then((([s, o]) => this.connection.jo(e, __PRIVATE_toResourcePath(t, n), r, s, o, i))).catch((e => {
+    /** Invokes the provided RPC with streamed results with auth and AppCheck tokens. */    zo(e, t, n, r, i) {
+        return this.ia(), Promise.all([ this.authCredentials.getToken(), this.appCheckCredentials.getToken() ]).then((([s, o]) => this.connection.zo(e, __PRIVATE_toResourcePath(t, n), r, s, o, i))).catch((e => {
             throw "FirebaseError" === e.name ? (e.code === D.UNAUTHENTICATED && (this.authCredentials.invalidateToken(), 
             this.appCheckCredentials.invalidateToken()), e) : new FirestoreError(D.UNKNOWN, e.toString());
         }));
     }
     terminate() {
-        this.ia = true, this.connection.terminate();
+        this.ra = true, this.connection.terminate();
     }
 }
 
@@ -17335,19 +17393,19 @@ class __PRIVATE_OnlineStateTracker {
          * maximum defined by MAX_WATCH_STREAM_FAILURES, we'll set the OnlineState to
          * Offline.
          */
-        this.oa = 0, 
+        this.sa = 0, 
         /**
          * A timer that elapses after ONLINE_STATE_TIMEOUT_MS, at which point we
          * transition from OnlineState.Unknown to OnlineState.Offline without waiting
          * for the stream to actually fail (MAX_WATCH_STREAM_FAILURES times).
          */
-        this._a = null, 
+        this.oa = null, 
         /**
          * Whether the client should log a warning message if it fails to connect to
          * the backend (initially true, cleared after a successful stream, or if we've
          * logged the message already).
          */
-        this.aa = true;
+        this._a = true;
     }
     /**
      * Called by RemoteStore when a watch stream is started (including on each
@@ -17355,9 +17413,9 @@ class __PRIVATE_OnlineStateTracker {
      *
      * If this is the first attempt, it sets the OnlineState to Unknown and starts
      * the onlineStateTimer.
-     */    ua() {
-        0 === this.oa && (this.ca("Unknown" /* OnlineState.Unknown */), this._a = this.asyncQueue.enqueueAfterDelay("online_state_timeout" /* TimerId.OnlineStateTimeout */ , 1e4, (() => (this._a = null, 
-        this.la("Backend didn't respond within 10 seconds."), this.ca("Offline" /* OnlineState.Offline */), 
+     */    aa() {
+        0 === this.sa && (this.ua("Unknown" /* OnlineState.Unknown */), this.oa = this.asyncQueue.enqueueAfterDelay("online_state_timeout" /* TimerId.OnlineStateTimeout */ , 1e4, (() => (this.oa = null, 
+        this.ca("Backend didn't respond within 10 seconds."), this.ua("Offline" /* OnlineState.Offline */), 
         Promise.resolve()))));
     }
     /**
@@ -17365,10 +17423,10 @@ class __PRIVATE_OnlineStateTracker {
      * failure. The first failure moves us to the 'Unknown' state. We then may
      * allow multiple failures (based on MAX_WATCH_STREAM_FAILURES) before we
      * actually transition to the 'Offline' state.
-     */    ha(e) {
-        "Online" /* OnlineState.Online */ === this.state ? this.ca("Unknown" /* OnlineState.Unknown */) : (this.oa++, 
-        this.oa >= 1 && (this.Pa(), this.la(`Connection failed 1 times. Most recent error: ${e.toString()}`), 
-        this.ca("Offline" /* OnlineState.Offline */)));
+     */    la(e) {
+        "Online" /* OnlineState.Online */ === this.state ? this.ua("Unknown" /* OnlineState.Unknown */) : (this.sa++, 
+        this.sa >= 1 && (this.ha(), this.ca(`Connection failed 1 times. Most recent error: ${e.toString()}`), 
+        this.ua("Offline" /* OnlineState.Offline */)));
     }
     /**
      * Explicitly sets the OnlineState to the specified state.
@@ -17377,20 +17435,20 @@ class __PRIVATE_OnlineStateTracker {
      * Offline heuristics, so must not be used in place of
      * handleWatchStreamStart() and handleWatchStreamFailure().
      */    set(e) {
-        this.Pa(), this.oa = 0, "Online" /* OnlineState.Online */ === e && (
+        this.ha(), this.sa = 0, "Online" /* OnlineState.Online */ === e && (
         // We've connected to watch at least once. Don't warn the developer
         // about being offline going forward.
-        this.aa = false), this.ca(e);
+        this._a = false), this.ua(e);
     }
-    ca(e) {
+    ua(e) {
         e !== this.state && (this.state = e, this.onlineStateHandler(e));
     }
-    la(e) {
+    ca(e) {
         const t = `Could not reach Cloud Firestore backend. ${e}\nThis typically indicates that your device does not have a healthy Internet connection at the moment. The client will operate in offline mode until it is able to successfully connect to the backend.`;
-        this.aa ? (__PRIVATE_logError(t), this.aa = false) : __PRIVATE_logDebug("OnlineStateTracker", t);
+        this._a ? (__PRIVATE_logError(t), this._a = false) : __PRIVATE_logDebug("OnlineStateTracker", t);
     }
-    Pa() {
-        null !== this._a && (this._a.cancel(), this._a = null);
+    ha() {
+        null !== this.oa && (this.oa.cancel(), this.oa = null);
     }
 }
 
@@ -17409,7 +17467,7 @@ class __PRIVATE_OnlineStateTracker {
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */ const jt = "RemoteStore";
+ */ const Ht$1 = "RemoteStore";
 
 // TODO(b/35853402): Negotiate this with the stream.
 class __PRIVATE_RemoteStoreImpl {
@@ -17438,7 +17496,7 @@ class __PRIVATE_RemoteStoreImpl {
          * purely based on order, and so we can just shift() writes from the front of
          * the writePipeline as we receive responses.
          */
-        this.Ta = [], 
+        this.Pa = [], 
         /**
          * A mapping of watched targets that the client cares about tracking and the
          * user has explicitly called a 'listen' for this target.
@@ -17448,12 +17506,13 @@ class __PRIVATE_RemoteStoreImpl {
          * to the server. The targets removed with unlistens are removed eagerly
          * without waiting for confirmation from the listen stream.
          */
-        this.Ea = new Map, 
+        this.Ta = new Map, this.Ia = new Map, this.Ea = new Map, this.Ra = new __PRIVATE_TargetIdGenerator(1e3), 
+        this.Aa = new __PRIVATE_TargetIdGenerator(1001), 
         /**
          * A set of reasons for why the RemoteStore may be offline. If empty, the
          * RemoteStore may start its network connections.
          */
-        this.Ia = new Set, 
+        this.Va = new Set, 
         /**
          * Event handlers that get called when the network is disabled or enabled.
          *
@@ -17461,68 +17520,120 @@ class __PRIVATE_RemoteStoreImpl {
          * underlying streams (to support tree-shakeable streams). On Android and iOS,
          * the streams are created during construction of RemoteStore.
          */
-        this.Ra = [], this.Aa = i, this.Aa.Mo((e => {
+        this.da = [], this.ma = i, this.ma.Fo((e => {
             n.enqueueAndForget((async () => {
                 // Porting Note: Unlike iOS, `restartNetwork()` is called even when the
                 // network becomes unreachable as we don't have any other way to tear
                 // down our streams.
-                __PRIVATE_canUseNetwork(this) && (__PRIVATE_logDebug(jt, "Restarting streams for network reachability change."), 
+                __PRIVATE_canUseNetwork(this) && (__PRIVATE_logDebug(Ht$1, "Restarting streams for network reachability change."), 
                 await async function __PRIVATE_restartNetwork(e) {
                     const t = __PRIVATE_debugCast(e);
-                    t.Ia.add(4 /* OfflineCause.ConnectivityChange */), await __PRIVATE_disableNetworkInternal(t), 
-                    t.Va.set("Unknown" /* OnlineState.Unknown */), t.Ia.delete(4 /* OfflineCause.ConnectivityChange */), 
+                    t.Va.add(4 /* OfflineCause.ConnectivityChange */), await __PRIVATE_disableNetworkInternal(t), 
+                    t.fa.set("Unknown" /* OnlineState.Unknown */), t.Va.delete(4 /* OfflineCause.ConnectivityChange */), 
                     await __PRIVATE_enableNetworkInternal(t);
                 }(this));
             }));
-        })), this.Va = new __PRIVATE_OnlineStateTracker(n, r);
+        })), this.fa = new __PRIVATE_OnlineStateTracker(n, r);
     }
 }
 
 async function __PRIVATE_enableNetworkInternal(e) {
-    if (__PRIVATE_canUseNetwork(e)) for (const t of e.Ra) await t(/* enabled= */ true);
+    if (__PRIVATE_canUseNetwork(e)) for (const t of e.da) await t(/* enabled= */ true);
 }
 
 /**
  * Temporarily disables the network. The network can be re-enabled using
  * enableNetwork().
  */ async function __PRIVATE_disableNetworkInternal(e) {
-    for (const t of e.Ra) await t(/* enabled= */ false);
+    for (const t of e.da) await t(/* enabled= */ false);
 }
 
+/**
+ * Returns the remote target ID currently mapped to this
+ * sdkTargetId. Or returns `0` if the SDK target ID
+ * is not currently mapped.
+ * @param remoteStoreImpl
+ * @param sdkTargetId
+ */
+function __PRIVATE_getRemoteTargetId(e, t) {
+    return e.Ia.get(t) || void 0;
+}
+
+/**
+ * Generates a new remote target ID that is acceptable
+ * to map to the given SDK target ID.
+ * @param remoteStoreImpl
+ * @param sdkTargetId
+ */
 /**
  * Starts new listen for the given target. Uses resume token if provided. It
  * is a no-op if the target of given `TargetData` is already being listened to.
  */
 function __PRIVATE_remoteStoreListen(e, t) {
-    const n = __PRIVATE_debugCast(e);
-    n.Ea.has(t.targetId) || (
+    const n = __PRIVATE_debugCast(e), r = __PRIVATE_getRemoteTargetId(n, t.targetId);
+    // Get any remote target ID currently mapped to the targetData
+        // If remote store is still listening for this remote target ID, this is a no-op.
+    if (void 0 !== r && n.Ta.has(r)) return;
+    // Generate and map a new remote ID to the SDK target ID
+        const i = 
+    /**
+ * Generate a new remote target ID for the given SDK target ID.
+ * Re-map the given SDK to the new remote ID.
+ * Delete any mapping of the old remote ID, if given.
+ * @param remoteStoreImpl
+ * @param sdkTargetId
+ * @return The new remote ID.
+ */
+    function __PRIVATE_allocateRemoteTargetId(e, t) {
+        const n = __PRIVATE_getRemoteTargetId(e, t);
+        void 0 !== n && 
+        // If there was an existing remote target ID mapped to that SDK target ID, forget about the old remote ID.
+        e.Ea.delete(n);
+        // Generate a new unique remote target ID
+                const r = function __PRIVATE_generateRemoteTargetId(e, t) {
+            // If the given sdkTargetId is odd, map it to an odd (sync engine) target ID
+            return t % 2 != 0 ? e.Aa.next() : e.Ra.next();
+        }(e, t);
+        return e.Ia.set(t, r), e.Ea.set(r, t), r;
+    }(n, t.targetId);
+    __PRIVATE_logDebug(Ht$1, "remoteStoreListen mapping SDK target ID to remote", t.targetId, i);
+    // Create a new TargetData for remote use, which uses
+    // the remote TargetID.
+    const s = new TargetData(t.target, i, t.purpose, t.sequenceNumber, t.snapshotVersion, t.lastLimboFreeSnapshotVersion, t.resumeToken);
     // Mark this as something the client is currently listening for.
-    n.Ea.set(t.targetId, t), __PRIVATE_shouldStartWatchStream(n) ? 
+        n.Ta.set(i, s), __PRIVATE_shouldStartWatchStream(n) ? 
     // The listen will be sent in onWatchStreamOpen
-    __PRIVATE_startWatchStream(n) : __PRIVATE_ensureWatchStream(n).O_() && __PRIVATE_sendWatchRequest(n, t));
+    __PRIVATE_startWatchStream(n) : __PRIVATE_ensureWatchStream(n).x_() && __PRIVATE_sendWatchRequest(n, s);
 }
 
 /**
  * Removes the listen from server. It is a no-op if the given target id is
  * not being listened to.
  */ function __PRIVATE_remoteStoreUnlisten(e, t) {
-    const n = __PRIVATE_debugCast(e), r = __PRIVATE_ensureWatchStream(n);
-    n.Ea.delete(t), r.O_() && __PRIVATE_sendUnwatchRequest(n, t), 0 === n.Ea.size && (r.O_() ? r.L_() : __PRIVATE_canUseNetwork(n) && 
+    const n = __PRIVATE_debugCast(e), r = __PRIVATE_ensureWatchStream(n), i = __PRIVATE_getRemoteTargetId(n, t);
+    __PRIVATE_logDebug(Ht$1, "remoteStoreUnlisten removing mapping of SDK target ID to remote", t, i), 
+    n.Ta.delete(i), n.Ia.delete(t), n.Ea.delete(i), r.x_() && __PRIVATE_sendUnwatchRequest(n, i), 
+    0 === n.Ta.size && (r.x_() ? r.B_() : __PRIVATE_canUseNetwork(n) && 
     // Revert to OnlineState.Unknown if the watch stream is not open and we
     // have no listeners, since without any listens to send we cannot
     // confirm if the stream is healthy and upgrade to OnlineState.Online.
-    n.Va.set("Unknown" /* OnlineState.Unknown */));
+    n.fa.set("Unknown" /* OnlineState.Unknown */));
 }
 
 /**
  * We need to increment the expected number of pending responses we're due
  * from watch so we wait for the ack to process any messages from this target.
  */ function __PRIVATE_sendWatchRequest(e, t) {
-    if (e.da.$e(t.targetId), t.resumeToken.approximateByteSize() > 0 || t.snapshotVersion.compareTo(SnapshotVersion.min()) > 0) {
-        const n = e.remoteSyncer.getRemoteKeysForTarget(t.targetId).size;
-        t = t.withExpectedCount(n);
+    if (e.ga.$e(t.targetId), t.resumeToken.approximateByteSize() > 0 || t.snapshotVersion.compareTo(SnapshotVersion.min()) > 0) {
+        const n = e.Ea.get(t.targetId);
+        if (void 0 === n) 
+        // There's already a new remoteStoreListen request for the original
+        // target, so ignore this.
+        return void __PRIVATE_logDebug(Ht$1, "SDK target ID not found for remote ID: " + t.targetId);
+        const r = e.remoteSyncer.getRemoteKeysForTarget(n).size;
+        t = t.withExpectedCount(r);
     }
-    __PRIVATE_ensureWatchStream(e).Z_(t);
+    __PRIVATE_ensureWatchStream(e).H_(t);
 }
 
 /**
@@ -17530,39 +17641,45 @@ function __PRIVATE_remoteStoreListen(e, t) {
  * from watch so we wait for the removal on the server before we process any
  * messages from this target.
  */ function __PRIVATE_sendUnwatchRequest(e, t) {
-    e.da.$e(t), __PRIVATE_ensureWatchStream(e).X_(t);
+    e.ga.$e(t), __PRIVATE_ensureWatchStream(e).Z_(t);
 }
 
 function __PRIVATE_startWatchStream(e) {
-    e.da = new __PRIVATE_WatchChangeAggregator({
-        getRemoteKeysForTarget: t => e.remoteSyncer.getRemoteKeysForTarget(t),
-        At: t => e.Ea.get(t) || null,
-        ht: () => e.datastore.serializer.databaseId
-    }), __PRIVATE_ensureWatchStream(e).start(), e.Va.ua();
+    e.ga = new __PRIVATE_WatchChangeAggregator({
+        getRemoteKeysForTarget: t => {
+            // Remote syncer uses SDK target IDs, so we need to map the remote
+            // id to external id
+            const n = e.Ea.get(t);
+            // If no sdkTargetId is mapped, return an empty key set
+                        return void 0 !== n ? e.remoteSyncer.getRemoteKeysForTarget(n) : __PRIVATE_documentKeySet();
+        },
+        Rt: t => e.Ta.get(t) || null,
+        lt: () => e.datastore.serializer.databaseId
+    }), __PRIVATE_ensureWatchStream(e).start(), e.fa.aa();
 }
 
 /**
  * Returns whether the watch stream should be started because it's necessary
  * and has not yet been started.
  */ function __PRIVATE_shouldStartWatchStream(e) {
-    return __PRIVATE_canUseNetwork(e) && !__PRIVATE_ensureWatchStream(e).x_() && e.Ea.size > 0;
+    return __PRIVATE_canUseNetwork(e) && !__PRIVATE_ensureWatchStream(e).M_() && e.Ta.size > 0;
 }
 
 function __PRIVATE_canUseNetwork(e) {
-    return 0 === __PRIVATE_debugCast(e).Ia.size;
+    return 0 === __PRIVATE_debugCast(e).Va.size;
 }
 
 function __PRIVATE_cleanUpWatchStreamState(e) {
-    e.da = void 0;
+    e.ga = void 0;
 }
 
 async function __PRIVATE_onWatchStreamConnected(e) {
     // Mark the client as online since we got a "connected" notification.
-    e.Va.set("Online" /* OnlineState.Online */);
+    e.fa.set("Online" /* OnlineState.Online */);
 }
 
 async function __PRIVATE_onWatchStreamOpen(e) {
-    e.Ea.forEach(((t, n) => {
+    e.Ta.forEach(((t, n) => {
         __PRIVATE_sendWatchRequest(e, t);
     }));
 }
@@ -17570,26 +17687,34 @@ async function __PRIVATE_onWatchStreamOpen(e) {
 async function __PRIVATE_onWatchStreamClose(e, t) {
     __PRIVATE_cleanUpWatchStreamState(e), 
     // If we still need the watch stream, retry the connection.
-    __PRIVATE_shouldStartWatchStream(e) ? (e.Va.ha(t), __PRIVATE_startWatchStream(e)) : 
+    __PRIVATE_shouldStartWatchStream(e) ? (e.fa.la(t), __PRIVATE_startWatchStream(e)) : 
     // No need to restart watch stream because there are no active targets.
     // The online state is set to unknown because there is no active attempt
     // at establishing a connection
-    e.Va.set("Unknown" /* OnlineState.Unknown */);
+    e.fa.set("Unknown" /* OnlineState.Unknown */);
 }
 
 async function __PRIVATE_onWatchStreamChange(e, t, n) {
     if (
     // Mark the client as online since we got a message from the server
-    e.Va.set("Online" /* OnlineState.Online */), t instanceof __PRIVATE_WatchTargetChange && 2 /* WatchTargetChangeState.Removed */ === t.state && t.cause) 
+    e.fa.set("Online" /* OnlineState.Online */), t instanceof __PRIVATE_WatchTargetChange && 2 /* WatchTargetChangeState.Removed */ === t.state && t.cause) 
     // There was an error on a target, don't wait for a consistent snapshot
     // to raise events
     try {
         /** Handles an error on a target */
         await async function __PRIVATE_handleTargetError(e, t) {
             const n = t.cause;
-            for (const r of t.targetIds) 
-            // A watched target might have been removed already.
-            e.Ea.has(r) && (await e.remoteSyncer.rejectListen(r, n), e.Ea.delete(r), e.da.removeTarget(r));
+            for (const r of t.targetIds) {
+                // A watched target might have been removed already.
+                if (e.Ta.has(r)) {
+                    const t = e.Ea.get(r);
+                    // If we still track the remote target ID, then notify the remoteSyncer
+                    // of the error and then free up the remote ID.
+                                        void 0 !== t && (await e.remoteSyncer.rejectListen(t, n), e.Ia.delete(t), 
+                    e.Ea.delete(r)), e.Ta.delete(r);
+                }
+                e.ga.removeTarget(r);
+            }
         }
         /**
  * Attempts to fill our write pipeline with writes from the LocalStore.
@@ -17600,9 +17725,9 @@ async function __PRIVATE_onWatchStreamChange(e, t, n) {
  * Starts the write stream if necessary.
  */ (e, t);
     } catch (n) {
-        __PRIVATE_logDebug(jt, "Failed to remove targets %s: %s ", t.targetIds.join(","), n), 
+        __PRIVATE_logDebug(Ht$1, "Failed to remove targets %s: %s ", t.targetIds.join(","), n), 
         await __PRIVATE_disableNetworkUntilRecovery(e, n);
-    } else if (t instanceof __PRIVATE_DocumentWatchChange ? e.da.Xe(t) : t instanceof __PRIVATE_ExistenceFilterChange ? e.da.st(t) : e.da.tt(t), 
+    } else if (t instanceof __PRIVATE_DocumentWatchChange ? e.ga.Xe(t) : t instanceof __PRIVATE_ExistenceFilterChange ? e.ga.it(t) : e.ga.tt(t), 
     !n.isEqual(SnapshotVersion.min())) try {
         const t = await __PRIVATE_localStoreGetLastRemoteSnapshotVersion(e.localStore);
         n.compareTo(t) >= 0 && 
@@ -17614,26 +17739,27 @@ async function __PRIVATE_onWatchStreamChange(e, t, n) {
  * SyncEngine.
  */
         await function __PRIVATE_raiseWatchSnapshot(e, t) {
-            const n = e.da.Tt(t);
+            const n = e.ga.Pt(t);
             // Update in-memory resume tokens. LocalStore will update the
             // persistent view of these when applying the completed RemoteEvent.
-                        return n.targetChanges.forEach(((n, r) => {
+                        n.targetChanges.forEach(((n, r) => {
                 if (n.resumeToken.approximateByteSize() > 0) {
-                    const i = e.Ea.get(r);
+                    const i = e.Ta.get(r);
                     // A watched target might have been removed already.
-                                        i && e.Ea.set(r, i.withResumeToken(n.resumeToken, t));
+                                        i && e.Ta.set(r, i.withResumeToken(n.resumeToken, t));
                 }
             })), 
             // Re-establish listens for the targets that have been invalidated by
             // existence filter mismatches.
+            // TODO ideally this would use a new remote target ID
             n.targetMismatches.forEach(((t, n) => {
-                const r = e.Ea.get(t);
+                const r = e.Ta.get(t);
                 if (!r) 
                 // A watched target might have been removed already.
                 return;
                 // Clear the resume token for the target, since we're in a known mismatch
                 // state.
-                                e.Ea.set(t, r.withResumeToken(ByteString.EMPTY_BYTE_STRING, r.snapshotVersion)), 
+                                e.Ta.set(t, r.withResumeToken(ByteString.EMPTY_BYTE_STRING, r.snapshotVersion)), 
                 // Cause a hard reset by unwatching and rewatching immediately, but
                 // deliberately don't send a resume token so that we get a full update.
                 __PRIVATE_sendUnwatchRequest(e, t);
@@ -17643,10 +17769,40 @@ async function __PRIVATE_onWatchStreamChange(e, t, n) {
                 // listens of this target (that might happen e.g. on reconnect).
                 const i = new TargetData(r.target, t, n, r.sequenceNumber);
                 __PRIVATE_sendWatchRequest(e, i);
-            })), e.remoteSyncer.applyRemoteEvent(n);
+            }));
+            const r = 
+            /**
+ * Convert a RemoteEvent with remote IDs to a RemoteEvent with
+ * SDK IDs and dropped updates
+ * for any targets we no longer track.
+ *
+ * @param remoteStoreImpl
+ * @param remoteEvent
+ * @return a new RemoteEvent with SDK IDs and dropped updates
+ * for any targets we no longer track.
+ */
+            function __PRIVATE_toSdkRemoteEvent(e, t) {
+                // Map TargetChanges to TargetChanges with SDK ID
+                const n = new Map;
+                t.targetChanges.forEach(((t, r) => {
+                    // If we no longer track the remote ID, then drop the TargetChange
+                    // otherwise propagate the TargetChange
+                    const i = e.Ea.get(r);
+                    void 0 !== i && n.set(i, t);
+                }));
+                // Map target mismatches to target mismatches with SDK ID
+                let r = new SortedMap(__PRIVATE_primitiveComparator);
+                return t.targetMismatches.forEach(((t, n) => {
+                    // If we no longer track the remote ID, then drop the target mismatch
+                    // otherwise propagate the target mismatch
+                    const i = e.Ea.get(t);
+                    void 0 !== i && (r = r.insert(i, n));
+                })), new RemoteEvent(t.snapshotVersion, n, r, t.documentUpdates, t.resolvedLimboDocuments);
+            }(e, n);
+            return e.remoteSyncer.applyRemoteEvent(r);
         }(e, n);
     } catch (t) {
-        __PRIVATE_logDebug(jt, "Failed to raise snapshot:", t), await __PRIVATE_disableNetworkUntilRecovery(e, t);
+        __PRIVATE_logDebug(Ht$1, "Failed to raise snapshot:", t), await __PRIVATE_disableNetworkUntilRecovery(e, t);
     }
 }
 
@@ -17660,9 +17816,9 @@ async function __PRIVATE_onWatchStreamChange(e, t, n) {
  * any retry attempt.
  */ async function __PRIVATE_disableNetworkUntilRecovery(e, t, n) {
     if (!__PRIVATE_isIndexedDbTransactionError(t)) throw t;
-    e.Ia.add(1 /* OfflineCause.IndexedDbFailed */), 
+    e.Va.add(1 /* OfflineCause.IndexedDbFailed */), 
     // Disable network and raise offline snapshots
-    await __PRIVATE_disableNetworkInternal(e), e.Va.set("Offline" /* OnlineState.Offline */), 
+    await __PRIVATE_disableNetworkInternal(e), e.fa.set("Offline" /* OnlineState.Offline */), 
     n || (
     // Use a simple read operation to determine if IndexedDB recovered.
     // Ideally, we would expose a health check directly on SimpleDb, but
@@ -17670,7 +17826,7 @@ async function __PRIVATE_onWatchStreamChange(e, t, n) {
     n = () => __PRIVATE_localStoreGetLastRemoteSnapshotVersion(e.localStore)), 
     // Probe IndexedDB periodically and re-enable network
     e.asyncQueue.enqueueRetryable((async () => {
-        __PRIVATE_logDebug(jt, "Retrying IndexedDB access"), await n(), e.Ia.delete(1 /* OfflineCause.IndexedDbFailed */), 
+        __PRIVATE_logDebug(Ht$1, "Retrying IndexedDB access"), await n(), e.Va.delete(1 /* OfflineCause.IndexedDbFailed */), 
         await __PRIVATE_enableNetworkInternal(e);
     }));
 }
@@ -17684,11 +17840,11 @@ async function __PRIVATE_onWatchStreamChange(e, t, n) {
 
 async function __PRIVATE_fillWritePipeline(e) {
     const t = __PRIVATE_debugCast(e), n = __PRIVATE_ensureWriteStream(t);
-    let r = t.Ta.length > 0 ? t.Ta[t.Ta.length - 1].batchId : q;
+    let r = t.Pa.length > 0 ? t.Pa[t.Pa.length - 1].batchId : q;
     for (;__PRIVATE_canAddToWritePipeline(t); ) try {
         const e = await __PRIVATE_localStoreGetNextMutationBatch(t.localStore, r);
         if (null === e) {
-            0 === t.Ta.length && n.L_();
+            0 === t.Pa.length && n.B_();
             break;
         }
         r = e.batchId, __PRIVATE_addToWritePipeline(t, e);
@@ -17702,20 +17858,20 @@ async function __PRIVATE_fillWritePipeline(e) {
  * Returns true if we can add to the write pipeline (i.e. the network is
  * enabled and the write pipeline is not full).
  */ function __PRIVATE_canAddToWritePipeline(e) {
-    return __PRIVATE_canUseNetwork(e) && e.Ta.length < 10;
+    return __PRIVATE_canUseNetwork(e) && e.Pa.length < 10;
 }
 
 /**
  * Queues additional writes to be sent to the write stream, sending them
  * immediately if the write stream is established.
  */ function __PRIVATE_addToWritePipeline(e, t) {
-    e.Ta.push(t);
+    e.Pa.push(t);
     const n = __PRIVATE_ensureWriteStream(e);
-    n.O_() && n.Y_ && n.ea(t.mutations);
+    n.x_() && n.X_ && n.Y_(t.mutations);
 }
 
 function __PRIVATE_shouldStartWriteStream(e) {
-    return __PRIVATE_canUseNetwork(e) && !__PRIVATE_ensureWriteStream(e).x_() && e.Ta.length > 0;
+    return __PRIVATE_canUseNetwork(e) && !__PRIVATE_ensureWriteStream(e).M_() && e.Pa.length > 0;
 }
 
 function __PRIVATE_startWriteStream(e) {
@@ -17723,17 +17879,17 @@ function __PRIVATE_startWriteStream(e) {
 }
 
 async function __PRIVATE_onWriteStreamOpen(e) {
-    __PRIVATE_ensureWriteStream(e).ra();
+    __PRIVATE_ensureWriteStream(e).na();
 }
 
 async function __PRIVATE_onWriteHandshakeComplete(e) {
     const t = __PRIVATE_ensureWriteStream(e);
     // Send the write pipeline now that the stream is established.
-        for (const n of e.Ta) t.ea(n.mutations);
+        for (const n of e.Pa) t.Y_(n.mutations);
 }
 
 async function __PRIVATE_onMutationResult(e, t, n) {
-    const r = e.Ta.shift(), i = MutationBatchResult.from(r, t, n);
+    const r = e.Pa.shift(), i = MutationBatchResult.from(r, t, n);
     await __PRIVATE_executeWithRecovery(e, (() => e.remoteSyncer.applySuccessfulWrite(i))), 
     // It's possible that with the completion of this mutation another
     // slot has freed up.
@@ -17743,7 +17899,7 @@ async function __PRIVATE_onMutationResult(e, t, n) {
 async function __PRIVATE_onWriteStreamClose(e, t) {
     // If the write stream closed after the write handshake completes, a write
     // operation failed and we fail the pending operation.
-    t && __PRIVATE_ensureWriteStream(e).Y_ && 
+    t && __PRIVATE_ensureWriteStream(e).X_ && 
     // This error affects the actual write.
     await async function __PRIVATE_handleWriteError(e, t) {
         // Only handle permanent errors here. If it's transient, just let the retry
@@ -17753,11 +17909,11 @@ async function __PRIVATE_onWriteStreamClose(e, t) {
         }(t.code)) {
             // This was a permanent error, the request itself was the problem
             // so it's not going to succeed if we resend it.
-            const n = e.Ta.shift();
+            const n = e.Pa.shift();
             // In this case it's also unlikely that the server itself is melting
             // down -- this was just a bad request so inhibit backoff on the next
             // restart.
-                        __PRIVATE_ensureWriteStream(e).B_(), await __PRIVATE_executeWithRecovery(e, (() => e.remoteSyncer.rejectFailedWrite(n.batchId, t))), 
+                        __PRIVATE_ensureWriteStream(e).N_(), await __PRIVATE_executeWithRecovery(e, (() => e.remoteSyncer.rejectFailedWrite(n.batchId, t))), 
             // It's possible that with the completion of this mutation
             // another slot has freed up.
             await __PRIVATE_fillWritePipeline(e);
@@ -17770,24 +17926,24 @@ async function __PRIVATE_onWriteStreamClose(e, t) {
 
 async function __PRIVATE_remoteStoreHandleCredentialChange(e, t) {
     const n = __PRIVATE_debugCast(e);
-    n.asyncQueue.verifyOperationInProgress(), __PRIVATE_logDebug(jt, "RemoteStore received new credentials");
+    n.asyncQueue.verifyOperationInProgress(), __PRIVATE_logDebug(Ht$1, "RemoteStore received new credentials");
     const r = __PRIVATE_canUseNetwork(n);
     // Tear down and re-create our network streams. This will ensure we get a
     // fresh auth token for the new user and re-fill the write pipeline with
     // new mutations from the LocalStore (since mutations are per-user).
-        n.Ia.add(3 /* OfflineCause.CredentialChange */), await __PRIVATE_disableNetworkInternal(n), 
+        n.Va.add(3 /* OfflineCause.CredentialChange */), await __PRIVATE_disableNetworkInternal(n), 
     r && 
     // Don't set the network status to Unknown if we are offline.
-    n.Va.set("Unknown" /* OnlineState.Unknown */), await n.remoteSyncer.handleCredentialChange(t), 
-    n.Ia.delete(3 /* OfflineCause.CredentialChange */), await __PRIVATE_enableNetworkInternal(n);
+    n.fa.set("Unknown" /* OnlineState.Unknown */), await n.remoteSyncer.handleCredentialChange(t), 
+    n.Va.delete(3 /* OfflineCause.CredentialChange */), await __PRIVATE_enableNetworkInternal(n);
 }
 
 /**
  * Toggles the network state when the client gains or loses its primary lease.
  */ async function __PRIVATE_remoteStoreApplyPrimaryState(e, t) {
     const n = __PRIVATE_debugCast(e);
-    t ? (n.Ia.delete(2 /* OfflineCause.IsSecondary */), await __PRIVATE_enableNetworkInternal(n)) : t || (n.Ia.add(2 /* OfflineCause.IsSecondary */), 
-    await __PRIVATE_disableNetworkInternal(n), n.Va.set("Unknown" /* OnlineState.Unknown */));
+    t ? (n.Va.delete(2 /* OfflineCause.IsSecondary */), await __PRIVATE_enableNetworkInternal(n)) : t || (n.Va.add(2 /* OfflineCause.IsSecondary */), 
+    await __PRIVATE_disableNetworkInternal(n), n.fa.set("Unknown" /* OnlineState.Unknown */));
 }
 
 /**
@@ -17798,11 +17954,11 @@ async function __PRIVATE_remoteStoreHandleCredentialChange(e, t) {
  * PORTING NOTE: On iOS and Android, the WatchStream gets registered on startup.
  * This is not done on Web to allow it to be tree-shaken.
  */ function __PRIVATE_ensureWatchStream(e) {
-    return e.ma || (
+    return e.pa || (
     // Create stream (but note that it is not started yet).
-    e.ma = function __PRIVATE_newPersistentWatchStream(e, t, n) {
+    e.pa = function __PRIVATE_newPersistentWatchStream(e, t, n) {
         const r = __PRIVATE_debugCast(e);
-        return r.sa(), new __PRIVATE_PersistentListenStream(t, r.connection, r.authCredentials, r.appCheckCredentials, r.serializer, n);
+        return r.ia(), new __PRIVATE_PersistentListenStream(t, r.connection, r.authCredentials, r.appCheckCredentials, r.serializer, n);
     }
     /**
  * @license
@@ -17820,14 +17976,14 @@ async function __PRIVATE_remoteStoreHandleCredentialChange(e, t) {
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ (e.datastore, e.asyncQueue, {
-        Zo: __PRIVATE_onWatchStreamConnected.bind(null, e),
-        Yo: __PRIVATE_onWatchStreamOpen.bind(null, e),
-        t_: __PRIVATE_onWatchStreamClose.bind(null, e),
-        H_: __PRIVATE_onWatchStreamChange.bind(null, e)
-    }), e.Ra.push((async t => {
-        t ? (e.ma.B_(), __PRIVATE_shouldStartWatchStream(e) ? __PRIVATE_startWatchStream(e) : e.Va.set("Unknown" /* OnlineState.Unknown */)) : (await e.ma.stop(), 
+        Ho: __PRIVATE_onWatchStreamConnected.bind(null, e),
+        Xo: __PRIVATE_onWatchStreamOpen.bind(null, e),
+        e_: __PRIVATE_onWatchStreamClose.bind(null, e),
+        J_: __PRIVATE_onWatchStreamChange.bind(null, e)
+    }), e.da.push((async t => {
+        t ? (e.pa.N_(), __PRIVATE_shouldStartWatchStream(e) ? __PRIVATE_startWatchStream(e) : e.fa.set("Unknown" /* OnlineState.Unknown */)) : (await e.pa.stop(), 
         __PRIVATE_cleanUpWatchStreamState(e));
-    }))), e.ma;
+    }))), e.pa;
 }
 
 /**
@@ -17838,23 +17994,23 @@ async function __PRIVATE_remoteStoreHandleCredentialChange(e, t) {
  * PORTING NOTE: On iOS and Android, the WriteStream gets registered on startup.
  * This is not done on Web to allow it to be tree-shaken.
  */ function __PRIVATE_ensureWriteStream(e) {
-    return e.fa || (
+    return e.ya || (
     // Create stream (but note that it is not started yet).
-    e.fa = function __PRIVATE_newPersistentWriteStream(e, t, n) {
+    e.ya = function __PRIVATE_newPersistentWriteStream(e, t, n) {
         const r = __PRIVATE_debugCast(e);
-        return r.sa(), new __PRIVATE_PersistentWriteStream(t, r.connection, r.authCredentials, r.appCheckCredentials, r.serializer, n);
+        return r.ia(), new __PRIVATE_PersistentWriteStream(t, r.connection, r.authCredentials, r.appCheckCredentials, r.serializer, n);
     }(e.datastore, e.asyncQueue, {
-        Zo: () => Promise.resolve(),
-        Yo: __PRIVATE_onWriteStreamOpen.bind(null, e),
-        t_: __PRIVATE_onWriteStreamClose.bind(null, e),
-        ta: __PRIVATE_onWriteHandshakeComplete.bind(null, e),
-        na: __PRIVATE_onMutationResult.bind(null, e)
-    }), e.Ra.push((async t => {
-        t ? (e.fa.B_(), 
+        Ho: () => Promise.resolve(),
+        Xo: __PRIVATE_onWriteStreamOpen.bind(null, e),
+        e_: __PRIVATE_onWriteStreamClose.bind(null, e),
+        ea: __PRIVATE_onWriteHandshakeComplete.bind(null, e),
+        ta: __PRIVATE_onMutationResult.bind(null, e)
+    }), e.da.push((async t => {
+        t ? (e.ya.N_(), 
         // This will start the write stream if necessary.
-        await __PRIVATE_fillWritePipeline(e)) : (await e.fa.stop(), e.Ta.length > 0 && (__PRIVATE_logDebug(jt, `Stopping write stream with ${e.Ta.length} pending writes`), 
-        e.Ta = []));
-    }))), e.fa;
+        await __PRIVATE_fillWritePipeline(e)) : (await e.ya.stop(), e.Pa.length > 0 && (__PRIVATE_logDebug(Ht$1, `Stopping write stream with ${e.Pa.length} pending writes`), 
+        e.Pa = []));
+    }))), e.ya;
 }
 
 /**
@@ -18067,25 +18223,25 @@ class DelayedOperation {
  * duplicate events for the same doc.
  */ class __PRIVATE_DocumentChangeSet {
     constructor() {
-        this.ga = new SortedMap(DocumentKey.comparator);
+        this.wa = new SortedMap(DocumentKey.comparator);
     }
     track(e) {
-        const t = e.doc.key, n = this.ga.get(t);
+        const t = e.doc.key, n = this.wa.get(t);
         n ? 
         // Merge the new change with the existing change.
-        0 /* ChangeType.Added */ !== e.type && 3 /* ChangeType.Metadata */ === n.type ? this.ga = this.ga.insert(t, e) : 3 /* ChangeType.Metadata */ === e.type && 1 /* ChangeType.Removed */ !== n.type ? this.ga = this.ga.insert(t, {
+        0 /* ChangeType.Added */ !== e.type && 3 /* ChangeType.Metadata */ === n.type ? this.wa = this.wa.insert(t, e) : 3 /* ChangeType.Metadata */ === e.type && 1 /* ChangeType.Removed */ !== n.type ? this.wa = this.wa.insert(t, {
             type: n.type,
             doc: e.doc
-        }) : 2 /* ChangeType.Modified */ === e.type && 2 /* ChangeType.Modified */ === n.type ? this.ga = this.ga.insert(t, {
+        }) : 2 /* ChangeType.Modified */ === e.type && 2 /* ChangeType.Modified */ === n.type ? this.wa = this.wa.insert(t, {
             type: 2 /* ChangeType.Modified */ ,
             doc: e.doc
-        }) : 2 /* ChangeType.Modified */ === e.type && 0 /* ChangeType.Added */ === n.type ? this.ga = this.ga.insert(t, {
+        }) : 2 /* ChangeType.Modified */ === e.type && 0 /* ChangeType.Added */ === n.type ? this.wa = this.wa.insert(t, {
             type: 0 /* ChangeType.Added */ ,
             doc: e.doc
-        }) : 1 /* ChangeType.Removed */ === e.type && 0 /* ChangeType.Added */ === n.type ? this.ga = this.ga.remove(t) : 1 /* ChangeType.Removed */ === e.type && 2 /* ChangeType.Modified */ === n.type ? this.ga = this.ga.insert(t, {
+        }) : 1 /* ChangeType.Removed */ === e.type && 0 /* ChangeType.Added */ === n.type ? this.wa = this.wa.remove(t) : 1 /* ChangeType.Removed */ === e.type && 2 /* ChangeType.Modified */ === n.type ? this.wa = this.wa.insert(t, {
             type: 1 /* ChangeType.Removed */ ,
             doc: n.doc
-        }) : 0 /* ChangeType.Added */ === e.type && 1 /* ChangeType.Removed */ === n.type ? this.ga = this.ga.insert(t, {
+        }) : 0 /* ChangeType.Added */ === e.type && 1 /* ChangeType.Removed */ === n.type ? this.wa = this.wa.insert(t, {
             type: 2 /* ChangeType.Modified */ ,
             doc: e.doc
         }) : 
@@ -18097,13 +18253,13 @@ class DelayedOperation {
         // Metadata->Added
         // Removed->Metadata
         fail(63341, {
-            Vt: e,
-            pa: n
-        }) : this.ga = this.ga.insert(t, e);
+            At: e,
+            Sa: n
+        }) : this.wa = this.wa.insert(t, e);
     }
-    ya() {
+    ba() {
         const e = [];
-        return this.ga.inorderTraversal(((t, n) => {
+        return this.wa.inorderTraversal(((t, n) => {
             e.push(n);
         })), e;
     }
@@ -18159,25 +18315,25 @@ class ViewSnapshot {
  * tracked by EventManager.
  */ class __PRIVATE_QueryListenersInfo {
     constructor() {
-        this.wa = void 0, this.Sa = [];
+        this.Da = void 0, this.Ca = [];
     }
     // Helper methods that checks if the query has listeners that listening to remote store
-    ba() {
-        return this.Sa.some((e => e.Da()));
+    va() {
+        return this.Ca.some((e => e.Fa()));
     }
 }
 
 class __PRIVATE_EventManagerImpl {
     constructor() {
         this.queries = __PRIVATE_newQueriesObjectMap(), this.onlineState = "Unknown" /* OnlineState.Unknown */ , 
-        this.Ca = new Set;
+        this.Ma = new Set;
     }
     terminate() {
         !function __PRIVATE_errorAllTargets(e, t) {
             const n = __PRIVATE_debugCast(e), r = n.queries;
             // Prevent further access by clearing ObjectMap.
             n.queries = __PRIVATE_newQueriesObjectMap(), r.forEach(((e, n) => {
-                for (const e of n.Sa) e.onError(t);
+                for (const e of n.Ca) e.onError(t);
             }));
         }
         // Call all global snapshot listeners that have been set.
@@ -18194,19 +18350,19 @@ async function __PRIVATE_eventManagerListen(e, t) {
     let r = 3 /* ListenerSetupAction.NoActionRequired */;
     const i = t.query;
     let s = n.queries.get(i);
-    s ? !s.ba() && t.Da() && (
+    s ? !s.va() && t.Fa() && (
     // Query has been listening to local cache, and tries to add a new listener sourced from watch.
     r = 2 /* ListenerSetupAction.RequireWatchConnectionOnly */) : (s = new __PRIVATE_QueryListenersInfo, 
-    r = t.Da() ? 0 /* ListenerSetupAction.InitializeLocalListenAndRequireWatchConnection */ : 1 /* ListenerSetupAction.InitializeLocalListenOnly */);
+    r = t.Fa() ? 0 /* ListenerSetupAction.InitializeLocalListenAndRequireWatchConnection */ : 1 /* ListenerSetupAction.InitializeLocalListenOnly */);
     try {
         switch (r) {
           case 0 /* ListenerSetupAction.InitializeLocalListenAndRequireWatchConnection */ :
-            s.wa = await n.onListen(i, 
+            s.Da = await n.onListen(i, 
             /** enableRemoteListen= */ !0);
             break;
 
           case 1 /* ListenerSetupAction.InitializeLocalListenOnly */ :
-            s.wa = await n.onListen(i, 
+            s.Da = await n.onListen(i, 
             /** enableRemoteListen= */ !1);
             break;
 
@@ -18217,10 +18373,10 @@ async function __PRIVATE_eventManagerListen(e, t) {
         const n = __PRIVATE_wrapInUserErrorIfRecoverable(e, `Initialization of query '${__PRIVATE_stringifyQuery(t.query)}' failed`);
         return void t.onError(n);
     }
-    if (n.queries.set(i, s), s.Sa.push(t), 
+    if (n.queries.set(i, s), s.Ca.push(t), 
     // Run global snapshot listeners if a consistent snapshot has been emitted.
-    t.va(n.onlineState), s.wa) {
-        t.Fa(s.wa) && __PRIVATE_raiseSnapshotsInSyncEvent(n);
+    t.xa(n.onlineState), s.Da) {
+        t.Oa(s.Da) && __PRIVATE_raiseSnapshotsInSyncEvent(n);
     }
 }
 
@@ -18229,8 +18385,8 @@ async function __PRIVATE_eventManagerUnlisten(e, t) {
     let i = 3 /* ListenerRemovalAction.NoActionRequired */;
     const s = n.queries.get(r);
     if (s) {
-        const e = s.Sa.indexOf(t);
-        e >= 0 && (s.Sa.splice(e, 1), 0 === s.Sa.length ? i = t.Da() ? 0 /* ListenerRemovalAction.TerminateLocalListenAndRequireWatchDisconnection */ : 1 /* ListenerRemovalAction.TerminateLocalListenOnly */ : !s.ba() && t.Da() && (
+        const e = s.Ca.indexOf(t);
+        e >= 0 && (s.Ca.splice(e, 1), 0 === s.Ca.length ? i = t.Fa() ? 0 /* ListenerRemovalAction.TerminateLocalListenAndRequireWatchDisconnection */ : 1 /* ListenerRemovalAction.TerminateLocalListenOnly */ : !s.va() && t.Fa() && (
         // The removed listener is the last one that sourced from watch.
         i = 2 /* ListenerRemovalAction.RequireWatchDisconnectionOnly */));
     }
@@ -18257,8 +18413,8 @@ function __PRIVATE_eventManagerOnWatchChange(e, t) {
     for (const e of t) {
         const t = e.query, i = n.queries.get(t);
         if (i) {
-            for (const t of i.Sa) t.Fa(e) && (r = true);
-            i.wa = e;
+            for (const t of i.Ca) t.Oa(e) && (r = true);
+            i.Da = e;
         }
     }
     r && __PRIVATE_raiseSnapshotsInSyncEvent(n);
@@ -18266,24 +18422,24 @@ function __PRIVATE_eventManagerOnWatchChange(e, t) {
 
 function __PRIVATE_eventManagerOnWatchError(e, t, n) {
     const r = __PRIVATE_debugCast(e), i = r.queries.get(t);
-    if (i) for (const e of i.Sa) e.onError(n);
+    if (i) for (const e of i.Ca) e.onError(n);
     // Remove all listeners. NOTE: We don't need to call syncEngine.unlisten()
     // after an error.
         r.queries.delete(t);
 }
 
 function __PRIVATE_raiseSnapshotsInSyncEvent(e) {
-    e.Ca.forEach((e => {
+    e.Ma.forEach((e => {
         e.next();
     }));
 }
 
-var Ht$1, Jt;
+var Jt, Zt;
 
 /** Listen to both cache and server changes */
-(Jt = Ht$1 || (Ht$1 = {})).Ma = "default", 
+(Zt = Jt || (Jt = {})).Na = "default", 
 /** Listen to changes in cache only */
-Jt.Cache = "cache";
+Zt.Cache = "cache";
 
 /**
  * QueryListener takes a series of internal view snapshots and determines
@@ -18293,12 +18449,12 @@ Jt.Cache = "cache";
  */
 class __PRIVATE_QueryListener {
     constructor(e, t, n) {
-        this.query = e, this.xa = t, 
+        this.query = e, this.Ba = t, 
         /**
          * Initial snapshots (e.g. from cache) may not be propagated to the wrapped
          * observer. This flag is set to true once we've actually raised an event.
          */
-        this.Oa = false, this.Na = null, this.onlineState = "Unknown" /* OnlineState.Unknown */ , 
+        this.La = false, this.ka = null, this.onlineState = "Unknown" /* OnlineState.Unknown */ , 
         this.options = n || {};
     }
     /**
@@ -18306,7 +18462,7 @@ class __PRIVATE_QueryListener {
      * if applicable (depending on what changed, whether the user has opted into
      * metadata-only changes, etc.). Returns true if a user-facing event was
      * indeed raised.
-     */    Fa(e) {
+     */    Oa(e) {
         if (!this.options.includeMetadataChanges) {
             // Remove the metadata only changes.
             const t = [];
@@ -18315,50 +18471,50 @@ class __PRIVATE_QueryListener {
             /* excludesMetadataChanges= */ true, e.hasCachedResults);
         }
         let t = false;
-        return this.Oa ? this.Ba(e) && (this.xa.next(e), t = true) : this.La(e, this.onlineState) && (this.ka(e), 
-        t = true), this.Na = e, t;
+        return this.La ? this.qa(e) && (this.Ba.next(e), t = true) : this.Ka(e, this.onlineState) && (this.Ua(e), 
+        t = true), this.ka = e, t;
     }
     onError(e) {
-        this.xa.error(e);
+        this.Ba.error(e);
     }
-    /** Returns whether a snapshot was raised. */    va(e) {
+    /** Returns whether a snapshot was raised. */    xa(e) {
         this.onlineState = e;
         let t = false;
-        return this.Na && !this.Oa && this.La(this.Na, e) && (this.ka(this.Na), t = true), 
+        return this.ka && !this.La && this.Ka(this.ka, e) && (this.Ua(this.ka), t = true), 
         t;
     }
-    La(e, t) {
+    Ka(e, t) {
         // Always raise the first event when we're synced
         if (!e.fromCache) return true;
         // Always raise event if listening to cache
-                if (!this.Da()) return true;
+                if (!this.Fa()) return true;
         // NOTE: We consider OnlineState.Unknown as online (it should become Offline
         // or Online if we wait long enough).
                 const n = "Offline" /* OnlineState.Offline */ !== t;
         // Don't raise the event if we're online, aren't synced yet (checked
         // above) and are waiting for a sync.
-                return (!this.options.qa || !n) && (!e.docs.isEmpty() || e.hasCachedResults || "Offline" /* OnlineState.Offline */ === t);
+                return (!this.options.$a || !n) && (!e.docs.isEmpty() || e.hasCachedResults || "Offline" /* OnlineState.Offline */ === t);
         // Raise data from cache if we have any documents, have cached results before,
         // or we are offline.
         }
-    Ba(e) {
+    qa(e) {
         // We don't need to handle includeDocumentMetadataChanges here because
         // the Metadata only changes have already been stripped out if needed.
         // At this point the only changes we will see are the ones we should
         // propagate.
         if (e.docChanges.length > 0) return true;
-        const t = this.Na && this.Na.hasPendingWrites !== e.hasPendingWrites;
+        const t = this.ka && this.ka.hasPendingWrites !== e.hasPendingWrites;
         return !(!e.syncStateChanged && !t) && true === this.options.includeMetadataChanges;
         // Generally we should have hit one of the cases above, but it's possible
         // to get here if there were only metadata docChanges and they got
         // stripped out.
         }
-    ka(e) {
+    Ua(e) {
         e = ViewSnapshot.fromInitialDocuments(e.query, e.docs, e.mutatedKeys, e.fromCache, e.hasCachedResults), 
-        this.Oa = true, this.xa.next(e);
+        this.La = true, this.Ba.next(e);
     }
-    Da() {
-        return this.options.source !== Ht$1.Cache;
+    Fa() {
+        return this.options.source !== Jt.Cache;
     }
 }
 
@@ -18402,7 +18558,7 @@ class __PRIVATE_RemovedLimboDocument {
     constructor(e, 
     /** Documents included in the remote target */
     t) {
-        this.query = e, this.Za = t, this.Xa = null, this.hasCachedResults = false, 
+        this.query = e, this.eu = t, this.tu = null, this.hasCachedResults = false, 
         /**
          * A flag whether the view is current with the backend. A view is considered
          * current after it has seen the current flag from the backend and did not
@@ -18411,16 +18567,16 @@ class __PRIVATE_RemovedLimboDocument {
          */
         this.current = false, 
         /** Documents in the view but not in the remote target */
-        this.Ya = __PRIVATE_documentKeySet(), 
+        this.nu = __PRIVATE_documentKeySet(), 
         /** Document Keys that have local changes */
-        this.mutatedKeys = __PRIVATE_documentKeySet(), this.eu = __PRIVATE_newQueryComparator(e), 
-        this.tu = new DocumentSet(this.eu);
+        this.mutatedKeys = __PRIVATE_documentKeySet(), this.ru = __PRIVATE_newQueryComparator(e), 
+        this.iu = new DocumentSet(this.ru);
     }
     /**
      * The set of remote documents that the server has told us belongs to the target associated with
      * this view.
-     */    get nu() {
-        return this.Za;
+     */    get su() {
+        return this.eu;
     }
     /**
      * Iterates over a set of doc changes, applies the query limit, and computes
@@ -18431,8 +18587,8 @@ class __PRIVATE_RemovedLimboDocument {
      * @param previousChanges - If this is being called with a refill, then start
      *        with this set of docs and changes instead of the current view.
      * @returns a new set of docs, changes, and refill flag.
-     */    ru(e, t) {
-        const n = t ? t.iu : new __PRIVATE_DocumentChangeSet, r = t ? t.tu : this.tu;
+     */    ou(e, t) {
+        const n = t ? t._u : new __PRIVATE_DocumentChangeSet, r = t ? t.iu : this.iu;
         let i = t ? t.mutatedKeys : this.mutatedKeys, s = r, o = false;
         // Track the last doc in a (full) limit. This is necessary, because some
         // update (a delete, or an update moving a doc past the old limit) might
@@ -18455,10 +18611,10 @@ class __PRIVATE_RemovedLimboDocument {
                 u.data.isEqual(c.data) ? l !== h && (n.track({
                     type: 3 /* ChangeType.Metadata */ ,
                     doc: c
-                }), P = true) : this.su(u, c) || (n.track({
+                }), P = true) : this.au(u, c) || (n.track({
                     type: 2 /* ChangeType.Modified */ ,
                     doc: c
-                }), P = true, (_ && this.eu(c, _) > 0 || a && this.eu(c, a) < 0) && (
+                }), P = true, (_ && this.ru(c, _) > 0 || a && this.ru(c, a) < 0) && (
                 // This doc moved from inside the limit to outside the limit.
                 // That means there may be some other doc in the local cache
                 // that should be included instead.
@@ -18483,13 +18639,13 @@ class __PRIVATE_RemovedLimboDocument {
             });
         }
         return {
-            tu: s,
-            iu: n,
-            bs: o,
+            iu: s,
+            _u: n,
+            Ss: o,
             mutatedKeys: i
         };
     }
-    su(e, t) {
+    au(e, t) {
         // We suppress the initial change event for documents that were modified as
         // part of a write acknowledgment (e.g. when the value of a server transform
         // is applied) as Watch will send us the same document again.
@@ -18514,10 +18670,10 @@ class __PRIVATE_RemovedLimboDocument {
      */
     // PORTING NOTE: The iOS/Android clients always compute limbo document changes.
     applyChanges(e, t, n, r) {
-        const i = this.tu;
-        this.tu = e.tu, this.mutatedKeys = e.mutatedKeys;
+        const i = this.iu;
+        this.iu = e.iu, this.mutatedKeys = e.mutatedKeys;
         // Sort changes based on type and query comparator
-        const s = e.iu.ya();
+        const s = e._u.ba();
         s.sort(((e, t) => function __PRIVATE_compareChangeType(e, t) {
             const order = e => {
                 switch (e) {
@@ -18536,7 +18692,7 @@ class __PRIVATE_RemovedLimboDocument {
 
                   default:
                     return fail(20277, {
-                        Vt: e
+                        At: e
                     });
                 }
             };
@@ -18557,70 +18713,70 @@ class __PRIVATE_RemovedLimboDocument {
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */ (e.type, t.type) || this.eu(e.doc, t.doc))), this.ou(n), r = r ?? false;
-        const o = t && !r ? this._u() : [], _ = 0 === this.Ya.size && this.current && !r ? 1 /* SyncState.Synced */ : 0 /* SyncState.Local */ , a = _ !== this.Xa;
+ */ (e.type, t.type) || this.ru(e.doc, t.doc))), this.uu(n), r = r ?? false;
+        const o = t && !r ? this.cu() : [], _ = 0 === this.nu.size && this.current && !r ? 1 /* SyncState.Synced */ : 0 /* SyncState.Local */ , a = _ !== this.tu;
         // We are at synced state if there is no limbo docs are waiting to be resolved, view is current
         // with the backend, and the query is not pending to reset due to existence filter mismatch.
-                if (this.Xa = _, 0 !== s.length || a) {
+                if (this.tu = _, 0 !== s.length || a) {
             return {
-                snapshot: new ViewSnapshot(this.query, e.tu, i, s, e.mutatedKeys, 0 /* SyncState.Local */ === _, a, 
+                snapshot: new ViewSnapshot(this.query, e.iu, i, s, e.mutatedKeys, 0 /* SyncState.Local */ === _, a, 
                 /* excludesMetadataChanges= */ false, !!n && n.resumeToken.approximateByteSize() > 0),
-                au: o
+                lu: o
             };
         }
         // no changes
         return {
-            au: o
+            lu: o
         };
     }
     /**
      * Applies an OnlineState change to the view, potentially generating a
      * ViewChange if the view's syncState changes as a result.
-     */    va(e) {
+     */    xa(e) {
         return this.current && "Offline" /* OnlineState.Offline */ === e ? (
         // If we're offline, set `current` to false and then call applyChanges()
         // to refresh our syncState and generate a ViewChange as appropriate. We
         // are guaranteed to get a new TargetChange that sets `current` back to
         // true once the client is back online.
         this.current = false, this.applyChanges({
-            tu: this.tu,
-            iu: new __PRIVATE_DocumentChangeSet,
+            iu: this.iu,
+            _u: new __PRIVATE_DocumentChangeSet,
             mutatedKeys: this.mutatedKeys,
-            bs: false
+            Ss: false
         }, 
         /* limboResolutionEnabled= */ false)) : {
-            au: []
+            lu: []
         };
     }
     /**
      * Returns whether the doc for the given key should be in limbo.
-     */    uu(e) {
+     */    hu(e) {
         // If the remote end says it's part of this query, it's not in limbo.
-        return !this.Za.has(e) && (
+        return !this.eu.has(e) && (
         // The local store doesn't think it's a result, so it shouldn't be in limbo.
-        !!this.tu.has(e) && !this.tu.get(e).hasLocalMutations);
+        !!this.iu.has(e) && !this.iu.get(e).hasLocalMutations);
     }
     /**
      * Updates syncedDocuments, current, and limbo docs based on the given change.
      * Returns the list of changes to which docs are in limbo.
-     */    ou(e) {
-        e && (e.addedDocuments.forEach((e => this.Za = this.Za.add(e))), e.modifiedDocuments.forEach((e => {})), 
-        e.removedDocuments.forEach((e => this.Za = this.Za.delete(e))), this.current = e.current);
+     */    uu(e) {
+        e && (e.addedDocuments.forEach((e => this.eu = this.eu.add(e))), e.modifiedDocuments.forEach((e => {})), 
+        e.removedDocuments.forEach((e => this.eu = this.eu.delete(e))), this.current = e.current);
     }
-    _u() {
+    cu() {
         // We can only determine limbo documents when we're in-sync with the server.
         if (!this.current) return [];
         // TODO(klimt): Do this incrementally so that it's not quadratic when
         // updating many documents.
-                const e = this.Ya;
-        this.Ya = __PRIVATE_documentKeySet(), this.tu.forEach((e => {
-            this.uu(e.key) && (this.Ya = this.Ya.add(e.key));
+                const e = this.nu;
+        this.nu = __PRIVATE_documentKeySet(), this.iu.forEach((e => {
+            this.hu(e.key) && (this.nu = this.nu.add(e.key));
         }));
         // Diff the new limbo docs with the old limbo docs.
         const t = [];
         return e.forEach((e => {
-            this.Ya.has(e) || t.push(new __PRIVATE_RemovedLimboDocument(e));
-        })), this.Ya.forEach((n => {
+            this.nu.has(e) || t.push(new __PRIVATE_RemovedLimboDocument(e));
+        })), this.nu.forEach((n => {
             e.has(n) || t.push(new __PRIVATE_AddedLimboDocument(n));
         })), t;
     }
@@ -18644,9 +18800,9 @@ class __PRIVATE_RemovedLimboDocument {
      * @returns The ViewChange that resulted from this synchronization.
      */
     // PORTING NOTE: Multi-tab only.
-    cu(e) {
-        this.Za = e.ks, this.Ya = __PRIVATE_documentKeySet();
-        const t = this.ru(e.documents);
+    Pu(e) {
+        this.eu = e.Ls, this.nu = __PRIVATE_documentKeySet();
+        const t = this.ou(e.documents);
         return this.applyChanges(t, /* limboResolutionEnabled= */ true);
     }
     /**
@@ -18655,12 +18811,12 @@ class __PRIVATE_RemovedLimboDocument {
      * `hasPendingWrites` status of the already established view.
      */
     // PORTING NOTE: Multi-tab only.
-    lu() {
-        return ViewSnapshot.fromInitialDocuments(this.query, this.tu, this.mutatedKeys, 0 /* SyncState.Local */ === this.Xa, this.hasCachedResults);
+    Tu() {
+        return ViewSnapshot.fromInitialDocuments(this.query, this.iu, this.mutatedKeys, 0 /* SyncState.Local */ === this.tu, this.hasCachedResults);
     }
 }
 
-const Zt = "SyncEngine";
+const Xt = "SyncEngine";
 
 /**
  * QueryView contains all of the data that SyncEngine needs to keep track of for
@@ -18696,7 +18852,7 @@ const Zt = "SyncEngine";
          * decide whether it needs to manufacture a delete event for the target once
          * the target is CURRENT.
          */
-        this.hu = false;
+        this.Iu = false;
     }
 }
 
@@ -18717,8 +18873,8 @@ const Zt = "SyncEngine";
     // PORTING NOTE: Manages state synchronization in multi-tab environments.
     r, i, s) {
         this.localStore = e, this.remoteStore = t, this.eventManager = n, this.sharedClientState = r, 
-        this.currentUser = i, this.maxConcurrentLimboResolutions = s, this.Pu = {}, this.Tu = new ObjectMap((e => __PRIVATE_canonifyQuery(e)), __PRIVATE_queryEquals), 
-        this.Eu = new Map, 
+        this.currentUser = i, this.maxConcurrentLimboResolutions = s, this.Eu = {}, this.Ru = new ObjectMap((e => __PRIVATE_canonifyQuery(e)), __PRIVATE_queryEquals), 
+        this.Au = new Map, 
         /**
          * The keys of documents that are in limbo for which we haven't yet started a
          * limbo resolution query. The strings in this set are the result of calling
@@ -18728,28 +18884,28 @@ const Zt = "SyncEngine";
          * of arbitrary elements and it also maintains insertion order, providing the
          * desired queue-like FIFO semantics.
          */
-        this.Iu = new Set, 
+        this.Vu = new Set, 
         /**
          * Keeps track of the target ID for each document that is in limbo with an
          * active target.
          */
-        this.Ru = new SortedMap(DocumentKey.comparator), 
+        this.du = new SortedMap(DocumentKey.comparator), 
         /**
          * Keeps track of the information about an active limbo resolution for each
          * active target ID that was started for the purpose of limbo resolution.
          */
-        this.Au = new Map, this.Vu = new __PRIVATE_ReferenceSet, 
+        this.mu = new Map, this.fu = new __PRIVATE_ReferenceSet, 
         /** Stores user completion handlers, indexed by User and BatchId. */
-        this.du = {}, 
+        this.gu = {}, 
         /** Stores user callbacks waiting for all pending writes to be acknowledged. */
-        this.mu = new Map, this.fu = __PRIVATE_TargetIdGenerator.ar(), this.onlineState = "Unknown" /* OnlineState.Unknown */ , 
+        this.pu = new Map, this.yu = __PRIVATE_TargetIdGenerator._r(), this.onlineState = "Unknown" /* OnlineState.Unknown */ , 
         // The primary state is set to `true` or `false` immediately after Firestore
         // startup. In the interim, a client should only be considered primary if
         // `isPrimary` is true.
-        this.gu = void 0;
+        this.wu = void 0;
     }
     get isPrimaryClient() {
-        return true === this.gu;
+        return true === this.wu;
     }
 }
 
@@ -18761,7 +18917,7 @@ const Zt = "SyncEngine";
 async function __PRIVATE_syncEngineListen(e, t, n = true) {
     const r = __PRIVATE_ensureWatchCallbacks(e);
     let i;
-    const s = r.Tu.get(t);
+    const s = r.Ru.get(t);
     return s ? (
     // PORTING NOTE: With Multi-Tab Web, it is possible that a query view
     // already exists when EventManager calls us for the first time. This
@@ -18769,7 +18925,7 @@ async function __PRIVATE_syncEngineListen(e, t, n = true) {
     // behalf of another tab and the user of the primary also starts listening
     // to the query. EventManager will not have an assigned target ID in this
     // case and calls `listen` to obtain this ID.
-    r.sharedClientState.addLocalQueryTarget(s.targetId), i = s.view.lu()) : i = await __PRIVATE_allocateTargetAndMaybeListen(r, t, n, 
+    r.sharedClientState.addLocalQueryTarget(s.targetId), i = s.view.Tu()) : i = await __PRIVATE_allocateTargetAndMaybeListen(r, t, n, 
     /** shouldInitializeView= */ true), i;
 }
 
@@ -18794,30 +18950,30 @@ async function __PRIVATE_allocateTargetAndMaybeListen(e, t, n, r) {
     // PORTING NOTE: On Web only, we inject the code that registers new Limbo
     // targets based on view changes. This allows us to only depend on Limbo
     // changes when user code includes queries.
-    e.pu = (t, n, r) => async function __PRIVATE_applyDocChanges(e, t, n, r) {
-        let i = t.view.ru(n);
-        i.bs && (
+    e.Su = (t, n, r) => async function __PRIVATE_applyDocChanges(e, t, n, r) {
+        let i = t.view.ou(n);
+        i.Ss && (
         // The query has a limit and some docs were removed, so we need
         // to re-run the query against the local store to make sure we
         // didn't lose any good docs that had been past the limit.
         i = await __PRIVATE_localStoreExecuteQuery(e.localStore, t.query, 
-        /* usePreviousResults= */ false).then((({documents: e}) => t.view.ru(e, i))));
+        /* usePreviousResults= */ false).then((({documents: e}) => t.view.ou(e, i))));
         const s = r && r.targetChanges.get(t.targetId), o = r && null != r.targetMismatches.get(t.targetId), _ = t.view.applyChanges(i, 
         /* limboResolutionEnabled= */ e.isPrimaryClient, s, o);
-        return __PRIVATE_updateTrackedLimbos(e, t.targetId, _.au), _.snapshot;
+        return __PRIVATE_updateTrackedLimbos(e, t.targetId, _.lu), _.snapshot;
     }(e, t, n, r);
     const s = await __PRIVATE_localStoreExecuteQuery(e.localStore, t, 
-    /* usePreviousResults= */ true), o = new __PRIVATE_View(t, s.ks), _ = o.ru(s.documents), a = TargetChange.createSynthesizedTargetChangeForCurrentChange(n, r && "Offline" /* OnlineState.Offline */ !== e.onlineState, i), u = o.applyChanges(_, 
+    /* usePreviousResults= */ true), o = new __PRIVATE_View(t, s.Ls), _ = o.ou(s.documents), a = TargetChange.createSynthesizedTargetChangeForCurrentChange(n, r && "Offline" /* OnlineState.Offline */ !== e.onlineState, i), u = o.applyChanges(_, 
     /* limboResolutionEnabled= */ e.isPrimaryClient, a);
-    __PRIVATE_updateTrackedLimbos(e, n, u.au);
+    __PRIVATE_updateTrackedLimbos(e, n, u.lu);
     const c = new __PRIVATE_QueryView(t, n, o);
-    return e.Tu.set(t, c), e.Eu.has(n) ? e.Eu.get(n).push(t) : e.Eu.set(n, [ t ]), u.snapshot;
+    return e.Ru.set(t, c), e.Au.has(n) ? e.Au.get(n).push(t) : e.Au.set(n, [ t ]), u.snapshot;
 }
 
 /** Stops listening to the query. */ async function __PRIVATE_syncEngineUnlisten(e, t, n) {
-    const r = __PRIVATE_debugCast(e), i = r.Tu.get(t), s = r.Eu.get(i.targetId);
-    if (s.length > 1) return r.Eu.set(i.targetId, s.filter((e => !__PRIVATE_queryEquals(e, t)))), 
-    void r.Tu.delete(t);
+    const r = __PRIVATE_debugCast(e), i = r.Ru.get(t), s = r.Au.get(i.targetId);
+    if (s.length > 1) return r.Au.set(i.targetId, s.filter((e => !__PRIVATE_queryEquals(e, t)))), 
+    void r.Ru.delete(t);
     // No other queries are mapped to the target, clean up the query and the target.
         if (r.isPrimaryClient) {
         // We need to remove the local query target first to allow us to verify
@@ -18833,7 +18989,7 @@ async function __PRIVATE_allocateTargetAndMaybeListen(e, t, n, r) {
 }
 
 /** Unlistens to the remote store while still listening to the cache. */ async function __PRIVATE_triggerRemoteStoreUnlisten(e, t) {
-    const n = __PRIVATE_debugCast(e), r = n.Tu.get(t), i = n.Eu.get(r.targetId);
+    const n = __PRIVATE_debugCast(e), r = n.Ru.get(t), i = n.Au.get(r.targetId);
     n.isPrimaryClient && 1 === i.length && (
     // PORTING NOTE: Unregister the target ID with local Firestore client as
     // watch target.
@@ -18863,7 +19019,7 @@ async function __PRIVATE_allocateTargetAndMaybeListen(e, t, n, r) {
                 //  document version does not work because local mutations set them back
                 //  to 0.
                 let _ = __PRIVATE_mutableDocumentMap(), a = __PRIVATE_documentKeySet();
-                return n.xs.getEntries(e, i).next((e => {
+                return n.Ms.getEntries(e, i).next((e => {
                     _ = e, _.forEach(((e, t) => {
                         t.isValidDocument() || (a = a.add(e));
                     }));
@@ -18895,9 +19051,9 @@ async function __PRIVATE_allocateTargetAndMaybeListen(e, t, n, r) {
             })));
         }(r.localStore, t);
         r.sharedClientState.addPendingMutation(e.batchId), function __PRIVATE_addMutationCallback(e, t, n) {
-            let r = e.du[e.currentUser.toKey()];
+            let r = e.gu[e.currentUser.toKey()];
             r || (r = new SortedMap(__PRIVATE_primitiveComparator));
-            r = r.insert(t, n), e.du[e.currentUser.toKey()] = r;
+            r = r.insert(t, n), e.gu[e.currentUser.toKey()] = r;
         }
         /**
  * Resolves or rejects the user callback for the given batch and then discards
@@ -18922,13 +19078,13 @@ async function __PRIVATE_allocateTargetAndMaybeListen(e, t, n, r) {
         const e = await __PRIVATE_localStoreApplyRemoteEventToLocalCache(n.localStore, t);
         // Update `receivedDocument` as appropriate for any limbo targets.
                 t.targetChanges.forEach(((e, t) => {
-            const r = n.Au.get(t);
+            const r = n.mu.get(t);
             r && (
             // Since this is a limbo resolution lookup, it's for a single document
             // and it could be added, modified, or removed, but not a combination.
             __PRIVATE_hardAssert(e.addedDocuments.size + e.modifiedDocuments.size + e.removedDocuments.size <= 1, 22616), 
-            e.addedDocuments.size > 0 ? r.hu = !0 : e.modifiedDocuments.size > 0 ? __PRIVATE_hardAssert(r.hu, 14607) : e.removedDocuments.size > 0 && (__PRIVATE_hardAssert(r.hu, 42227), 
-            r.hu = !1));
+            e.addedDocuments.size > 0 ? r.Iu = !0 : e.modifiedDocuments.size > 0 ? __PRIVATE_hardAssert(r.Iu, 14607) : e.removedDocuments.size > 0 && (__PRIVATE_hardAssert(r.Iu, 42227), 
+            r.Iu = !1));
         })), await __PRIVATE_syncEngineEmitNewSnapsAndNotifyLocalStore(n, e, t);
     } catch (e) {
         await __PRIVATE_ignoreIfPrimaryLeaseLoss(e);
@@ -18946,19 +19102,19 @@ async function __PRIVATE_allocateTargetAndMaybeListen(e, t, n, r) {
     // SharedClientState.
         if (r.isPrimaryClient && 0 /* OnlineStateSource.RemoteStore */ === n || !r.isPrimaryClient && 1 /* OnlineStateSource.SharedClientState */ === n) {
         const e = [];
-        r.Tu.forEach(((n, r) => {
-            const i = r.view.va(t);
+        r.Ru.forEach(((n, r) => {
+            const i = r.view.xa(t);
             i.snapshot && e.push(i.snapshot);
         })), function __PRIVATE_eventManagerOnOnlineStateChange(e, t) {
             const n = __PRIVATE_debugCast(e);
             n.onlineState = t;
             let r = false;
             n.queries.forEach(((e, n) => {
-                for (const e of n.Sa) 
+                for (const e of n.Ca) 
                 // Run global snapshot listeners if a consistent snapshot has been emitted.
-                e.va(t) && (r = true);
+                e.xa(t) && (r = true);
             })), r && __PRIVATE_raiseSnapshotsInSyncEvent(n);
-        }(r.eventManager, t), e.length && r.Pu.H_(e), r.onlineState = t, r.isPrimaryClient && r.sharedClientState.setOnlineState(t);
+        }(r.eventManager, t), e.length && r.Eu.J_(e), r.onlineState = t, r.isPrimaryClient && r.sharedClientState.setOnlineState(t);
     }
 }
 
@@ -18976,7 +19132,7 @@ async function __PRIVATE_allocateTargetAndMaybeListen(e, t, n, r) {
     const r = __PRIVATE_debugCast(e);
     // PORTING NOTE: Multi-tab only.
         r.sharedClientState.updateQueryState(t, "rejected", n);
-    const i = r.Au.get(t), s = i && i.key;
+    const i = r.mu.get(t), s = i && i.key;
     if (s) {
         // TODO(klimt): We really only should do the following on permission
         // denied errors, but we don't have the cause code here.
@@ -18998,7 +19154,7 @@ async function __PRIVATE_allocateTargetAndMaybeListen(e, t, n, r) {
         // RemoteEvent. If `applyRemoteEvent()` throws, we want to re-listen to
         // this query when the RemoteStore restarts the Watch stream, which should
         // re-trigger the target failure.
-        r.Ru = r.Ru.remove(s), r.Au.delete(t), __PRIVATE_pumpEnqueuedLimboResolutions(r);
+        r.du = r.du.remove(s), r.mu.delete(t), __PRIVATE_pumpEnqueuedLimboResolutions(r);
     } else await __PRIVATE_localStoreReleaseTarget(r.localStore, t, 
     /* keepPersistedTargetData */ false).then((() => __PRIVATE_removeAndCleanupTarget(r, t, n))).catch(__PRIVATE_ignoreIfPrimaryLeaseLoss);
 }
@@ -19050,28 +19206,28 @@ async function __PRIVATE_syncEngineRejectFailedWrite(e, t, n) {
  * Triggers the callbacks that are waiting for this batch id to get acknowledged by server,
  * if there are any.
  */ function __PRIVATE_triggerPendingWritesCallbacks(e, t) {
-    (e.mu.get(t) || []).forEach((e => {
+    (e.pu.get(t) || []).forEach((e => {
         e.resolve();
-    })), e.mu.delete(t);
+    })), e.pu.delete(t);
 }
 
 /** Reject all outstanding callbacks waiting for pending writes to complete. */ function __PRIVATE_processUserCallback(e, t, n) {
     const r = __PRIVATE_debugCast(e);
-    let i = r.du[r.currentUser.toKey()];
+    let i = r.gu[r.currentUser.toKey()];
     // NOTE: Mutations restored from persistence won't have callbacks, so it's
     // okay for there to be no callback for this ID.
         if (i) {
         const e = i.get(t);
-        e && (n ? e.reject(n) : e.resolve(), i = i.remove(t)), r.du[r.currentUser.toKey()] = i;
+        e && (n ? e.reject(n) : e.resolve(), i = i.remove(t)), r.gu[r.currentUser.toKey()] = i;
     }
 }
 
 function __PRIVATE_removeAndCleanupTarget(e, t, n = null) {
     e.sharedClientState.removeLocalQueryTarget(t);
-    for (const r of e.Eu.get(t)) e.Tu.delete(r), n && e.Pu.yu(r, n);
-    if (e.Eu.delete(t), e.isPrimaryClient) {
-        e.Vu.Gr(t).forEach((t => {
-            e.Vu.containsKey(t) || 
+    for (const r of e.Au.get(t)) e.Ru.delete(r), n && e.Eu.bu(r, n);
+    if (e.Au.delete(t), e.isPrimaryClient) {
+        e.fu.Qr(t).forEach((t => {
+            e.fu.containsKey(t) || 
             // We removed the last reference for this key
             __PRIVATE_removeLimboTarget(e, t);
         }));
@@ -19079,30 +19235,30 @@ function __PRIVATE_removeAndCleanupTarget(e, t, n = null) {
 }
 
 function __PRIVATE_removeLimboTarget(e, t) {
-    e.Iu.delete(t.path.canonicalString());
+    e.Vu.delete(t.path.canonicalString());
     // It's possible that the target already got removed because the query failed. In that case,
     // the key won't exist in `limboTargetsByKey`. Only do the cleanup if we still have the target.
-    const n = e.Ru.get(t);
-    null !== n && (__PRIVATE_remoteStoreUnlisten(e.remoteStore, n), e.Ru = e.Ru.remove(t), 
-    e.Au.delete(n), __PRIVATE_pumpEnqueuedLimboResolutions(e));
+    const n = e.du.get(t);
+    null !== n && (__PRIVATE_remoteStoreUnlisten(e.remoteStore, n), e.du = e.du.remove(t), 
+    e.mu.delete(n), __PRIVATE_pumpEnqueuedLimboResolutions(e));
 }
 
 function __PRIVATE_updateTrackedLimbos(e, t, n) {
-    for (const r of n) if (r instanceof __PRIVATE_AddedLimboDocument) e.Vu.addReference(r.key, t), 
+    for (const r of n) if (r instanceof __PRIVATE_AddedLimboDocument) e.fu.addReference(r.key, t), 
     __PRIVATE_trackLimboChange(e, r); else if (r instanceof __PRIVATE_RemovedLimboDocument) {
-        __PRIVATE_logDebug(Zt, "Document no longer in limbo: " + r.key), e.Vu.removeReference(r.key, t);
-        e.Vu.containsKey(r.key) || 
+        __PRIVATE_logDebug(Xt, "Document no longer in limbo: " + r.key), e.fu.removeReference(r.key, t);
+        e.fu.containsKey(r.key) || 
         // We removed the last reference for this key
         __PRIVATE_removeLimboTarget(e, r.key);
     } else fail(19791, {
-        wu: r
+        Du: r
     });
 }
 
 function __PRIVATE_trackLimboChange(e, t) {
     const n = t.key, r = n.path.canonicalString();
-    e.Ru.get(n) || e.Iu.has(r) || (__PRIVATE_logDebug(Zt, "New document in limbo: " + n), 
-    e.Iu.add(r), __PRIVATE_pumpEnqueuedLimboResolutions(e));
+    e.du.get(n) || e.Vu.has(r) || (__PRIVATE_logDebug(Xt, "New document in limbo: " + n), 
+    e.Vu.add(r), __PRIVATE_pumpEnqueuedLimboResolutions(e));
 }
 
 /**
@@ -19113,18 +19269,18 @@ function __PRIVATE_trackLimboChange(e, t) {
  * with "resource exhausted" errors which can lead to pathological client
  * behavior as seen in https://github.com/firebase/firebase-js-sdk/issues/2683.
  */ function __PRIVATE_pumpEnqueuedLimboResolutions(e) {
-    for (;e.Iu.size > 0 && e.Ru.size < e.maxConcurrentLimboResolutions; ) {
-        const t = e.Iu.values().next().value;
-        e.Iu.delete(t);
-        const n = new DocumentKey(ResourcePath.fromString(t)), r = e.fu.next();
-        e.Au.set(r, new LimboResolution(n)), e.Ru = e.Ru.insert(n, r), __PRIVATE_remoteStoreListen(e.remoteStore, new TargetData(__PRIVATE_queryToTarget(__PRIVATE_newQueryForPath(n.path)), r, "TargetPurposeLimboResolution" /* TargetPurpose.LimboResolution */ , __PRIVATE_ListenSequence.ce));
+    for (;e.Vu.size > 0 && e.du.size < e.maxConcurrentLimboResolutions; ) {
+        const t = e.Vu.values().next().value;
+        e.Vu.delete(t);
+        const n = new DocumentKey(ResourcePath.fromString(t)), r = e.yu.next();
+        e.mu.set(r, new LimboResolution(n)), e.du = e.du.insert(n, r), __PRIVATE_remoteStoreListen(e.remoteStore, new TargetData(__PRIVATE_queryToTarget(__PRIVATE_newQueryForPath(n.path)), r, "TargetPurposeLimboResolution" /* TargetPurpose.LimboResolution */ , __PRIVATE_ListenSequence.ce));
     }
 }
 
 async function __PRIVATE_syncEngineEmitNewSnapsAndNotifyLocalStore(e, t, n) {
     const r = __PRIVATE_debugCast(e), i = [], s = [], o = [];
-    r.Tu.isEmpty() || (r.Tu.forEach(((e, _) => {
-        o.push(r.pu(_, t, n).then((e => {
+    r.Ru.isEmpty() || (r.Ru.forEach(((e, _) => {
+        o.push(r.Su(_, t, n).then((e => {
             // If there are changes, or we are handling a global snapshot, notify
             // secondary clients to update query state.
             if ((e || n) && r.isPrimaryClient) {
@@ -19141,24 +19297,24 @@ async function __PRIVATE_syncEngineEmitNewSnapsAndNotifyLocalStore(e, t, n) {
                 s.push(t);
             }
         })));
-    })), await Promise.all(o), r.Pu.H_(i), await async function __PRIVATE_localStoreNotifyLocalViewChanges(e, t) {
+    })), await Promise.all(o), r.Eu.J_(i), await async function __PRIVATE_localStoreNotifyLocalViewChanges(e, t) {
         const n = __PRIVATE_debugCast(e);
         try {
-            await n.persistence.runTransaction("notifyLocalViewChanges", "readwrite", (e => PersistencePromise.forEach(t, (t => PersistencePromise.forEach(t.Ts, (r => n.persistence.referenceDelegate.addReference(e, t.targetId, r))).next((() => PersistencePromise.forEach(t.Es, (r => n.persistence.referenceDelegate.removeReference(e, t.targetId, r)))))))));
+            await n.persistence.runTransaction("notifyLocalViewChanges", "readwrite", (e => PersistencePromise.forEach(t, (t => PersistencePromise.forEach(t.Ps, (r => n.persistence.referenceDelegate.addReference(e, t.targetId, r))).next((() => PersistencePromise.forEach(t.Ts, (r => n.persistence.referenceDelegate.removeReference(e, t.targetId, r)))))))));
         } catch (e) {
             if (!__PRIVATE_isIndexedDbTransactionError(e)) throw e;
             // If `notifyLocalViewChanges` fails, we did not advance the sequence
             // number for the documents that were included in this transaction.
             // This might trigger them to be deleted earlier than they otherwise
             // would have, but it should not invalidate the integrity of the data.
-            __PRIVATE_logDebug(Nt, "Failed to update sequence numbers: " + e);
+            __PRIVATE_logDebug(Bt, "Failed to update sequence numbers: " + e);
         }
         for (const e of t) {
             const t = e.targetId;
             if (!e.fromCache) {
-                const e = n.vs.get(t), r = e.snapshotVersion, i = e.withLastLimboFreeSnapshotVersion(r);
+                const e = n.Cs.get(t), r = e.snapshotVersion, i = e.withLastLimboFreeSnapshotVersion(r);
                 // Advance the last limbo free snapshot version
-                                n.vs = n.vs.insert(t, i);
+                                n.Cs = n.Cs.insert(t, i);
             }
         }
     }(r.localStore, s));
@@ -19167,32 +19323,32 @@ async function __PRIVATE_syncEngineEmitNewSnapsAndNotifyLocalStore(e, t, n) {
 async function __PRIVATE_syncEngineHandleCredentialChange(e, t) {
     const n = __PRIVATE_debugCast(e);
     if (!n.currentUser.isEqual(t)) {
-        __PRIVATE_logDebug(Zt, "User change. New user:", t.toKey());
+        __PRIVATE_logDebug(Xt, "User change. New user:", t.toKey());
         const e = await __PRIVATE_localStoreHandleUserChange(n.localStore, t);
         n.currentUser = t, 
         // Fails tasks waiting for pending writes requested by previous user.
         function __PRIVATE_rejectOutstandingPendingWritesCallbacks(e, t) {
-            e.mu.forEach((e => {
+            e.pu.forEach((e => {
                 e.forEach((e => {
                     e.reject(new FirestoreError(D.CANCELLED, t));
                 }));
-            })), e.mu.clear();
+            })), e.pu.clear();
         }(n, "'waitForPendingWrites' promise is rejected due to a user change."), 
         // TODO(b/114226417): Consider calling this only in the primary tab.
-        n.sharedClientState.handleUserChange(t, e.removedBatchIds, e.addedBatchIds), await __PRIVATE_syncEngineEmitNewSnapsAndNotifyLocalStore(n, e.Ns);
+        n.sharedClientState.handleUserChange(t, e.removedBatchIds, e.addedBatchIds), await __PRIVATE_syncEngineEmitNewSnapsAndNotifyLocalStore(n, e.Os);
     }
 }
 
 function __PRIVATE_syncEngineGetRemoteKeysForTarget(e, t) {
-    const n = __PRIVATE_debugCast(e), r = n.Au.get(t);
-    if (r && r.hu) return __PRIVATE_documentKeySet().add(r.key);
+    const n = __PRIVATE_debugCast(e), r = n.mu.get(t);
+    if (r && r.Iu) return __PRIVATE_documentKeySet().add(r.key);
     {
         let e = __PRIVATE_documentKeySet();
-        const r = n.Eu.get(t);
+        const r = n.Au.get(t);
         if (!r) return e;
         for (const t of r) {
-            const r = n.Tu.get(t);
-            e = e.unionWith(r.view.nu);
+            const r = n.Ru.get(t);
+            e = e.unionWith(r.view.su);
         }
         return e;
     }
@@ -19203,7 +19359,7 @@ function __PRIVATE_ensureWatchCallbacks(e) {
     return t.remoteStore.remoteSyncer.applyRemoteEvent = __PRIVATE_syncEngineApplyRemoteEvent.bind(null, t), 
     t.remoteStore.remoteSyncer.getRemoteKeysForTarget = __PRIVATE_syncEngineGetRemoteKeysForTarget.bind(null, t), 
     t.remoteStore.remoteSyncer.rejectListen = __PRIVATE_syncEngineRejectListen.bind(null, t), 
-    t.Pu.H_ = __PRIVATE_eventManagerOnWatchChange.bind(null, t.eventManager), t.Pu.yu = __PRIVATE_eventManagerOnWatchError.bind(null, t.eventManager), 
+    t.Eu.J_ = __PRIVATE_eventManagerOnWatchChange.bind(null, t.eventManager), t.Eu.bu = __PRIVATE_eventManagerOnWatchError.bind(null, t.eventManager), 
     t;
 }
 
@@ -19219,23 +19375,23 @@ class __PRIVATE_MemoryOfflineComponentProvider {
         this.kind = "memory", this.synchronizeTabs = false;
     }
     async initialize(e) {
-        this.serializer = __PRIVATE_newSerializer(e.databaseInfo.databaseId), this.sharedClientState = this.Du(e), 
-        this.persistence = this.Cu(e), await this.persistence.start(), this.localStore = this.vu(e), 
-        this.gcScheduler = this.Fu(e, this.localStore), this.indexBackfillerScheduler = this.Mu(e, this.localStore);
+        this.serializer = __PRIVATE_newSerializer(e.databaseInfo.databaseId), this.sharedClientState = this.Fu(e), 
+        this.persistence = this.Mu(e), await this.persistence.start(), this.localStore = this.xu(e), 
+        this.gcScheduler = this.Ou(e, this.localStore), this.indexBackfillerScheduler = this.Nu(e, this.localStore);
     }
-    Fu(e, t) {
+    Ou(e, t) {
         return null;
     }
-    Mu(e, t) {
+    Nu(e, t) {
         return null;
     }
-    vu(e) {
+    xu(e) {
         return __PRIVATE_newLocalStore(this.persistence, new __PRIVATE_QueryEngine, e.initialUser, this.serializer);
     }
-    Cu(e) {
-        return new __PRIVATE_MemoryPersistence(__PRIVATE_MemoryEagerDelegate.Vi, this.serializer);
+    Mu(e) {
+        return new __PRIVATE_MemoryPersistence(__PRIVATE_MemoryEagerDelegate.Ai, this.serializer);
     }
-    Du(e) {
+    Fu(e) {
         return new __PRIVATE_MemorySharedClientState;
     }
     async terminate() {
@@ -19252,14 +19408,14 @@ class __PRIVATE_LruGcMemoryOfflineComponentProvider extends __PRIVATE_MemoryOffl
     constructor(e) {
         super(), this.cacheSizeBytes = e;
     }
-    Fu(e, t) {
+    Ou(e, t) {
         __PRIVATE_hardAssert(this.persistence.referenceDelegate instanceof __PRIVATE_MemoryLruDelegate, 46915);
         const n = this.persistence.referenceDelegate.garbageCollector;
         return new __PRIVATE_LruScheduler(n, e.asyncQueue, t);
     }
-    Cu(e) {
+    Mu(e) {
         const t = void 0 !== this.cacheSizeBytes ? LruParams.withCacheSize(this.cacheSizeBytes) : LruParams.DEFAULT;
-        return new __PRIVATE_MemoryPersistence((e => __PRIVATE_MemoryLruDelegate.Vi(e, t)), this.serializer);
+        return new __PRIVATE_MemoryPersistence((e => __PRIVATE_MemoryLruDelegate.Ai(e, t)), this.serializer);
     }
 }
 
@@ -19297,17 +19453,17 @@ class __PRIVATE_LruGcMemoryOfflineComponentProvider extends __PRIVATE_MemoryOffl
         // PORTING NOTE: Manages state synchronization in multi-tab environments.
         r, i, s, o) {
             const _ = new __PRIVATE_SyncEngineImpl(e, t, n, r, i, s);
-            return o && (_.gu = true), _;
+            return o && (_.wu = true), _;
         }(this.localStore, this.remoteStore, this.eventManager, this.sharedClientState, e.initialUser, e.maxConcurrentLimboResolutions, t);
     }
     async terminate() {
         await async function __PRIVATE_remoteStoreShutdown(e) {
             const t = __PRIVATE_debugCast(e);
-            __PRIVATE_logDebug(jt, "RemoteStore shutting down."), t.Ia.add(5 /* OfflineCause.Shutdown */), 
-            await __PRIVATE_disableNetworkInternal(t), t.Aa.shutdown(), 
+            __PRIVATE_logDebug(Ht$1, "RemoteStore shutting down."), t.Va.add(5 /* OfflineCause.Shutdown */), 
+            await __PRIVATE_disableNetworkInternal(t), t.ma.shutdown(), 
             // Set the OnlineState to Unknown (rather than Offline) to avoid potentially
             // triggering spurious listener events with cached data, etc.
-            t.Va.set("Unknown" /* OnlineState.Unknown */);
+            t.fa.set("Unknown" /* OnlineState.Unknown */);
         }(this.remoteStore), this.datastore?.terminate(), this.eventManager?.terminate();
     }
 }
@@ -19366,15 +19522,15 @@ class __PRIVATE_AsyncObserver {
         this.muted = false;
     }
     next(e) {
-        this.muted || this.observer.next && this.Ou(this.observer.next, e);
+        this.muted || this.observer.next && this.Lu(this.observer.next, e);
     }
     error(e) {
-        this.muted || (this.observer.error ? this.Ou(this.observer.error, e) : __PRIVATE_logError("Uncaught Error in snapshot listener:", e.toString()));
+        this.muted || (this.observer.error ? this.Lu(this.observer.error, e) : __PRIVATE_logError("Uncaught Error in snapshot listener:", e.toString()));
     }
-    Nu() {
+    ku() {
         this.muted = true;
     }
-    Ou(e, t) {
+    Lu(e, t) {
         setTimeout((() => {
             this.muted || e(t);
         }), 0);
@@ -19396,7 +19552,7 @@ class __PRIVATE_AsyncObserver {
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */ const Xt = "FirestoreClient";
+ */ const Yt = "FirestoreClient";
 
 /**
  * FirestoreClient is a top-level class that constructs and owns all of the //
@@ -19422,9 +19578,9 @@ class FirestoreClient {
         this.user = User.UNAUTHENTICATED, this.clientId = __PRIVATE_AutoId.newId(), this.authCredentialListener = () => Promise.resolve(), 
         this.appCheckCredentialListener = () => Promise.resolve(), this._uninitializedComponentsProvider = i, 
         this.authCredentials.start(n, (async e => {
-            __PRIVATE_logDebug(Xt, "Received user=", e.uid), await this.authCredentialListener(e), 
+            __PRIVATE_logDebug(Yt, "Received user=", e.uid), await this.authCredentialListener(e), 
             this.user = e;
-        })), this.appCheckCredentials.start(n, (e => (__PRIVATE_logDebug(Xt, "Received new app check token=", e), 
+        })), this.appCheckCredentials.start(n, (e => (__PRIVATE_logDebug(Yt, "Received new app check token=", e), 
         this.appCheckCredentialListener(e, this.user))));
     }
     get configuration() {
@@ -19463,7 +19619,7 @@ class FirestoreClient {
 }
 
 async function __PRIVATE_setOfflineComponentProvider(e, t) {
-    e.asyncQueue.verifyOperationInProgress(), __PRIVATE_logDebug(Xt, "Initializing OfflineComponentProvider");
+    e.asyncQueue.verifyOperationInProgress(), __PRIVATE_logDebug(Yt, "Initializing OfflineComponentProvider");
     const n = e.configuration;
     await t.initialize(n);
     let r = n.initialUser;
@@ -19478,7 +19634,7 @@ async function __PRIVATE_setOfflineComponentProvider(e, t) {
 async function __PRIVATE_setOnlineComponentProvider(e, t) {
     e.asyncQueue.verifyOperationInProgress();
     const n = await __PRIVATE_ensureOfflineComponents(e);
-    __PRIVATE_logDebug(Xt, "Initializing OnlineComponentProvider"), await t.initialize(n, e.configuration), 
+    __PRIVATE_logDebug(Yt, "Initializing OnlineComponentProvider"), await t.initialize(n, e.configuration), 
     // The CredentialChangeListener of the online component provider takes
     // precedence over the offline component provider.
     e.setCredentialChangeListener((e => __PRIVATE_remoteStoreHandleCredentialChange(t.remoteStore, e))), 
@@ -19491,7 +19647,7 @@ async function __PRIVATE_setOnlineComponentProvider(e, t) {
  * persistence (as opposed to crashing the client).
  */ async function __PRIVATE_ensureOfflineComponents(e) {
     if (!e._offlineComponents) if (e._uninitializedComponentsProvider) {
-        __PRIVATE_logDebug(Xt, "Using user provided OfflineComponentProvider");
+        __PRIVATE_logDebug(Yt, "Using user provided OfflineComponentProvider");
         try {
             await __PRIVATE_setOfflineComponentProvider(e, e._uninitializedComponentsProvider._offline);
         } catch (t) {
@@ -19509,13 +19665,13 @@ async function __PRIVATE_setOnlineComponentProvider(e, t) {
             __PRIVATE_logWarn("Error using user provided cache. Falling back to memory cache: " + n), 
             await __PRIVATE_setOfflineComponentProvider(e, new __PRIVATE_MemoryOfflineComponentProvider);
         }
-    } else __PRIVATE_logDebug(Xt, "Using default OfflineComponentProvider"), await __PRIVATE_setOfflineComponentProvider(e, new __PRIVATE_LruGcMemoryOfflineComponentProvider(void 0));
+    } else __PRIVATE_logDebug(Yt, "Using default OfflineComponentProvider"), await __PRIVATE_setOfflineComponentProvider(e, new __PRIVATE_LruGcMemoryOfflineComponentProvider(void 0));
     return e._offlineComponents;
 }
 
 async function __PRIVATE_ensureOnlineComponents(e) {
-    return e._onlineComponents || (e._uninitializedComponentsProvider ? (__PRIVATE_logDebug(Xt, "Using user provided OnlineComponentProvider"), 
-    await __PRIVATE_setOnlineComponentProvider(e, e._uninitializedComponentsProvider._online)) : (__PRIVATE_logDebug(Xt, "Using default OnlineComponentProvider"), 
+    return e._onlineComponents || (e._uninitializedComponentsProvider ? (__PRIVATE_logDebug(Yt, "Using user provided OnlineComponentProvider"), 
+    await __PRIVATE_setOnlineComponentProvider(e, e._uninitializedComponentsProvider._online)) : (__PRIVATE_logDebug(Yt, "Using default OnlineComponentProvider"), 
     await __PRIVATE_setOnlineComponentProvider(e, new OnlineComponentProvider))), e._onlineComponents;
 }
 
@@ -19539,7 +19695,7 @@ async function __PRIVATE_getEventManager(e) {
     const i = new __PRIVATE_AsyncObserver(r), s = new __PRIVATE_QueryListener(t, i, n);
     return e.asyncQueue.enqueueAndForget((async () => __PRIVATE_eventManagerListen(await __PRIVATE_getEventManager(e), s))), 
     () => {
-        i.Nu(), e.asyncQueue.enqueueAndForget((async () => __PRIVATE_eventManagerUnlisten(await __PRIVATE_getEventManager(e), s)));
+        i.ku(), e.asyncQueue.enqueueAndForget((async () => __PRIVATE_eventManagerUnlisten(await __PRIVATE_getEventManager(e), s)));
     };
 }
 
@@ -19550,7 +19706,7 @@ function __PRIVATE_firestoreClientGetDocumentViaSnapshotListener(e, t, n = {}) {
             next: _ => {
                 // Mute and remove query first before passing event to user to avoid
                 // user actions affecting the now stale query.
-                s.Nu(), t.enqueueAndForget((() => __PRIVATE_eventManagerUnlisten(e, o)));
+                s.ku(), t.enqueueAndForget((() => __PRIVATE_eventManagerUnlisten(e, o)));
                 const a = _.docs.has(n);
                 !a && _.fromCache ? 
                 // TODO(dimond): If we're online and the document doesn't
@@ -19565,7 +19721,7 @@ function __PRIVATE_firestoreClientGetDocumentViaSnapshotListener(e, t, n = {}) {
             error: e => i.reject(e)
         }), o = new __PRIVATE_QueryListener(__PRIVATE_newQueryForPath(n.path), s, {
             includeMetadataChanges: true,
-            qa: true
+            $a: true
         });
         return __PRIVATE_eventManagerListen(e, o);
     }(await __PRIVATE_getEventManager(e), e.asyncQueue, t, n, r))), r.promise;
@@ -19620,7 +19776,7 @@ function __PRIVATE_cloneLongPollingOptions(e) {
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */ const Yt = "ComponentProvider", en = new Map;
+ */ const en = "ComponentProvider", tn = new Map;
 
 /**
  * An instance map that ensures only one Datastore exists per Firestore
@@ -19646,7 +19802,7 @@ function __PRIVATE_cloneLongPollingOptions(e) {
  * limitations under the License.
  */
 // settings() defaults:
-const tn = "firestore.googleapis.com", nn = true;
+const nn = "firestore.googleapis.com", rn = true;
 
 /**
  * A concrete type describing all the values that can be applied via a
@@ -19657,12 +19813,12 @@ class FirestoreSettingsImpl {
     constructor(e) {
         if (void 0 === e.host) {
             if (void 0 !== e.ssl) throw new FirestoreError(D.INVALID_ARGUMENT, "Can't provide ssl option if host option is not set");
-            this.host = tn, this.ssl = nn;
-        } else this.host = e.host, this.ssl = e.ssl ?? nn;
+            this.host = nn, this.ssl = rn;
+        } else this.host = e.host, this.ssl = e.ssl ?? rn;
         if (this.isUsingEmulator = void 0 !== e.emulatorOptions, this.credentials = e.credentials, 
         this.ignoreUndefinedProperties = !!e.ignoreUndefinedProperties, this.localCache = e.localCache, 
-        void 0 === e.cacheSizeBytes) this.cacheSizeBytes = St; else {
-            if (-1 !== e.cacheSizeBytes && e.cacheSizeBytes < Ct) throw new FirestoreError(D.INVALID_ARGUMENT, "cacheSizeBytes must be at least 1048576");
+        void 0 === e.cacheSizeBytes) this.cacheSizeBytes = Dt; else {
+            if (-1 !== e.cacheSizeBytes && e.cacheSizeBytes < vt) throw new FirestoreError(D.INVALID_ARGUMENT, "cacheSizeBytes must be at least 1048576");
             this.cacheSizeBytes = e.cacheSizeBytes;
         }
         __PRIVATE_validateIsNotUsedTogether("experimentalForceLongPolling", e.experimentalForceLongPolling, "experimentalAutoDetectLongPolling", e.experimentalAutoDetectLongPolling), 
@@ -19794,8 +19950,8 @@ class Firestore$1 {
  * when the `Firestore` instance is terminated.
  */
         return function __PRIVATE_removeComponents(e) {
-            const t = en.get(e);
-            t && (__PRIVATE_logDebug(Yt, "Removing Datastore"), en.delete(e), t.terminate());
+            const t = tn.get(e);
+            t && (__PRIVATE_logDebug(en, "Removing Datastore"), tn.delete(e), t.terminate());
         }(this), Promise.resolve();
     }
 }
@@ -19958,43 +20114,43 @@ function doc(e, t, ...n) {
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */ const rn = "AsyncQueue";
+ */ const sn = "AsyncQueue";
 
 class __PRIVATE_AsyncQueueImpl {
     constructor(e = Promise.resolve()) {
         // A list of retryable operations. Retryable operations are run in order and
         // retried with backoff.
-        this.Yu = [], 
+        this.nc = [], 
         // Is this AsyncQueue being shut down? Once it is set to true, it will not
         // be changed again.
-        this.ec = false, 
+        this.rc = false, 
         // Operations scheduled to be queued in the future. Operations are
         // automatically removed after they are run or canceled.
-        this.tc = [], 
+        this.sc = [], 
         // visible for testing
-        this.nc = null, 
+        this.oc = null, 
         // Flag set while there's an outstanding AsyncQueue operation, used for
         // assertion sanity-checks.
-        this.rc = false, 
+        this._c = false, 
         // Enabled during shutdown on Safari to prevent future access to IndexedDB.
-        this.sc = false, 
+        this.ac = false, 
         // List of TimerIds to fast-forward delays for.
-        this.oc = [], 
+        this.uc = [], 
         // Backoff timer used to schedule retries for retryable operations
-        this.M_ = new __PRIVATE_ExponentialBackoff(this, "async_queue_retry" /* TimerId.AsyncQueueRetry */), 
+        this.F_ = new __PRIVATE_ExponentialBackoff(this, "async_queue_retry" /* TimerId.AsyncQueueRetry */), 
         // Visibility handler that triggers an immediate retry of all retryable
         // operations. Meant to speed up recovery when we regain file system access
         // after page comes into foreground.
-        this._c = () => {
+        this.cc = () => {
             const e = getDocument();
-            e && __PRIVATE_logDebug(rn, "Visibility state changed to " + e.visibilityState), 
-            this.M_.w_();
-        }, this.ac = e;
+            e && __PRIVATE_logDebug(sn, "Visibility state changed to " + e.visibilityState), 
+            this.F_.y_();
+        }, this.lc = e;
         const t = getDocument();
-        t && "function" == typeof t.addEventListener && t.addEventListener("visibilitychange", this._c);
+        t && "function" == typeof t.addEventListener && t.addEventListener("visibilitychange", this.cc);
     }
     get isShuttingDown() {
-        return this.ec;
+        return this.rc;
     }
     /**
      * Adds a new operation to the queue without waiting for it to complete (i.e.
@@ -20004,44 +20160,44 @@ class __PRIVATE_AsyncQueueImpl {
         this.enqueue(e);
     }
     enqueueAndForgetEvenWhileRestricted(e) {
-        this.uc(), 
+        this.hc(), 
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
-        this.cc(e);
+        this.Pc(e);
     }
     enterRestrictedMode(e) {
-        if (!this.ec) {
-            this.ec = true, this.sc = e || false;
+        if (!this.rc) {
+            this.rc = true, this.ac = e || false;
             const t = getDocument();
-            t && "function" == typeof t.removeEventListener && t.removeEventListener("visibilitychange", this._c);
+            t && "function" == typeof t.removeEventListener && t.removeEventListener("visibilitychange", this.cc);
         }
     }
     enqueue(e) {
-        if (this.uc(), this.ec) 
+        if (this.hc(), this.rc) 
         // Return a Promise which never resolves.
         return new Promise((() => {}));
         // Create a deferred Promise that we can return to the callee. This
         // allows us to return a "hanging Promise" only to the callee and still
         // advance the queue even when the operation is not run.
                 const t = new __PRIVATE_Deferred;
-        return this.cc((() => this.ec && this.sc ? Promise.resolve() : (e().then(t.resolve, t.reject), 
+        return this.Pc((() => this.rc && this.ac ? Promise.resolve() : (e().then(t.resolve, t.reject), 
         t.promise))).then((() => t.promise));
     }
     enqueueRetryable(e) {
-        this.enqueueAndForget((() => (this.Yu.push(e), this.lc())));
+        this.enqueueAndForget((() => (this.nc.push(e), this.Tc())));
     }
     /**
      * Runs the next operation from the retryable queue. If the operation fails,
      * reschedules with backoff.
-     */    async lc() {
-        if (0 !== this.Yu.length) {
+     */    async Tc() {
+        if (0 !== this.nc.length) {
             try {
-                await this.Yu[0](), this.Yu.shift(), this.M_.reset();
+                await this.nc[0](), this.nc.shift(), this.F_.reset();
             } catch (e) {
                 if (!__PRIVATE_isIndexedDbTransactionError(e)) throw e;
  // Failure will be handled by AsyncQueue
-                                __PRIVATE_logDebug(rn, "Operation failed with retryable error: " + e);
+                                __PRIVATE_logDebug(sn, "Operation failed with retryable error: " + e);
             }
-            this.Yu.length > 0 && 
+            this.nc.length > 0 && 
             // If there are additional operations, we re-schedule `retryNextOp()`.
             // This is necessary to run retryable operations that failed during
             // their initial attempt since we don't know whether they are already
@@ -20052,51 +20208,51 @@ class __PRIVATE_AsyncQueueImpl {
             // Since `backoffAndRun()` cancels an existing backoff and schedules a
             // new backoff on every call, there is only ever a single additional
             // operation in the queue.
-            this.M_.p_((() => this.lc()));
+            this.F_.g_((() => this.Tc()));
         }
     }
-    cc(e) {
-        const t = this.ac.then((() => (this.rc = true, e().catch((e => {
-            this.nc = e, this.rc = false;
+    Pc(e) {
+        const t = this.lc.then((() => (this._c = true, e().catch((e => {
+            this.oc = e, this._c = false;
             // Re-throw the error so that this.tail becomes a rejected Promise and
             // all further attempts to chain (via .then) will just short-circuit
             // and return the rejected Promise.
             throw __PRIVATE_logError("INTERNAL UNHANDLED ERROR: ", __PRIVATE_getMessageOrStack(e)), 
             e;
-        })).then((e => (this.rc = false, e))))));
-        return this.ac = t, t;
+        })).then((e => (this._c = false, e))))));
+        return this.lc = t, t;
     }
     enqueueAfterDelay(e, t, n) {
-        this.uc(), 
+        this.hc(), 
         // Fast-forward delays for timerIds that have been overridden.
-        this.oc.indexOf(e) > -1 && (t = 0);
-        const r = DelayedOperation.createAndSchedule(this, e, t, n, (e => this.hc(e)));
-        return this.tc.push(r), r;
+        this.uc.indexOf(e) > -1 && (t = 0);
+        const r = DelayedOperation.createAndSchedule(this, e, t, n, (e => this.Ic(e)));
+        return this.sc.push(r), r;
     }
-    uc() {
-        this.nc && fail(47125, {
-            Pc: __PRIVATE_getMessageOrStack(this.nc)
+    hc() {
+        this.oc && fail(47125, {
+            Ec: __PRIVATE_getMessageOrStack(this.oc)
         });
     }
     verifyOperationInProgress() {}
     /**
      * Waits until all currently queued tasks are finished executing. Delayed
      * operations are not run.
-     */    async Tc() {
+     */    async Rc() {
         // Operations in the queue prior to draining may have enqueued additional
         // operations. Keep draining the queue until the tail is no longer advanced,
         // which indicates that no more new operations were enqueued and that all
         // operations were executed.
         let e;
         do {
-            e = this.ac, await e;
-        } while (e !== this.ac);
+            e = this.lc, await e;
+        } while (e !== this.lc);
     }
     /**
      * For Tests: Determine if a delayed operation with a particular TimerId
      * exists.
-     */    Ec(e) {
-        for (const t of this.tc) if (t.timerId === e) return true;
+     */    Ac(e) {
+        for (const t of this.sc) if (t.timerId === e) return true;
         return false;
     }
     /**
@@ -20105,25 +20261,25 @@ class __PRIVATE_AsyncQueueImpl {
      * @param lastTimerId - Delayed operations up to and including this TimerId
      * will be drained. Pass TimerId.All to run all delayed operations.
      * @returns a Promise that resolves once all operations have been run.
-     */    Ic(e) {
+     */    Vc(e) {
         // Note that draining may generate more delayed ops, so we do that first.
-        return this.Tc().then((() => {
+        return this.Rc().then((() => {
             // Run ops in the same order they'd run if they ran naturally.
             /* eslint-disable-next-line @typescript-eslint/no-floating-promises */
-            this.tc.sort(((e, t) => e.targetTimeMs - t.targetTimeMs));
-            for (const t of this.tc) if (t.skipDelay(), "all" /* TimerId.All */ !== e && t.timerId === e) break;
-            return this.Tc();
+            this.sc.sort(((e, t) => e.targetTimeMs - t.targetTimeMs));
+            for (const t of this.sc) if (t.skipDelay(), "all" /* TimerId.All */ !== e && t.timerId === e) break;
+            return this.Rc();
         }));
     }
     /**
      * For Tests: Skip all subsequent delays for a timer id.
-     */    Rc(e) {
-        this.oc.push(e);
+     */    dc(e) {
+        this.uc.push(e);
     }
-    /** Called once a DelayedOperation is run or canceled. */    hc(e) {
+    /** Called once a DelayedOperation is run or canceled. */    Ic(e) {
         // NOTE: indexOf / slice are O(n), but delayedOperations is expected to be small.
-        const t = this.tc.indexOf(e);
-        /* eslint-disable-next-line @typescript-eslint/no-floating-promises */        this.tc.splice(t, 1);
+        const t = this.sc.indexOf(e);
+        /* eslint-disable-next-line @typescript-eslint/no-floating-promises */        this.sc.splice(t, 1);
     }
 }
 
@@ -20180,7 +20336,7 @@ class __PRIVATE_AsyncQueueImpl {
         throw new FirestoreError(D.FAILED_PRECONDITION, "initializeFirestore() has already been called with different options. To avoid this error, call initializeFirestore() with the same options as when it was originally called, or call getFirestore() to return the already initialized instance.");
     }
     if (void 0 !== t.cacheSizeBytes && void 0 !== t.localCache) throw new FirestoreError(D.INVALID_ARGUMENT, "cache and cacheSizeBytes cannot be specified at the same time as cacheSizeBytes willbe deprecated. Instead, specify the cache size in the cache object");
-    if (void 0 !== t.cacheSizeBytes && -1 !== t.cacheSizeBytes && t.cacheSizeBytes < Ct) throw new FirestoreError(D.INVALID_ARGUMENT, "cacheSizeBytes must be at least 1048576");
+    if (void 0 !== t.cacheSizeBytes && -1 !== t.cacheSizeBytes && t.cacheSizeBytes < vt) throw new FirestoreError(D.INVALID_ARGUMENT, "cacheSizeBytes must be at least 1048576");
     // Workaround to get cookies in Firebase Studio
         return t.host && isCloudWorkstation(t.host) && pingServer(t.host), r.initialize({
         options: t,
@@ -20583,7 +20739,7 @@ VectorValue._jsonSchemaVersion = "firestore/vectorValue/1.0", VectorValue._jsonS
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-const on = /^__.*__$/;
+const _n = /^__.*__$/;
 
 /** The result of parsing document data (e.g. for a setData call). */ class ParsedSetData {
     constructor(e, t, n) {
@@ -20637,7 +20793,7 @@ function __PRIVATE_isWrite(e) {
         this.settings = e, this.databaseId = t, this.serializer = n, this.ignoreUndefinedProperties = r, 
         // Minor hack: If fieldTransforms is undefined, we assume this is an
         // external call and we need to validate the entire path.
-        void 0 === i && this.Ac(), this.fieldTransforms = i || [], this.fieldMask = s || [];
+        void 0 === i && this.mc(), this.fieldTransforms = i || [], this.fieldMask = s || [];
     }
     get path() {
         return this.settings.path;
@@ -20651,21 +20807,21 @@ function __PRIVATE_isWrite(e) {
             ...e
         }, this.databaseId, this.serializer, this.ignoreUndefinedProperties, this.fieldTransforms, this.fieldMask);
     }
-    dc(e) {
-        const t = this.path?.child(e), n = this.i({
-            path: t,
-            arrayElement: false
-        });
-        return n.mc(e), n;
-    }
-    fc(e) {
-        const t = this.path?.child(e), n = this.i({
-            path: t,
-            arrayElement: false
-        });
-        return n.Ac(), n;
-    }
     gc(e) {
+        const t = this.path?.child(e), n = this.i({
+            path: t,
+            arrayElement: false
+        });
+        return n.yc(e), n;
+    }
+    wc(e) {
+        const t = this.path?.child(e), n = this.i({
+            path: t,
+            arrayElement: false
+        });
+        return n.mc(), n;
+    }
+    Sc(e) {
         // TODO(b/34871131): We don't support array paths right now; so make path
         // undefined.
         return this.i({
@@ -20673,20 +20829,20 @@ function __PRIVATE_isWrite(e) {
             arrayElement: true
         });
     }
-    yc(e) {
+    bc(e) {
         return __PRIVATE_createError(e, this.settings.methodName, this.settings.hasConverter || false, this.path, this.settings.targetDoc);
     }
     /** Returns 'true' if 'fieldPath' was traversed when creating this context. */    contains(e) {
         return void 0 !== this.fieldMask.find((t => e.isPrefixOf(t))) || void 0 !== this.fieldTransforms.find((t => e.isPrefixOf(t.field)));
     }
-    Ac() {
+    mc() {
         // TODO(b/34871131): Remove null check once we have proper paths for fields
         // within arrays.
-        if (this.path) for (let e = 0; e < this.path.length; e++) this.mc(this.path.get(e));
+        if (this.path) for (let e = 0; e < this.path.length; e++) this.yc(this.path.get(e));
     }
-    mc(e) {
-        if (0 === e.length) throw this.yc("Document fields must not be empty");
-        if (__PRIVATE_isWrite(this.dataSource) && on.test(e)) throw this.yc('Document fields cannot begin and end with "__"');
+    yc(e) {
+        if (0 === e.length) throw this.bc("Document fields must not be empty");
+        if (__PRIVATE_isWrite(this.dataSource) && _n.test(e)) throw this.bc('Document fields cannot begin and end with "__"');
     }
 }
 
@@ -20697,7 +20853,7 @@ function __PRIVATE_isWrite(e) {
     constructor(e, t, n) {
         this.databaseId = e, this.ignoreUndefinedProperties = t, this.serializer = n || __PRIVATE_newSerializer(e);
     }
-    /** Creates a new top-level parse context. */    A(e, t, n, r = false) {
+    /** Creates a new top-level parse context. */    V(e, t, n, r = false) {
         return new __PRIVATE_ParseContextImpl({
             dataSource: e,
             methodName: t,
@@ -20715,7 +20871,7 @@ function __PRIVATE_newUserDataReader(e) {
 }
 
 /** Parse document data from a set() call. */ function __PRIVATE_parseSetData(e, t, n, r, i, s = {}) {
-    const o = e.A(s.merge || s.mergeFields ? 2 /* UserDataSource.MergeSet */ : 0 /* UserDataSource.Set */ , t, n, i);
+    const o = e.V(s.merge || s.mergeFields ? 2 /* UserDataSource.MergeSet */ : 0 /* UserDataSource.Set */ , t, n, i);
     __PRIVATE_validatePlainObject("Data must be an object, but it was:", o, r);
     const _ = __PRIVATE_parseObject(r, o);
     let a, u;
@@ -20757,8 +20913,8 @@ function __PRIVATE_newUserDataReader(e) {
  */
     return function __PRIVATE_parseSentinelFieldValue(e, t) {
         // Sentinels are only supported with writes, and not within arrays.
-        if (!__PRIVATE_isWrite(t.dataSource)) throw t.yc(`${e._methodName}() can only be used with update() and set()`);
-        if (!t.path) throw t.yc(`${e._methodName}() is not currently supported inside arrays`);
+        if (!__PRIVATE_isWrite(t.dataSource)) throw t.bc(`${e._methodName}() can only be used with update() and set()`);
+        if (!t.path) throw t.bc(`${e._methodName}() is not currently supported inside arrays`);
         const n = e._toFieldTransform(t);
         n && t.fieldTransforms.push(n);
     }
@@ -20782,12 +20938,12 @@ function __PRIVATE_newUserDataReader(e) {
         // the set of values to be included for the IN query) that may directly
         // contain additional arrays (each representing an individual field
         // value), so we disable this validation.
-        if (t.settings.arrayElement && 4 /* UserDataSource.ArrayArgument */ !== t.dataSource) throw t.yc("Nested arrays are not supported");
+        if (t.settings.arrayElement && 4 /* UserDataSource.ArrayArgument */ !== t.dataSource) throw t.bc("Nested arrays are not supported");
         return function __PRIVATE_parseArray(e, t) {
             const n = [];
             let r = 0;
             for (const i of e) {
-                let e = __PRIVATE_parseData(i, t.gc(r));
+                let e = __PRIVATE_parseData(i, t.Sc(r));
                 null == e && (
                 // Just include nulls in the array for fields being replaced with a
                 // sentinel.
@@ -20839,7 +20995,7 @@ function __PRIVATE_newUserDataReader(e) {
         };
         if (e instanceof DocumentReference) {
             const n = t.databaseId, r = e.firestore._databaseId;
-            if (!r.isEqual(n)) throw t.yc(`Document reference is for database ${r.projectId}/${r.database} but should be for database ${n.projectId}/${n.database}`);
+            if (!r.isEqual(n)) throw t.bc(`Document reference is for database ${r.projectId}/${r.database} but should be for database ${n.projectId}/${n.database}`);
             return {
                 referenceValue: __PRIVATE_toResourceName(e.firestore._databaseId || t.databaseId, e._key.path)
             };
@@ -20857,7 +21013,7 @@ function __PRIVATE_newUserDataReader(e) {
                     [ut]: {
                         arrayValue: {
                             values: n.map((e => {
-                                if ("number" != typeof e) throw t.yc("VectorValues must only contain numeric values.");
+                                if ("number" != typeof e) throw t.bc("VectorValues must only contain numeric values.");
                                 return __PRIVATE_toDouble(t.serializer, e);
                             }))
                         }
@@ -20876,7 +21032,7 @@ function __PRIVATE_newUserDataReader(e) {
  * to specific FieldValue types other than ObjectValue.
  */ (e, t);
         if (__PRIVATE_isProtoValueSerializable(e)) return e._toProto(t.serializer);
-        throw t.yc(`Unsupported field value: ${__PRIVATE_valueDescription(e)}`);
+        throw t.bc(`Unsupported field value: ${__PRIVATE_valueDescription(e)}`);
     }(e, t);
 }
 
@@ -20886,7 +21042,7 @@ function __PRIVATE_parseObject(e, t) {
     // If we encounter an empty object, we explicitly add it to the update
     // mask to ensure that the server creates a map entry.
     t.path && t.path.length > 0 && t.fieldMask.push(t.path) : forEach(e, ((e, r) => {
-        const i = __PRIVATE_parseData(r, t.dc(e));
+        const i = __PRIVATE_parseData(r, t.gc(e));
         null != i && (n[e] = i);
     })), {
         mapValue: {
@@ -20902,7 +21058,7 @@ function __PRIVATE_looksLikeJsonObject(e) {
 function __PRIVATE_validatePlainObject(e, t, n) {
     if (!__PRIVATE_looksLikeJsonObject(n) || !__PRIVATE_isPlainObject(n)) {
         const r = __PRIVATE_valueDescription(n);
-        throw "an object" === r ? t.yc(e + " a custom object") : t.yc(e + " " + r);
+        throw "an object" === r ? t.bc(e + " a custom object") : t.bc(e + " " + r);
     }
 }
 
@@ -20921,7 +21077,7 @@ function __PRIVATE_validatePlainObject(e, t, n) {
 
 /**
  * Matches any characters in a field path string that are reserved.
- */ const _n = new RegExp("[~\\*/\\[\\]]");
+ */ const an = new RegExp("[~\\*/\\[\\]]");
 
 /**
  * Wraps fromDotSeparatedString with an error message about the method that
@@ -20932,7 +21088,7 @@ function __PRIVATE_validatePlainObject(e, t, n) {
  * @param targetDoc - The document against which the field path will be
  * evaluated.
  */ function __PRIVATE_fieldPathFromDotSeparatedString(e, t, n) {
-    if (t.search(_n) >= 0) throw __PRIVATE_createError(`Invalid field path (${t}). Paths must not contain '~', '*', '/', '[', or ']'`, e, 
+    if (t.search(an) >= 0) throw __PRIVATE_createError(`Invalid field path (${t}). Paths must not contain '~', '*', '/', '[', or ']'`, e, 
     /* hasConverter= */ false, 
     /* path= */ void 0, n);
     try {
@@ -21104,7 +21260,7 @@ function __PRIVATE_createError(e, t, n, r, i) {
     }
 }
 
-const Ut = "@firebase/firestore", Ht = "4.13.0";
+const Ut = "@firebase/firestore", Ht = "4.15.0";
 
 /**
  * @license
@@ -21848,35 +22004,38 @@ var Scratch3NumberbankBlocks = /*#__PURE__*/function () {
       return new Promise(function (resolve, reject) {
         if (masterSha256 == '') {
           resolve();
+          return;
         }
         if (args.BANK == '' || args.CARD == '') {
           resolve();
+          return;
         }
         var variable = util.target.lookupOrCreateVariable(null, args.VAR);
-        bankKey = new String(args.BANK);
-        bankName = args.BANK;
-        cardKey = new String(args.CARD);
-        uniKey = bankKey.trim().concat(cardKey.trim());
+        args.BANK + '\x00' + args.CARD;
+        var localBankKey = new String(args.BANK);
+        var localCardKey = new String(args.CARD);
+        var localUniKey = localBankKey.trim().concat(localCardKey.trim());
         if (!crypto || !crypto.subtle) {
           reject("crypto.subtle is not supported.");
+          return;
         }
-        if (bankKey != '' && bankKey != undefined) {
-          crypto.subtle.digest('SHA-256', encoder.encode(bankKey)).then(function (bankStr) {
-            bankSha256 = hexString(bankStr);
-            return crypto.subtle.digest('SHA-256', encoder.encode(cardKey));
-          }).then(function (cardStr) {
-            cardSha256 = hexString(cardStr);
-            return crypto.subtle.digest('SHA-256', encoder.encode(uniKey));
-          }).then(function (uniStr) {
-            uniSha256 = hexString(uniStr);
-            return sleep(1);
+        if (localBankKey != '' && localBankKey != undefined) {
+          crypto.subtle.digest('SHA-256', encoder.encode(localBankKey)).then(function () {
+            return crypto.subtle.digest('SHA-256', encoder.encode(localCardKey));
           }).then(function () {
+            return crypto.subtle.digest('SHA-256', encoder.encode(localUniKey));
+          }).then(function (uniStr) {
+            var localUniSha256 = hexString(uniStr);
+            return sleep(1).then(function () {
+              return localUniSha256;
+            });
+          }).then(function (localUniSha256) {
             if (masterSha256 != '' && masterSha256 != undefined) {
               enqueueApiCall(function () {
-                return getDoc(doc(db, 'card', uniSha256)).then(function (docSnapshot) {
+                return getDoc(doc(db, 'card', localUniSha256)).then(function (docSnapshot) {
                   if (docSnapshot.exists()) {
-                    var data = docSnapshot.data();
-                    variable.value = data.number;
+                    var value = docSnapshot.data().number;
+                    variable.value = value;
                     resolve();
                   } else {
                     variable.value = '';
@@ -21887,10 +22046,9 @@ var Scratch3NumberbankBlocks = /*#__PURE__*/function () {
                   reject();
                 });
               });
-              resolve();
             } else {
               console.log("No MasterKey!");
-              resolve(); // MasterKeyがない場合
+              resolve();
             }
           }).catch(function (error) {
             console.error("Error: ", error);
@@ -21982,39 +22140,39 @@ var Scratch3NumberbankBlocks = /*#__PURE__*/function () {
       return new Promise(function (resolve, reject) {
         if (masterSha256 == '') {
           resolve('');
+          return;
         }
         if (args.BANK == '' || args.CARD == '') {
           resolve('');
+          return;
         }
-        var rep_cloudNum = '';
-        bankKey = new String(args.BANK);
-        bankName = args.BANK;
-        cardKey = new String(args.CARD);
-        uniKey = bankKey.trim().concat(cardKey.trim());
+        args.BANK + '\x00' + args.CARD;
+        var localBankKey = new String(args.BANK);
+        var localCardKey = new String(args.CARD);
+        var localUniKey = localBankKey.trim().concat(localCardKey.trim());
         if (!crypto || !crypto.subtle) {
           reject("crypto.subtle is not supported.");
+          return;
         }
-        if (bankKey != '' && bankKey != undefined) {
-          crypto.subtle.digest('SHA-256', encoder.encode(bankKey)).then(function (bankStr) {
-            bankSha256 = hexString(bankStr);
-            return crypto.subtle.digest('SHA-256', encoder.encode(cardKey));
-          }).then(function (cardStr) {
-            cardSha256 = hexString(cardStr);
-            return crypto.subtle.digest('SHA-256', encoder.encode(uniKey));
-          }).then(function (uniStr) {
-            uniSha256 = hexString(uniStr);
-            return sleep(1);
+        if (localBankKey != '' && localBankKey != undefined) {
+          crypto.subtle.digest('SHA-256', encoder.encode(localBankKey)).then(function () {
+            return crypto.subtle.digest('SHA-256', encoder.encode(localCardKey));
           }).then(function () {
+            return crypto.subtle.digest('SHA-256', encoder.encode(localUniKey));
+          }).then(function (uniStr) {
+            var localUniSha256 = hexString(uniStr);
+            return sleep(1).then(function () {
+              return localUniSha256;
+            });
+          }).then(function (localUniSha256) {
             if (masterSha256 != '' && masterSha256 != undefined) {
               enqueueApiCall(function () {
-                return getDoc(doc(db, 'card', uniSha256)).then(function (docSnapshot) {
+                return getDoc(doc(db, 'card', localUniSha256)).then(function (docSnapshot) {
                   if (docSnapshot.exists()) {
-                    var data = docSnapshot.data();
-                    rep_cloudNum = data.number;
-                    resolve(rep_cloudNum);
+                    var value = docSnapshot.data().number;
+                    resolve(value);
                   } else {
-                    rep_cloudNum = '';
-                    resolve(rep_cloudNum);
+                    resolve('');
                   }
                 }).catch(function (error) {
                   console.error("Error getting document: ", error);
@@ -22023,14 +22181,14 @@ var Scratch3NumberbankBlocks = /*#__PURE__*/function () {
               });
             } else {
               console.log("No MasterKey!");
-              resolve(''); // MasterKeyがない場合
+              resolve('');
             }
           }).catch(function (error) {
             console.error("Error: ", error);
             reject(error);
           });
         } else {
-          resolve(''); // bankKeyがない場合
+          resolve('');
         }
       }).then(function (ret) {
         return new Promise(function (resolve) {
