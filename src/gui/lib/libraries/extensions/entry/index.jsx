@@ -18,7 +18,7 @@ const entry = {
     get name() {
         return formatMessage({
             id: 'numberbank.entry.name',
-            default: 'NumberBank 2.0',
+            default: 'NumberBank 2.5',
             description: 'Name of the extension'
         });
     },
