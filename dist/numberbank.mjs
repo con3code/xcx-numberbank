@@ -21848,7 +21848,7 @@ function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length)
 //
 var encoder = new TextEncoder();
 var decoderUtf8 = new TextDecoder('utf-8');
-var numberbankVersion = 'NumberBank 2.5(2502)';
+var numberbankVersion = 'NumberBank 2.5(2503)';
 
 /**
  * Formatter which is used for translation.
