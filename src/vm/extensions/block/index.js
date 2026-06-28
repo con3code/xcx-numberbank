@@ -1,6 +1,7 @@
 /*
 //
 // NumberBank for Xcratch
+// 20260628 - ver2.5(2503)
 // 20260601 - ver2.5(2502)
 //
 //
@@ -23,7 +24,7 @@ import {initializeFirestore, doc, getDoc, setDoc, onSnapshot} from 'firebase/fir
 const encoder = new TextEncoder();
 const decoderUtf8 = new TextDecoder('utf-8');
 
-const numberbankVersion = 'NumberBank 2.5(2502)';
+const numberbankVersion = 'NumberBank 2.5(2503)';
 
 
 /**
