@@ -6,7 +6,7 @@ import fs from 'fs-extra';
 
 // Get scratch-vm path from command line argument
 const args = process.argv.slice(2);
-const vmPath = args[0] || '../scratch-editor/packages/scratch-vm';
+const vmPath = args[0] || '../xcratch/packages/scratch-vm';
 
 // modify for your environment
 const vmSrcDev = path.resolve(process.cwd(), './src/vm');
