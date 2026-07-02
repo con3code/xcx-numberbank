@@ -14,7 +14,13 @@
     "numberbank.lisningNum": "turn lisning value of[CARD]of[BANK] [LISNING_STATE]",
     "numberbank.whenUpdated": "when updated",
     "lisning.off": "off",
-    "lisning.on": "on"
+    "lisning.on": "on",
+    "numberbank.changeNum": "change [CARD]of[BANK] by [VAL]",
+    "numberbank.boolLastOpOk": "last action ok?",
+    "numberbank.repLastError": "last error",
+    "numberbank.lastError.offline": "cannot connect",
+    "numberbank.lastError.notAllowed": "not allowed",
+    "numberbank.lastError.error": "error"
   },
   "ja": {
     "numberbank.name": "NumberBank",
@@ -31,7 +37,13 @@
     "numberbank.lisningNum": "[BANK]の[CARD]の更新確認を[LISNING_STATE]にする",
     "numberbank.whenUpdated": "更新されたとき",
     "lisning.off": "切",
-    "lisning.on": "入"
+    "lisning.on": "入",
+    "numberbank.changeNum": "[BANK]の[CARD]を[VAL]ずつ変える",
+    "numberbank.boolLastOpOk": "さっきの操作は成功した",
+    "numberbank.repLastError": "直近のエラー",
+    "numberbank.lastError.offline": "つながりません",
+    "numberbank.lastError.notAllowed": "アクセスできません",
+    "numberbank.lastError.error": "エラー"
   },
   "ja-Hira": {
     "numberbank.name": "なんばーばんく",
@@ -48,6 +60,12 @@
     "numberbank.lisningNum": "[BANK]の[CARD]のこうしんかくにんを[LISNING_STATE]にする",
     "numberbank.whenUpdated": "こうしんされたとき",
     "lisning.off": "きり",
-    "lisning.on": "いり"
+    "lisning.on": "いり",
+    "numberbank.changeNum": "[BANK]の[CARD]を[VAL]ずつかえる",
+    "numberbank.boolLastOpOk": "さっきのそうさはせいこうした",
+    "numberbank.repLastError": "さいきんのエラー",
+    "numberbank.lastError.offline": "つながりません",
+    "numberbank.lastError.notAllowed": "アクセスできません",
+    "numberbank.lastError.error": "エラー"
   }
 }

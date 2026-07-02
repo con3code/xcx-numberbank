@@ -1,6 +1,7 @@
 /*
 //
 // NumberBank for Xcratch
+// 20260702 - ver2.6(2601) ACID改善: writeBatch/runTransaction/リトライ/エラーブロック
 // 20260628 - ver2.5(2503)
 // 20260601 - ver2.5(2502)
 //
@@ -17,14 +18,15 @@ import Variable from '/usr/local/xcratch/xcratch/packages/scratch-vm/src/engine/
 
 import {initializeApp, getApps, deleteApp} from 'firebase/app';
 import * as firestore from 'firebase/firestore';
-import {initializeFirestore, doc, getDoc, setDoc, onSnapshot} from 'firebase/firestore';
+import {initializeFirestore, doc, getDoc, setDoc, onSnapshot, writeBatch, runTransaction} from 'firebase/firestore';
+import {withRetry, buildChangeTransaction, errorDisplayKey} from './firestore-ops';
 
 
 //
 const encoder = new TextEncoder();
 const decoderUtf8 = new TextDecoder('utf-8');
 
-const numberbankVersion = 'NumberBank 2.5(2503)';
+const numberbankVersion = 'NumberBank 2.6(2601)';
 
 
 /**
@@ -173,22 +175,95 @@ class Scratch3NumberbankBlocks {
                     const cardDocRef = doc(db, 'card', localUniSha256);
                     const bankDocRef = doc(db, 'bank', localBankSha256);
 
-                    enqueueApiCall(() =>
-                        setDoc(cardDocRef, {
+                    enqueueApiCall(() => withRetry(() => {
+                        // card/bankを同一バッチで書き、片方だけ成功する中間状態をなくす
+                        const batch = writeBatch(db);
+                        batch.set(cardDocRef, {
                             number: localSettingNum,
                             bank_key: localBankSha256,
                             card_key: localCardSha256,
                             master_key: masterSha256,
                             time_stamp: now
-                        })
-                        .then(() => setDoc(bankDocRef, {
+                        });
+                        batch.set(bankDocRef, {
                             bank_name: localBankName,
                             time_stamp: now
-                        }))
-                    )
-                    .then(() => resolve())
+                        });
+                        return batch.commit();
+                    }))
+                    .then(() => {
+                        cloudReadCache[localBankKey + '\x00' + localCardKey] = localSettingNum;
+                        recordOpResult('putNum', null);
+                        resolve();
+                    })
                     .catch(error => {
                         console.error("Error writing document: ", error);
+                        recordOpResult('putNum', error);
+                        reject(error);
+                    });
+                })
+                .catch(error => {
+                    console.error("Error: ", error);
+                    reject(error);
+                });
+        }).then(() => new Promise(resolve => {
+            setTimeout(() => {
+                resolve();
+            }, interval.MsPut);
+        }));
+
+    }
+
+
+    changeNum(args) {
+        return new Promise((resolve, reject) => {
+            if (masterSha256 == '') { resolve(); return; }
+            if (args.BANK == '' || args.CARD == '' || args.VAL == '') { resolve(); return; }
+
+            const localBankKey = String(args.BANK);
+            const localBankName = args.BANK;
+            const localCardKey = String(args.CARD);
+            const localVal = args.VAL;
+
+            if (!crypto || !crypto.subtle) {
+                reject("crypto.subtle is not supported.");
+                return;
+            }
+
+            computeHashes(localBankKey, localCardKey)
+                .then(({bankSha256: localBankSha256, cardSha256: localCardSha256, uniSha256: localUniSha256}) => {
+                    if (masterSha256 == '' || masterSha256 == undefined) {
+                        console.log("No MasterKey!");
+                        resolve();
+                        return;
+                    }
+                    const cardDocRef = doc(db, 'card', localUniSha256);
+                    const bankDocRef = doc(db, 'bank', localBankSha256);
+
+                    // read-modify-writeをトランザクションで行い、他クライアントとの
+                    // 同時加算でも更新が消えないようにする（競合時はSDKが自動再試行）
+                    enqueueApiCall(() => withRetry(() =>
+                        runTransaction(db, buildChangeTransaction({
+                            cardDocRef: cardDocRef,
+                            bankDocRef: bankDocRef,
+                            delta: localVal,
+                            keys: {
+                                bankSha256: localBankSha256,
+                                cardSha256: localCardSha256,
+                                masterSha256: masterSha256
+                            },
+                            bankName: localBankName,
+                            now: Date.now()
+                        }))
+                    ))
+                    .then(next => {
+                        cloudReadCache[localBankKey + '\x00' + localCardKey] = next;
+                        recordOpResult('changeNum', null);
+                        resolve();
+                    })
+                    .catch(error => {
+                        console.error("Error changing document: ", error);
+                        recordOpResult('changeNum', error);
                         reject(error);
                     });
                 })
@@ -223,21 +298,22 @@ class Scratch3NumberbankBlocks {
             computeHashes(localBankKey, localCardKey)
                 .then(({uniSha256: localUniSha256}) => {
                     if (masterSha256 != '' && masterSha256 != undefined) {
-                        enqueueApiCall(() => getDoc(doc(db, 'card', localUniSha256))
+                        enqueueApiCall(() => withRetry(() => getDoc(doc(db, 'card', localUniSha256)), {retries: 1, baseMs: 300})
                             .then(docSnapshot => {
                                 if (docSnapshot.exists()) {
                                     const value = docSnapshot.data().number;
                                     cloudReadCache[cacheKey] = value;
                                     variable.value = value;
-                                    resolve();
                                 } else {
                                     cloudReadCache[cacheKey] = '';
                                     variable.value = '';
-                                    resolve();
                                 }
+                                recordOpResult('setNum', null);
+                                resolve();
                             })
                             .catch(error => {
                                 console.error("Error getting document: ", error);
+                                recordOpResult('setNum', error);
                                 reject();
                             }));
                     } else {
@@ -275,18 +351,19 @@ class Scratch3NumberbankBlocks {
             computeHashes(localBankKey, localCardKey)
                 .then(({uniSha256: localUniSha256}) => {
                     if (masterSha256 != '' && masterSha256 != undefined) {
-                        enqueueApiCall(() => getDoc(doc(db, 'card', localUniSha256))
+                        enqueueApiCall(() => withRetry(() => getDoc(doc(db, 'card', localUniSha256)), {retries: 1, baseMs: 300})
                             .then(docSnapshot => {
                                 if (docSnapshot.exists()) {
                                     cloudNum = docSnapshot.data().number;
-                                    resolve(cloudNum);
                                 } else {
                                     cloudNum = '';
-                                    resolve(cloudNum);
                                 }
+                                recordOpResult('getNum', null);
+                                resolve(cloudNum);
                             })
                             .catch(error => {
                                 console.error("Error getting document: ", error);
+                                recordOpResult('getNum', error);
                                 reject(error);
                             }));
                     } else {
@@ -312,6 +389,21 @@ class Scratch3NumberbankBlocks {
     }
 
 
+    boolLastOpOk(args, util) {
+        return lastOpState.ok;
+    }
+
+
+    repLastError(args, util) {
+        if (lastOpState.ok) return '';
+        const key = errorDisplayKey(lastOpState.code);
+        return formatMessage({
+            id: 'numberbank.lastError.' + key,
+            default: key === 'offline' ? 'cannot connect' : (key === 'notAllowed' ? 'not allowed' : 'error')
+        });
+    }
+
+
     repCloudNum(args) {
         return new Promise((resolve, reject) => {
             if (masterSha256 == '') { resolve(''); return; }
@@ -329,8 +421,9 @@ class Scratch3NumberbankBlocks {
             computeHashes(localBankKey, localCardKey)
                 .then(({uniSha256: localUniSha256}) => {
                     if (masterSha256 != '' && masterSha256 != undefined) {
-                        enqueueApiCall(() => getDoc(doc(db, 'card', localUniSha256))
+                        enqueueApiCall(() => withRetry(() => getDoc(doc(db, 'card', localUniSha256)), {retries: 1, baseMs: 300})
                             .then(docSnapshot => {
+                                recordOpResult('repCloudNum', null);
                                 if (docSnapshot.exists()) {
                                     const value = docSnapshot.data().number;
                                     cloudReadCache[cacheKey] = value;
@@ -342,6 +435,7 @@ class Scratch3NumberbankBlocks {
                             })
                             .catch(error => {
                                 console.error("Error getting document: ", error);
+                                recordOpResult('repCloudNum', error);
                                 reject(error);
                             }));
                     } else {
@@ -378,8 +472,9 @@ class Scratch3NumberbankBlocks {
             computeHashes(localBankKey, localCardKey)
                 .then(({uniSha256: localUniSha256}) => {
                     if (masterSha256 != '' && masterSha256 != undefined) {
-                        enqueueApiCall(() => getDoc(doc(db, 'card', localUniSha256))
+                        enqueueApiCall(() => withRetry(() => getDoc(doc(db, 'card', localUniSha256)), {retries: 1, baseMs: 300})
                             .then(ckey => {
+                                recordOpResult('boolAvl', null);
                                 if (ckey.exists()) {
                                     resolve(true);
                                 } else {
@@ -388,6 +483,7 @@ class Scratch3NumberbankBlocks {
                             })
                             .catch(error => {
                                 console.log("Error checking document:", error);
+                                recordOpResult('boolAvl', error);
                                 reject(error);
                             }));
                     } else {
@@ -561,12 +657,16 @@ class Scratch3NumberbankBlocks {
                         Listening.BANK = localBankSha256;
                         Listening.CARD = localCardSha256;
                         Listening.UNI = localUniSha256;
+                        Listening.CACHE_KEY = localBankKey + '\x00' + localCardKey;
 
                         if (masterSha256 != '' && masterSha256 != undefined) {
 
                             this.unsubscribe();
                             Listening.FIRST = true;
-                            this.unsubscribe = onSnapshot(doc(db, 'card', localUniSha256), (doc) => {
+                            this.unsubscribe = onSnapshot(doc(db, 'card', localUniSha256), (snapshot) => {
+                                if (snapshot.exists()) {
+                                    cloudReadCache[Listening.CACHE_KEY] = snapshot.data().number;
+                                }
                                 this.listeningState();
                             },
                             (err) => {
@@ -739,6 +839,35 @@ class Scratch3NumberbankBlocks {
                         }
                     }
                 },
+                {
+                    opcode: 'changeNum',
+                    blockType: BlockType.COMMAND,
+                    text: formatMessage({
+                        id: 'numberbank.changeNum',
+                        default: 'change [CARD]of[BANK] by [VAL]',
+                        description: 'change value atomically on Firebase'
+                    }),
+                    arguments: {
+                        BANK: {
+                            type: ArgumentType.STRING,
+                            defaultValue: formatMessage({
+                                id: 'numberbank.argments.bank',
+                                default: 'bank'
+                            })
+                        },
+                        CARD: {
+                            type: ArgumentType.STRING,
+                            defaultValue: formatMessage({
+                                id: 'numberbank.argments.card',
+                                default: 'card'
+                            })
+                        },
+                        VAL: {
+                            type: ArgumentType.NUMBER,
+                            defaultValue: '1'
+                        }
+                    }
+                },
                 '---',
                 {
                     opcode: 'setNum',
@@ -857,6 +986,24 @@ class Scratch3NumberbankBlocks {
                             })
                         }
                     }
+                },
+                {
+                    opcode: 'boolLastOpOk',
+                    blockType: BlockType.BOOLEAN,
+                    text: formatMessage({
+                        id: 'numberbank.boolLastOpOk',
+                        default: 'last action ok?',
+                        description: 'whether the last cloud operation succeeded'
+                    })
+                },
+                {
+                    opcode: 'repLastError',
+                    blockType: BlockType.REPORTER,
+                    text: formatMessage({
+                        id: 'numberbank.repLastError',
+                        default: 'last error',
+                        description: 'short description of the last cloud error'
+                    })
                 },
                 '---',
                 {
@@ -1060,6 +1207,7 @@ const Listening = {
     BANK: '',
     CARD: '',
     UNI: '',
+    CACHE_KEY: '',
     FIRST: false
 }
 
@@ -1068,6 +1216,17 @@ let masterSetted = '';
 let ResponseMaster = '';
 let cloudNum = '';
 const cloudReadCache = {};
+
+// 直前のクラウド操作の成否（boolLastOpOk / repLastError ブロック用）
+let lastOpState = {ok: true, code: '', opcode: ''};
+
+function recordOpResult(opcode, error) {
+    if (error == null) {
+        lastOpState = {ok: true, code: '', opcode: opcode};
+    } else {
+        lastOpState = {ok: false, code: error.code || 'unknown', opcode: opcode};
+    }
+}
 let masterSha256 = '';
 let inoutFlag = false;
 let inoutFlag_setting = false;

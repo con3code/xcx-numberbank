@@ -1,4 +1,4 @@
-# NumberBank 2.5 for Xcratch
+# NumberBank 2.6 for Xcratch
 An example extension for [Xcratch](https://xcratch.github.io/)
 
 This extension add extra-blocks, that enables cloud associative arrays to save values from Scratch 3.0 projects to Firebase Cloud.
@@ -7,8 +7,19 @@ This extension add extra-blocks, that enables cloud associative arrays to save v
 ## ✨ What You Can Do With This Extension
 
 Play [Example Project](https://con3code.github.io/xcratch/#https://con3code.github.io/xcx-numberbank/projects/example.sb3) to look at what you can do with "NumberBank" extension. 
+
 <iframe src="https://con3code.github.io/xcratch/#https://con3code.github.io/xcx-numberbank/projects/example.sb3" width="540px" height="460px"></iframe>
 
+
+## Reliability Blocks (v2.6)
+
+NumberBank writes are now atomic (card and bank records are committed together) and transient network errors are retried automatically. Three blocks support this:
+
+- **change [CARD] of [BANK] by [VAL]** — adds VAL to the current cloud value in a single Firestore transaction. Safe even when multiple projects update the same card at the same time (no lost updates, unlike a get-then-put sequence).
+- **last action ok?** — boolean block that reports whether the most recent cloud operation succeeded.
+- **last error** — reporter that returns a short description of the most recent error ("cannot connect", "not allowed", ...), or an empty string after a success.
+
+Tip: after a **when updated** hat fires, read the latest value with **value of [CARD] of [BANK]**.
 
 ## How to Use in Xcratch
 
